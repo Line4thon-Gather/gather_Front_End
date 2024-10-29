@@ -5,6 +5,30 @@
   --primary: #1b78ff;
   --sub: #daed54;
   --grayscale: #dcdfe3;
+  --primary-100: #e8f1ff;
+  --primary-200: #b5d3ff;
+  --primary-300: #82b5ff;
+  --primary-400: #4e96ff;
+  --primary-500: #0a60dd;
+  --primary-600: #004cbb;
+  --primary-700: #003e99;
+  --primary-800: #003177;
+  --sub-100: #fdffee;
+  --sub-200: #f8ffc9;
+  --sub-300: #f4ffa4;
+  --sub-400: #eaf97d;
+  --sub-600: #cadf39;
+  --sub-700: #acc01f;
+  --sub-800: #7a871e;
+  --sub-900: #5b6512;
+  --grayscale-100: #f6f8f9;
+  --grayscale-200: #f2f4f6;
+  --grayscale-300: #eaecee;
+  --grayscale-400: #dcdfe3;
+  --grayscale-600: #adb3ba;
+  --grayscale-700: #868c94;
+  --grayscale-800: #4d5359;
+  --grayscale-900: #27282d;
 }
 
 /* Reset CSS */
