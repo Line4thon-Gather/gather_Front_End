@@ -1,0 +1,66 @@
+.selectWrapper {
+  width: 80%;
+  position: relative;
+  padding: 12px 10px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid;
+  box-sizing: border-box;
+
+  input {
+    width: 90%;
+    height: 100%;
+    border: none;
+    outline: none;
+    text-indent: 3%;
+  }
+
+  &:focus-within {
+    border-color: #3498db;
+  }
+}
+
+.dropdownBtn {
+  position: relative;
+  box-sizing: border-box;
+  pointer-events: none;
+  transform: rotate(0deg);
+  transition: transform 0.8s ease-in;
+}
+
+.rotate {
+  transform: rotate(180deg);
+  animation: rotateAnm 0.8s ease-in;
+}
+
+.reverseRotate {
+  animation: reverseRotate 0.8s ease-in;
+}
+
+.full {
+  border: 1px solid var(--primary);
+}
+
+@keyframes rotateAnm {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes reverseRotate {
+  0% {
+    transform: rotate(180deg);
+  }
+  50% {
+    transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
