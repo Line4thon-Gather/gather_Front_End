@@ -2,6 +2,9 @@
   --main-bg-color: #ffffff;
   --main-text-color: #1c1b1a;
   --accent-color: #66924b;
+  --primary: #1b78ff;
+  --sub: #daed54;
+  --grayscale: #dcdfe3;
 }
 
 /* Reset CSS */
@@ -93,7 +96,7 @@ button {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
-  font-family: "Pretendard";
+  font-family: 'Pretendard';
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -131,7 +134,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
   content: none;
 }
 
