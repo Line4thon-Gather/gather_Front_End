@@ -4,7 +4,7 @@
   padding: 12px 10px;
   font-weight: 500;
   border-radius: 6px;
-  border: 1px solid;
+  border: 2px solid var(--grayscale);
   box-sizing: border-box;
 
   input {
@@ -13,10 +13,6 @@
     border: none;
     outline: none;
     text-indent: 3%;
-  }
-
-  &:focus-within {
-    border-color: #3498db;
   }
 }
 
@@ -38,7 +34,7 @@
 }
 
 .full {
-  border: 1px solid var(--primary);
+  border: 2px solid var(--primary);
 }
 
 @keyframes rotateAnm {
