@@ -1,14 +1,18 @@
 import PropTypes from 'prop-types';
 import styles from '../../styles/common/Input.module.css';
-import { useRef } from 'react';
 import { useState } from 'react';
 
-export default function Input({ width, fontSize, placeholder, isFailed }) {
-  const ref = useRef();
+export default function Input({
+  width,
+  fontSize,
+  placeholder,
+  isFailed,
+  refer,
+}) {
   const [hasContent, setHasContent] = useState(false);
 
   const checkContent = () => {
-    if (ref.current.value !== '') setHasContent(true);
+    if (refer.current.value !== '') setHasContent(true);
     else setHasContent(false);
   };
 
@@ -21,14 +25,15 @@ export default function Input({ width, fontSize, placeholder, isFailed }) {
         fontSize,
         borderColor: hasContent
           ? isFailed
-            ? '##FF4646'
+            ? '#FF4646'
             : 'var(--primary)'
           : isFailed
-          ? '##FF4646'
+          ? '#FF4646'
           : 'var(--grayscale-400)',
+        outlineColor: isFailed && !hasContent && '#FF4646',
       }}
       onChange={checkContent}
-      ref={ref}
+      ref={refer}
     />
   );
 }
@@ -38,4 +43,5 @@ Input.propTypes = {
   fontSize: PropTypes.number,
   placeholder: PropTypes.string,
   isFailed: PropTypes.bool,
+  refer: PropTypes.object,
 };
