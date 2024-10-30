@@ -16,6 +16,7 @@
 }
 
 .subcontainer {
+  flex: 1;
   display: flex;
   margin-bottom: 20px;
   align-items: flex-start;
@@ -23,6 +24,7 @@
 }
 
 .inputcontainer {
+  width: 100%;
   display: flex;
   margin-bottom: 20px;
   gap: 24px;
@@ -35,11 +37,11 @@
 .inputFieldContainer {
   width: 100%;
   display: flex;
-  gap: 20px;
+  gap: 30px;
 }
 
 .inputcontainer h3 {
-  padding-top: 5px;
+  padding-top: 10px;
   color: #4d5359;
   flex: 0 0 auto;
   min-width: 90px;
@@ -99,12 +101,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-left: 15px;
 }
 
 .profileImage {
   border: 0;
-  width: 160px;
-  height: 160px;
+  min-width: 160px;
+  min-height: 160px;
+  max-width: 380px;
+  max-height: 206px;
   border-radius: 10px;
 }
 
@@ -122,4 +127,78 @@
   border-radius: 4px;
   font-size: 1rem;
   resize: none;
+}
+
+.profileContaine2 {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.portfolioItem {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.addButton {
+  display: flex;
+  height: 46px;
+  padding: 10px 42px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid #b5d3ff;
+  color: #1b78ff;
+  background: #fff;
+  gap: 8px;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.fileButton {
+  width: 100%;
+  padding: 10px 42px;
+  background-color: #fff;
+  color: #1b78ff;
+  border-radius: 6px;
+  border: 1px solid #b5d3ff;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  border-radius: 4px;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.addButton:hover,
+.fileButton:hover {
+  background-color: #e8f1ff;
+}
+
+.rowContainer {
+  display: flex;
+  gap: 16px;
+}
+
+.removeButtonContainer {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.removeButton {
+  background-color: transparent;
+  color: #1b78ff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.removeButton:hover {
+  color: #d9363e;
+}
+
+.removeButton:disabled {
+  color: #a0a0a0;
+  cursor: not-allowed;
 }
