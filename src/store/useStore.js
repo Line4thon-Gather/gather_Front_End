@@ -6,4 +6,11 @@ export const useStore = create((set) => ({
     set(() => ({
       selectedDropdown,
     })),
+  value: ['', '', ''],
+  setValue: (value, index) =>
+    set((state) => {
+      const newValue = [...state.value];
+      newValue[index] = value === '선택' ? '' : value;
+      return { value: newValue };
+    }),
 }));
