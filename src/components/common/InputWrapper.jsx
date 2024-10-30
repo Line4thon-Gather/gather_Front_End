@@ -12,6 +12,7 @@ export default function InputWrapper({
   placeholder,
   list,
   number,
+  refer,
 }) {
   return (
     <div className={styles.inputWrapper}>
@@ -23,6 +24,7 @@ export default function InputWrapper({
             <Select placeholder={placeholder} list={list} number={number} />
           ) : (
             <Input
+              refer={refer}
               width={span ? '80%' : '100%'}
               fontSize={16}
               placeholder={placeholder}
@@ -45,4 +47,5 @@ InputWrapper.propTypes = {
   placeholder: PropTypes.string,
   list: PropTypes.array,
   number: PropTypes.number,
+  refer: PropTypes.object,
 };
