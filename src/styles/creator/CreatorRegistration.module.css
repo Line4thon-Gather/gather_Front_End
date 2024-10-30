@@ -1,0 +1,125 @@
+.container {
+  background-color: #f6f8f9;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  justify-content: center;
+}
+
+.section {
+  align-items: center;
+  width: 100%;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 20px;
+}
+
+.subcontainer {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.inputcontainer {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 24px;
+}
+
+.align_container {
+  width: 100%;
+}
+
+.inputFieldContainer {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+}
+
+.inputcontainer h3 {
+  padding-top: 5px;
+  color: #4d5359;
+  flex: 0 0 auto;
+  min-width: 90px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 175%;
+  text-align: left;
+}
+
+.inputcontainer input {
+  color: #868c94;
+  flex: 2;
+  max-width: 100%;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid var(--gray-scale-gray-400, #dcdfe3);
+  background: var(--gray-scale-white, #fff);
+}
+
+.inputcontainer select {
+  color: #868c94;
+  flex: 2;
+  justify-content: left;
+  width: 50%;
+  font-size: 16px;
+  border: 1px solid var(--gray-scale-gray-400, #dcdfe3);
+  background: var(--gray-scale-white, #fff);
+}
+
+.section h2 {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 175%;
+  color: #27282d;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.subcontainer h3 {
+  flex: 0 0 auto;
+  color: #4d5359;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 175%;
+}
+
+.profileContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 130px;
+}
+
+.imageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profileImage {
+  border: 0;
+  width: 160px;
+  height: 160px;
+  border-radius: 10px;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  font-size: 1rem;
+  resize: none;
+}
