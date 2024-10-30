@@ -17,7 +17,7 @@ export default function Select({ placeholder, list, number }) {
   }, [selectedDropdown, number]);
 
   const handleSelectClick = () => {
-    setSelectedDropdown(number);
+    number && setSelectedDropdown(number);
     setShowDropdown((state) => !state);
     setFirstClick(true);
   };
@@ -53,6 +53,7 @@ export default function Select({ placeholder, list, number }) {
           setSelected={setSelectContent}
           setShow={setShowDropdown}
           list={list}
+          number={number}
         />
       )}
     </div>
