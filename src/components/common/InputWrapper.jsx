@@ -13,6 +13,7 @@ export default function InputWrapper({
   list,
   number,
   refer,
+  onChange,
 }) {
   return (
     <div className={styles.inputWrapper}>
@@ -29,6 +30,7 @@ export default function InputWrapper({
               fontSize={16}
               placeholder={placeholder}
               isFailed={isFailed}
+              onChange={onChange}
             />
           )}
           {spanPosition === 'back' && <span>{span}</span>}
@@ -48,4 +50,5 @@ InputWrapper.propTypes = {
   list: PropTypes.array,
   number: PropTypes.number,
   refer: PropTypes.object,
+  onChange: PropTypes.func,
 };

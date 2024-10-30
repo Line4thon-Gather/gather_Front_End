@@ -8,6 +8,7 @@ export default function Input({
   placeholder,
   isFailed,
   refer,
+  onChange,
 }) {
   const [hasContent, setHasContent] = useState(false);
 
@@ -32,7 +33,10 @@ export default function Input({
           : 'var(--grayscale-400)',
         outlineColor: isFailed && !hasContent && '#FF4646',
       }}
-      onChange={checkContent}
+      onChange={() => {
+        checkContent();
+        onChange();
+      }}
       ref={refer}
     />
   );
@@ -44,4 +48,5 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   isFailed: PropTypes.bool,
   refer: PropTypes.object,
+  onChange: PropTypes.func,
 };
