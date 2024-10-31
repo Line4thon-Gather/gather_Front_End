@@ -27,7 +27,6 @@
   width: 100%;
   display: flex;
   margin-bottom: 20px;
-  gap: 24px;
 }
 
 .align_container {
@@ -44,9 +43,8 @@
   padding-top: 10px;
   color: #4d5359;
   flex: 0 0 auto;
-  min-width: 90px;
+  margin-right: 24px;
   font-size: 16px;
-  font-style: normal;
   font-weight: 700;
   line-height: 175%;
   text-align: left;
@@ -55,6 +53,7 @@
 .inputcontainer input {
   color: #868c94;
   flex: 2;
+  margin-right: 8px;
   max-width: 100%;
   font-size: 16px;
   border-radius: 6px;
@@ -74,7 +73,6 @@
 
 .section h2 {
   font-size: 18px;
-  font-style: normal;
   font-weight: 700;
   line-height: 175%;
   color: #27282d;
@@ -86,7 +84,6 @@
   flex: 0 0 auto;
   color: #4d5359;
   font-size: 16px;
-  font-style: normal;
   font-weight: 700;
   line-height: 175%;
 }
@@ -106,6 +103,15 @@
 
 .profileImage {
   border: 0;
+  width: 160px;
+  height: 160px;
+  max-width: 160px;
+  max-height: 160px;
+  border-radius: 10px;
+}
+
+.thumbnailImage {
+  border: 0;
   min-width: 160px;
   min-height: 160px;
   max-width: 380px;
@@ -114,7 +120,7 @@
 }
 
 .label {
-  font-size: 0.9rem;
+  font-size: 16px;
   color: #666;
   margin-bottom: 5px;
 }
@@ -125,7 +131,7 @@
   padding: 16px;
   border: 1px solid #d0d0d0;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 16px;
   resize: none;
 }
 
@@ -175,8 +181,8 @@
 }
 
 .rowContainer {
+  width: 100%;
   display: flex;
-  gap: 16px;
 }
 
 .removeButtonContainer {
@@ -201,4 +207,39 @@
 .removeButton:disabled {
   color: #a0a0a0;
   cursor: not-allowed;
+}
+
+span {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--grayscale-700);
+  align-items: center;
+  margin-top: 0;
+}
+
+.spanBack {
+  margin-top: 16.5px;
+  color: #868c94;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.hidden-label {
+  display: none;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submitButton {
+  display: flex;
+  width: 252px;
+  height: 46px;
+  padding: 10px 42px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  background: #d1d4d8;
 }
