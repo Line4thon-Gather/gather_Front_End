@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../styles/creator/CheckModal.module.css';
 import Image from '../../assets/images/ModalImage.png';
-import CloseIcon from '../../assets/images/CloseIcon.png'; // X 이미지 추가
+import CloseIcon from '../../assets/images/CloseIcon.png';
 
 const CheckModal = ({ onConfirm, onCancel }) => {
   return (
