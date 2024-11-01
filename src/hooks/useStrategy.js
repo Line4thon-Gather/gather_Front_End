@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useCallback } from 'react';
 
 export const validateInputs = (
@@ -17,7 +18,7 @@ export const validateInputs = (
     title: titleValue === '',
     period: !/^\d+$/.test(periodValue),
     target: !/^\d+$/.test(targetValue),
-    budget: !/^\d+$/.test(budgetValue),
+    budget: !(Number(budgetValue) >= 10000),
   };
 
   setIsFailed(updatedIsFailed);
@@ -70,7 +71,7 @@ export const useValidateFull = (
     const isPeriodFilled = periodRef.current?.value?.trim() !== '';
     const isTargetFilled = targetRef.current?.value?.trim() !== '';
     const isBudgetFilled = budgetRef.current?.value?.trim() !== '';
-    const fullValue = () => !value.some((item) => item.trim() === '');
+    const fullValue = () => !value.every((item) => item.trim() === '');
 
     if (
       isTitleFilled &&
@@ -84,6 +85,10 @@ export const useValidateFull = (
       setIsInputFull(false);
     }
   }, [value, titleRef, periodRef, targetRef, budgetRef, setIsInputFull]);
+
+  useEffect(() => {
+    validateFull();
+  }, [validateFull]);
 
   // `validateFull` 함수 반환
   return validateFull;
