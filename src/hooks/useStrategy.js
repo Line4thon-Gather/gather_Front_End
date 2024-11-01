@@ -1,17 +1,20 @@
+import { useCallback } from 'react';
+
 export const validateInputs = (
+  titleRef,
   periodRef,
   targetRef,
   budgetRef,
   isFailed,
   setIsFailed
 ) => {
+  const titleValue = titleRef.current.value;
   const periodValue = periodRef.current.value;
   const targetValue = targetRef.current.value;
   const budgetValue = budgetRef.current.value;
 
-  // 잠정적인 상태 객체 생성
   const updatedIsFailed = {
-    title: isFailed.title, // title은 여기서 검사하지 않으므로 이전 상태 유지
+    title: titleValue === '',
     period: !/^\d+$/.test(periodValue),
     target: !/^\d+$/.test(targetValue),
     budget: !/^\d+$/.test(budgetValue),
@@ -52,4 +55,36 @@ export const validateFull = (
   } else {
     setIsInputFull(false); // 조건 미충족 시 false로 초기화
   }
+};
+
+export const useValidateFull = (
+  value,
+  titleRef,
+  periodRef,
+  targetRef,
+  budgetRef,
+  setIsInputFull
+) => {
+  const validateFull = useCallback(() => {
+    const isTitleFilled = titleRef.current?.value?.trim() !== '';
+    const isPeriodFilled = periodRef.current?.value?.trim() !== '';
+    const isTargetFilled = targetRef.current?.value?.trim() !== '';
+    const isBudgetFilled = budgetRef.current?.value?.trim() !== '';
+    const fullValue = () => !value.some((item) => item.trim() === '');
+
+    if (
+      isTitleFilled &&
+      isPeriodFilled &&
+      isTargetFilled &&
+      isBudgetFilled &&
+      fullValue()
+    ) {
+      setIsInputFull(true);
+    } else {
+      setIsInputFull(false);
+    }
+  }, [value, titleRef, periodRef, targetRef, budgetRef, setIsInputFull]);
+
+  // `validateFull` 함수 반환
+  return validateFull;
 };
