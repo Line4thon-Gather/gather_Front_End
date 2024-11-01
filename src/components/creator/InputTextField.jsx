@@ -9,7 +9,7 @@ const InputTextField = ({
   placeholder,
   maxLength,
   maxWidth,
-  rows,
+  rows = 3,
 }) => {
   const [hasContent, setHasContent] = useState(false);
 
@@ -29,6 +29,7 @@ const InputTextField = ({
         value={value}
         onChange={checkContent}
         rows={rows}
+        aria-label={label}
       />
     </div>
   );
@@ -42,10 +43,6 @@ InputTextField.propTypes = {
   maxLength: PropTypes.number,
   maxWidth: PropTypes.string,
   rows: PropTypes.number,
-};
-
-InputTextField.defaultProps = {
-  rows: 3,
 };
 
 export default InputTextField;
