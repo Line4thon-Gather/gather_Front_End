@@ -1,0 +1,98 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 383px;
+  height: 296px;
+  padding: 16px;
+  gap: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--gray-scale-gray-300, #eaecee);
+  background: var(--gray-scale-white, #fff);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.thumbnail {
+  height: 130px;
+  align-self: stretch;
+  margin-bottom: 16px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #e0e0e0;
+}
+
+.category {
+  display: flex;
+  width: 55px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 175%;
+}
+
+.description {
+  color: var(--gray-scale-gray-900, #27282d);
+  font-size: 16px;
+  font-weight: 700;
+  height: 40px;
+}
+
+.creatorInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.creatorName {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  color: var(--gray-scale-gray-600, #adb3ba);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  color: var(--gray-scale-gray-900, #27282d);
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.star {
+  color: #ffc107;
+  margin-right: 4px;
+}
+
+.reviewCount {
+  color: var(--gray-scale-gray-500, #757575);
+  font-size: 12px;
+}
+
+.price {
+  color: var(--gray-scale-gray-900, #27282d);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 175%;
+}
+
+.영상 {
+  background: var(--ect-accent-100, #ffcebc);
+  color: var(--ect-accent-400, #ff6b32);
+}
+
+.인쇄물 {
+  background: var(--ect-info-100, #d3c5ff);
+  color: var(--ect-info-400, #906bff);
+}
+
+.SNS {
+  background: var(--ect-tag-100, #c1eec0);
+  color: var(--ect-tag-400, #32854b);
+}
