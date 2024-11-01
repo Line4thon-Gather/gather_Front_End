@@ -17,10 +17,11 @@ export default function Select({ placeholder, list, number }) {
   }, [selectedDropdown, number]);
 
   const handleSelectClick = () => {
-    number && setSelectedDropdown(number);
+    number !== null && setSelectedDropdown(number);
     setShowDropdown((state) => !state);
     setFirstClick(true);
   };
+
   return (
     <div
       className={`${styles.selectWrapper} ${

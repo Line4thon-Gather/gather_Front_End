@@ -2,8 +2,8 @@ import InputWrapper from '../common/InputWrapper';
 import styles from '../../styles/strategy/Strategy.module.css';
 import { useState, useRef } from 'react';
 import { useStore } from '../../store/useStore';
-import { useEffect } from 'react';
-import { validateFull, validateInputs } from '../../hooks/useStrategy';
+import { useValidateFull } from '../../hooks/useStrategy';
+import { validateInputs } from '../../hooks/useStrategy';
 
 export default function FormWrapper() {
   const [isFailed, setIsFailed] = useState({
@@ -26,16 +26,15 @@ export default function FormWrapper() {
     'SNS 게시물(피드 등)',
   ];
 
-  useEffect(() => {
-    validateFull(
-      value,
-      titleRef,
-      periodRef,
-      targetRef,
-      budgetRef,
-      setIsInputFull
-    );
-  }, [value]);
+  //prop로 전달할 onChange 핸들러
+  const validateFull = useValidateFull(
+    value,
+    titleRef,
+    periodRef,
+    targetRef,
+    budgetRef,
+    setIsInputFull
+  );
 
   return (
     <div className={styles.inputsWrapper}>
@@ -71,9 +70,9 @@ export default function FormWrapper() {
       </div>
       <InputWrapper
         label="보유한 예산"
-        span="만원"
+        span="원"
         spanPosition="back"
-        placeholder="ex) 50만원일 경우 ‘50’만 입력"
+        placeholder="10,000원 이상부터 입력 가능해요."
         width="70.35%"
         isFailed={isFailed['budget']}
         refer={budgetRef} // ref 추가
@@ -88,7 +87,6 @@ export default function FormWrapper() {
               key={index}
               spanPosition="front"
               span={`${index + 1}순위`}
-              isFailed={isFailed}
               placeholder="선택"
               list={dropdownList}
               onChange={validateFull}
@@ -102,6 +100,7 @@ export default function FormWrapper() {
         <button
           onClick={() =>
             validateInputs(
+              titleRef,
               periodRef,
               targetRef,
               budgetRef,
@@ -109,6 +108,7 @@ export default function FormWrapper() {
               setIsFailed
             )
           }
+          disabled={!isInputFull}
         >
           홍보 전략 제안받기
         </button>
