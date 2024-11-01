@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  min-width: 1920px;
+  align-items: center;
+  align-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.subcontainer {
+  font-size: 32px;
+  text-align: left;
+}
+
+.subcontainer h2 {
+  color: #27282d;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 150%;
+}
+
+.subcontainer span {
+  color: #1b78ff;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 150%;
+}
+
+.creatorContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.thumbnailCard {
+  min-width: 250px;
+}
+
+.logoImg {
+  width: 80px;
+  height: 80px;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  padding: 10px 0px;
+}
+
+.filters > * {
+  margin-right: 20px;
+}
+
+.filters > *:last-child {
+  margin-right: 0;
+}
