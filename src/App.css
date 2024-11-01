@@ -1,11 +1,11 @@
 #root {
-  max-width: 1280px;
   min-width: 1024px;
   margin: 0 auto;
   text-align: center;
+  background-color: var(--grayscale-100);
 }
 
 @font-face {
-  font-family: "Pretendard";
-  src: url("../src/assets/fonts/PretendardVariable.woff2");
+  font-family: 'Pretendard';
+  src: url('../src/assets/fonts/PretendardVariable.woff2');
 }
