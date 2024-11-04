@@ -17,17 +17,17 @@ const FindCreator = () => {
   const creatorData = [
     {
       imageUrl: AddPortfolio,
-      category: '영상',
+      category: ['영상', '인쇄물'],
       creatorName: '홍길동',
       rating: '4.5',
       reviewCount: 12,
       minPrice: 15000,
       description:
-        '영상 제작을 전문으로 하는 홍길동입니다. 다양한 영상 스타일을 제공합니다.',
+        '영상 제작과 인쇄물을 전문으로 하는 홍길동입니다. 다양한 스타일을 제공합니다.',
     },
     {
       imageUrl: AddPortfolio,
-      category: '인쇄물',
+      category: ['인쇄물'],
       creatorName: '김철수',
       rating: '4.2',
       reviewCount: 8,
@@ -37,21 +37,11 @@ const FindCreator = () => {
     },
     {
       imageUrl: AddPortfolio,
-      category: 'SNS',
+      category: ['SNS'],
       creatorName: '이영희',
       rating: '5.0',
       reviewCount: 20,
       minPrice: 110000,
-      description:
-        'SNS 마케팅 전문가 이영희입니다. 브랜드의 인지도를 높이는 데 도움을 드립니다.',
-    },
-    {
-      imageUrl: AddPortfolio,
-      category: 'SNS',
-      creatorName: '이영희',
-      rating: '5.0',
-      reviewCount: 20,
-      minPrice: 200000,
       description:
         'SNS 마케팅 전문가 이영희입니다. 브랜드의 인지도를 높이는 데 도움을 드립니다.',
     },
@@ -70,12 +60,13 @@ const FindCreator = () => {
       return priceConditions[priceRange];
     })
     .filter((creator) => {
-      return category === '전체' || creator.category === category;
+      if (category === '전체') return true;
+      return Array.isArray(creator.category)
+        ? creator.category.includes(category)
+        : creator.category === category;
     })
     .sort((a, b) => {
       switch (sortOrder) {
-        case '최신순':
-          return 0;
         case '리뷰순':
           return b.reviewCount - a.reviewCount;
         case '가격낮은순':
@@ -138,10 +129,15 @@ const FindCreator = () => {
 
       <div className={styles.creatorContainer}>
         {filteredData.map((creator, index) => (
-          <div className={styles.thumbnailCard} key={index}>
+          <div
+            className={`${styles.thumbnailCard} ${creator.category
+              .map((cat) => styles[cat])
+              .join(' ')}`}
+            key={index}
+          >
             <ThumbnailCard
               imageUrl={creator.imageUrl}
-              category={creator.category}
+              category={creator.category.join(', ')}
               creatorName={creator.creatorName}
               rating={creator.rating}
               reviewCount={creator.reviewCount}
