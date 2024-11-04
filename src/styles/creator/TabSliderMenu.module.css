@@ -1,0 +1,41 @@
+.tabSliderMenu {
+  width: 100%;
+  padding: 15px 0;
+  font-family: Arial, sans-serif;
+}
+
+.tabs {
+  display: flex;
+  min-width: 440px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background-color 0.3s, border-bottom-color 0.3s;
+}
+
+.tab.active {
+  color: #000;
+  border-bottom-color: #007bff;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease;
+  width: 100%;
+}
+
+.tabContent {
+  margin-top: 80px;
+  border: 1px solid #000;
+  min-width: 100%;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
