@@ -40,13 +40,13 @@ export default function BodyInfo() {
         <div key={index} className={styles.bodyImgWrapper}>
           <div className={styles.bodyImg}>
             <img
-              src={'src/assets/images/homeImg' + (index + 1) + '.png'}
+              src={'/src/assets/images/homeImg' + (index + 1) + '.png'}
               loading="lazy"
             />
           </div>
           <div className={styles.bodyText}>
             <img
-              src={'src/assets/images/bodyText' + (index + 1) + '.png'}
+              src={'/src/assets/images/bodyText' + (index + 1) + '.png'}
               loading="lazy"
             />
           </div>
