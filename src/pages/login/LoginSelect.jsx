@@ -31,6 +31,7 @@ const LoginSelect = () => {
         />
       </div>
       <NextButton
+        text="선택 완료"
         isEnabled={selectedOption !== ''}
         onClick={() => alert(`Selected: ${selectedOption}`)}
       />
