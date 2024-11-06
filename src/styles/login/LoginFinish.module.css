@@ -1,0 +1,43 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  width: 100px;
+  height: 100px;
+  margin: 43px 0;
+}
+
+.title {
+  color: #27282d;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 150%;
+  margin-bottom: 8px;
+}
+
+.description {
+  color: #27282d;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 175%;
+}
+
+.homeBtn {
+  width: 447px;
+  height: 46px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  background: var(--blue-blue-500, #1b78ff);
+  color: var(--gray-scale-white, #fff);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 175%;
+}
