@@ -93,3 +93,37 @@ export const useValidateFull = (
   // `validateFull` 함수 반환
   return validateFull;
 };
+
+export const getTagInfo = (data, type) =>
+  type === '홍보 타임라인'
+    ? [
+        {
+          src: `calendar.png`,
+          content: `총 ${data.period}일`,
+        },
+        {
+          src: 'coin.png',
+          content: `${data.budget}원`,
+        },
+        {
+          src: 'target.png',
+          content: `${data.target}명`,
+        },
+      ]
+    : [
+        {
+          src: 'number1.png',
+          content: `${data.firstMeans}`,
+        },
+        {
+          src: 'number2.png',
+          content: `${data.secondMeans}`,
+        },
+        {
+          src: 'number3.png',
+          content: `${data.thirdMeans}`,
+        },
+      ];
+
+export const getTitle = (type) =>
+  type === '홍보 타임라인' ? '정보' : type === '비용관리' ? '우선순위' : '';
