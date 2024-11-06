@@ -1,13 +1,13 @@
 import React from 'react';
 
-function NextButton({ isEnabled, onClick }) {
+function NextButton({ text, isEnabled, onClick }) {
   return (
     <button
       onClick={onClick}
       disabled={!isEnabled}
       style={{
-        margin: '10px',
-        width: '420px',
+        margin: '10px 0',
+        width: '426px',
         height: '46px',
         padding: '10px 42px',
         marginTop: '20px',
@@ -21,7 +21,7 @@ function NextButton({ isEnabled, onClick }) {
         fontWeight: '700',
       }}
     >
-      선택 완료
+      {text}
     </button>
   );
 }
