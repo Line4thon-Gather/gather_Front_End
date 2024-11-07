@@ -2,6 +2,7 @@ import { Routes as ReactRouters, Route, Outlet } from 'react-router-dom';
 import Home from '../pages/home/Home';
 import Strategy from '../pages/strategy/Strategy';
 import FindCreator from '../pages/creator/FindCreator';
+import ScrollToTop from '../hooks/ScrollUp';
 
 export default function Routes() {
   return (
@@ -18,6 +19,7 @@ export default function Routes() {
 const Layout = () => {
   return (
     <>
+      <ScrollToTop />
       <Outlet />
     </>
   );
