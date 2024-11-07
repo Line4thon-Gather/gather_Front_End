@@ -67,6 +67,16 @@ export const useValidateFull = (
   setIsInputFull
 ) => {
   const validateFull = useCallback(() => {
+    const period = periodRef.current.value.replace(/[^0-9]/g, '');
+    const formatted1 = period.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    periodRef.current.value = formatted1;
+    const target = targetRef.current.value.replace(/[^0-9]/g, '');
+    const formatted2 = target.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    targetRef.current.value = formatted2;
+    const budget = budgetRef.current.value.replace(/[^0-9]/g, '');
+    const formatted3 = budget.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    budgetRef.current.value = formatted3;
+
     const isTitleFilled = titleRef.current?.value?.trim() !== '';
     const isPeriodFilled = periodRef.current?.value?.trim() !== '';
     const isTargetFilled = targetRef.current?.value?.trim() !== '';
