@@ -1,33 +1,26 @@
 import { useEffect } from 'react';
 import { useCallback } from 'react';
 
-export const validateInputs = (
-  titleRef,
-  periodRef,
-  targetRef,
-  budgetRef,
-  isFailed,
-  setIsFailed
-) => {
-  const titleValue = titleRef.current.value;
-  const periodValue = periodRef.current.value;
-  const targetValue = targetRef.current.value;
-  const budgetValue = budgetRef.current.value;
+// export const validateInputs = (titleRef, setIsFailed) => {
+//   const titleValue = titleRef.current.value;
+//   // const periodValue = periodRef.current.value;
+//   // const targetValue = targetRef.current.value;
+//   // const budgetValue = budgetRef.current.value;
 
-  const updatedIsFailed = {
-    title: titleValue === '',
-    period: !/^\d+$/.test(periodValue),
-    target: !/^\d+$/.test(targetValue),
-    budget: !(Number(budgetValue) >= 10000),
-  };
+//   const updatedIsFailed = {
+//     title: titleValue === '',
+//     // period: !/^\d+$/.test(periodValue),
+//     // target: !/^\d+$/.test(targetValue),
+//     // budget: !(Number(budgetValue) >= 10000),
+//   };
 
-  setIsFailed(updatedIsFailed);
+//   setIsFailed(updatedIsFailed);
 
-  const hasAnyFalse = Object.values(updatedIsFailed).some((value) => value);
-  if (hasAnyFalse) {
-    alert('모든 필드를 올바르게 입력해주세요.');
-  }
-};
+//   const hasAnyFalse = Object.values(updatedIsFailed).some((value) => value);
+//   if (hasAnyFalse) {
+//     alert('모든 필드를 올바르게 입력해주세요.');
+//   }
+// };
 
 export const validateFull = (
   value,
