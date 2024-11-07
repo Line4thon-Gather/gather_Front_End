@@ -20,10 +20,9 @@ const StudentCertification = () => {
   const verificationCodeRef = useRef();
 
   const verifyEmail = () => {
-    const trimmedEmail = email.trim(); // 양쪽 공백 제거
-    console.log('입력된 이메일:', trimmedEmail); // 입력된 이메일 출력
+    const trimmedEmail = email.trim();
+    console.log('입력된 이메일:', trimmedEmail);
 
-    // 이메일 형식 검증
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!trimmedEmail) {
       alert('이메일을 입력해주세요.');
@@ -51,14 +50,12 @@ const StudentCertification = () => {
   const isNextButtonEnabled =
     universityName !== '' && isEmailVerified && isInputValid;
 
-  // 입력 값 변경 시 상태 업데이트 및 검증 호출
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value);
-    validate(); // 검증 호출
+    validate();
   };
 
   const validate = () => {
-    // 대학교명 유효성 검증 (예: 비어있지 않은지)
     const isValidUniversity = universityName.trim() !== '';
     setIsInputValid(isValidUniversity);
   };
@@ -73,7 +70,7 @@ const StudentCertification = () => {
           placeholder="대학교명을 입력해 주세요."
           width="393px"
           value={universityName}
-          onChange={handleInputChange(setUniversityName)} // 대학교명 입력 핸들러 추가
+          onChange={handleInputChange(setUniversityName)}
         />
 
         <div className={styles.mailcontainer}>
@@ -82,7 +79,7 @@ const StudentCertification = () => {
             placeholder="학교 이메일을 입력해주세요."
             width="274px"
             value={email}
-            onChange={handleInputChange(setEmail)} // 이메일 입력 핸들러 추가
+            onChange={handleInputChange(setEmail)}
           />
           <button className={styles.certiBtn} onClick={verifyEmail}>
             인증 요청
