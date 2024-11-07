@@ -1,0 +1,27 @@
+.LoadingWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.LabelWrapper {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px 0;
+
+  label {
+    color: var(--grayscale-700);
+    font-weight: bold;
+    line-height: 150%;
+  }
+
+  label:first-child {
+    font-size: 32px;
+  }
+
+  label:last-child {
+    font-size: 40px;
+  }
+}
