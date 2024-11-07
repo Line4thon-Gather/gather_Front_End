@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate 임포트
 import Question from '../../components/login/Question.jsx';
 import OptionButton from '../../components/login/OptionButton.jsx';
 import NextButton from '../../components/login/NextButton.jsx';
@@ -6,12 +7,21 @@ import styles from '../../styles/login/LoginSelect.module.css';
 
 const LoginSelect = () => {
   const [selectedOption, setSelectedOption] = useState('');
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   const handleOptionSelect = (option) => {
     if (selectedOption === option) {
       setSelectedOption('');
     } else {
       setSelectedOption(option);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (selectedOption === '대학생이에요') {
+      navigate('/student'); // 대학생 전용 페이지로 이동
+    } else if (selectedOption === '창업했어요') {
+      navigate('/business'); // 사업자 대상 페이지로 이동
     }
   };
 
@@ -33,7 +43,7 @@ const LoginSelect = () => {
       <NextButton
         text="선택 완료"
         isEnabled={selectedOption !== ''}
-        onClick={() => alert(`Selected: ${selectedOption}`)}
+        onClick={handleNextClick} // 페이지 이동 함수 호출
       />
     </div>
   );
