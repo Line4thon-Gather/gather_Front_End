@@ -7,7 +7,6 @@ export default function InputWrapper({
   spanPosition,
   span,
   label,
-  isFailed,
   width,
   placeholder,
   list,
@@ -29,7 +28,6 @@ export default function InputWrapper({
               width={span ? '80%' : '100%'}
               fontSize={16}
               placeholder={placeholder}
-              isFailed={isFailed}
               onChange={onChange}
             />
           )}
@@ -44,7 +42,6 @@ InputWrapper.propTypes = {
   spanPosition: PropTypes.string,
   span: PropTypes.string,
   label: PropTypes.string,
-  isFailed: PropTypes.bool,
   width: PropTypes.string,
   placeholder: PropTypes.string,
   list: PropTypes.array,

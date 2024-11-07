@@ -6,7 +6,6 @@ export default function Input({
   width,
   fontSize,
   placeholder,
-  isFailed,
   refer,
   onChange,
 }) {
@@ -24,14 +23,7 @@ export default function Input({
       style={{
         width,
         fontSize,
-        borderColor: hasContent
-          ? isFailed
-            ? '#FF4646'
-            : 'var(--primary)'
-          : isFailed
-          ? '#FF4646'
-          : 'var(--grayscale-400)',
-        outlineColor: isFailed && !hasContent && '#FF4646',
+        borderColor: hasContent ? 'var(--primary)' : 'var(--grayscale-400)',
       }}
       onChange={() => {
         checkContent();
