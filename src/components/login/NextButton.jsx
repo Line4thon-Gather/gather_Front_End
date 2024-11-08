@@ -10,7 +10,6 @@ function NextButton({ text, isEnabled, onClick }) {
         width: '426px',
         height: '46px',
         padding: '10px 42px',
-        marginTop: '20px',
         fontSize: '16px',
         backgroundColor: isEnabled ? '#1B78FF' : '#D1D4D8',
         color: isEnabled ? '#FFFFFF' : '#ADB3BA',
