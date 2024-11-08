@@ -48,13 +48,50 @@ const StudentCertification = () => {
     }
   };
 
-  const confirmCode = () => {
-    if (verificationCode === '123456') {
-      setIsEmailVerified(true);
-      setIsCodeConfirmed(true);
-      alert('이메일 인증이 완료되었습니다.');
-    } else {
-      alert('인증번호가 올바르지 않습니다.');
+  const confirmCode = async () => {
+    const numericVerificationCode = Number(verificationCode);
+    console.log('인증 요청 데이터:', {
+      code: numericVerificationCode,
+      email: email.trim(),
+      univName: univName,
+    });
+
+    try {
+      const response = await axios.post(
+        'https://backend.to-gather.info/api/certification/univ/auth',
+        {
+          code: numericVerificationCode,
+          email: email.trim(),
+          univName: univName,
+        }
+      );
+
+      const responseData = response.data;
+
+      if (responseData.isSuccess) {
+        setIsEmailVerified(true);
+        setIsCodeConfirmed(true);
+        alert('이메일 인증이 완료되었습니다.');
+      } else {
+        alert(
+          responseData.message || '인증에 실패하였습니다. 다시 시도해주세요.'
+        );
+      }
+    } catch (error) {
+      console.error('인증 확인 실패:', error);
+
+      if (error.response) {
+        const statusCode = error.response.status;
+        const errorMessage =
+          error.response.data?.message ||
+          '서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+
+        alert(`오류 코드 ${statusCode}: ${errorMessage}`);
+      } else {
+        alert(
+          '인증 확인에 실패했습니다. 네트워크 상태를 확인하고 다시 시도해주세요.'
+        );
+      }
     }
   };
 
