@@ -23,6 +23,7 @@ const Redirection = () => {
           if (response.data.isSuccess === true) {
             const tokenData = response.data.data;
             localStorage.setItem('authToken', tokenData);
+            localStorage.setItem('token', token);
 
             if (tokenData.includes('가입 이력 있는 사용자 식별자')) {
               navigate('/');
