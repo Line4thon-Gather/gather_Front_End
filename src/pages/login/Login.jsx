@@ -13,8 +13,6 @@ const Login = () => {
           지금 로그인하고 상상만 하던 아이디어를 현실로 실현해보세요! <br />
           한정된 자금 안에서 최대한의 부가가치를 창출할 수 있어요!
         </p>
-
-        {/* Google 소셜 로그인 링크 */}
         <a href="https://backend.to-gather.info/oauth2/authorization/google">
           <img className={styles.googleButton} src={google} alt="Google Icon" />
         </a>
