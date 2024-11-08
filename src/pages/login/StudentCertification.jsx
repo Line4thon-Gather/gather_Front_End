@@ -1,13 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NextButton from '../../components/login/NextButton.jsx';
 import InputWrapper from '../../components/common/InputWrapper.jsx';
 import styles from '../../styles/login/StudentCertification.module.css';
 import Question from '../../components/login/Question.jsx';
 import InputDiv from '../../components/login/InputDiv.jsx';
 import mailAlert from '../../assets/images/mailAlert.png';
+import axios from 'axios';
 
 const StudentCertification = () => {
-  const [universityName, setUniversityName] = useState('');
+  const navigate = useNavigate();
+  const [univName, setUniversityName] = useState('');
   const [email, setEmail] = useState('');
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isVerificationCodeSent, setIsVerificationCodeSent] = useState(false);
@@ -15,14 +18,8 @@ const StudentCertification = () => {
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
   const [isInputValid, setIsInputValid] = useState(false);
 
-  const universityRef = useRef();
-  const emailRef = useRef();
-  const verificationCodeRef = useRef();
-
-  const verifyEmail = () => {
+  const verifyEmail = async () => {
     const trimmedEmail = email.trim();
-    console.log('입력된 이메일:', trimmedEmail);
-
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!trimmedEmail) {
       alert('이메일을 입력해주세요.');
@@ -31,6 +28,20 @@ const StudentCertification = () => {
     if (emailPattern.test(trimmedEmail)) {
       setIsVerificationCodeSent(true);
       alert('인증번호가 이메일로 전송되었습니다.');
+
+      try {
+        const response = await axios.post(
+          'https://backend.to-gather.info/api/certification/univ/email',
+          {
+            univName: univName,
+            email: trimmedEmail,
+          }
+        );
+        console.log('인증 요청 성공:', response.data);
+      } catch (error) {
+        console.error('인증 요청 실패:', error);
+        alert('인증 요청에 실패했습니다. 다시 시도해주세요.');
+      }
     } else {
       console.log('유효하지 않은 이메일 형식:', trimmedEmail);
       alert('유효한 이메일을 입력해주세요.');
@@ -48,7 +59,7 @@ const StudentCertification = () => {
   };
 
   const isNextButtonEnabled =
-    universityName !== '' && isEmailVerified && isInputValid;
+    univName !== '' && isEmailVerified && isInputValid;
 
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value);
@@ -56,8 +67,19 @@ const StudentCertification = () => {
   };
 
   const validate = () => {
-    const isValidUniversity = universityName.trim() !== '';
+    const isValidUniversity = univName.trim() !== '';
     setIsInputValid(isValidUniversity);
+  };
+
+  const handleCertificationRequest = () => {
+    console.log('대학교:', univName);
+    console.log('이메일:', email);
+    verifyEmail();
+  };
+
+  const handleNextButtonClick = () => {
+    console.log('인증된 학교:', univName);
+    navigate('/login-finish');
   };
 
   return (
@@ -69,7 +91,7 @@ const StudentCertification = () => {
           label="대학생 인증"
           placeholder="대학교명을 입력해 주세요."
           width="393px"
-          value={universityName}
+          value={univName}
           onChange={handleInputChange(setUniversityName)}
         />
 
@@ -81,21 +103,23 @@ const StudentCertification = () => {
             value={email}
             onChange={handleInputChange(setEmail)}
           />
-          <button className={styles.certiBtn} onClick={verifyEmail}>
+          <button
+            className={styles.requestcertiBtn}
+            onClick={handleCertificationRequest}
+          >
             인증 요청
           </button>
         </div>
 
         {isVerificationCodeSent && !isCodeConfirmed && (
-          <div>
+          <div className={styles.mailcontainer}>
             <InputDiv
-              label="인증번호 입력"
               placeholder="인증번호를 입력해주세요."
               width="274px"
               value={verificationCode}
               onChange={handleInputChange(setVerificationCode)}
             />
-            <button className={styles.certiBtn} onClick={confirmCode}>
+            <button className={styles.checkcertiBtn} onClick={confirmCode}>
               확인
             </button>
           </div>
@@ -105,7 +129,7 @@ const StudentCertification = () => {
           <NextButton
             text="인증 완료"
             isEnabled={isNextButtonEnabled}
-            onClick={() => alert(`인증된 학교: ${universityName}`)}
+            onClick={handleNextButtonClick}
           />
         </div>
       </div>
