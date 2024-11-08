@@ -8,7 +8,7 @@ const LoginFinish = () => {
   const navigate = useNavigate();
 
   const handleHomeRedirect = () => {
-    navigate('/home');
+    navigate('/');
   };
 
   return (
