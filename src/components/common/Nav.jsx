@@ -11,7 +11,6 @@ const NavBar = styled.nav`
   align-items: center;
   padding: 0 20px;
   background-color: #27282d;
-  margin-bottom: 80px;
 `;
 
 const LogoLink = styled(NavLink)`
@@ -20,8 +19,8 @@ const LogoLink = styled(NavLink)`
 `;
 
 const LogoImage = styled.img`
-  width: 147px; /* 이미지 너비 */
-  height: 33.266px; /* 이미지 높이 */
+  width: 147px;
+  height: 33.266px;
 `;
 
 const NavItems = styled.ul`
@@ -64,12 +63,13 @@ const ProfileImage = styled.img`
 `;
 
 const activeStyle = {
-  color: '#4E96FF', // 활성화된 링크의 색상
+  color: '#4E96FF',
+  textDecoration: 'none',
 };
 
-const LinkStyle = {
-  color: '#fff', // 기본 글자색을 하얀색으로 설정
-  textDecoration: 'none', // 기본 하이퍼링크 스타일(밑줄)을 없앰
+const basicStyle = {
+  color: '#fff',
+  textDecoration: 'none',
 };
 
 const Nav = () => {
@@ -81,7 +81,6 @@ const Nav = () => {
   return (
     <NavBar>
       <NavItems>
-        {/* 로고를 클릭하면 루트 페이지로 이동 */}
         <LogoLink to="/">
           <LogoImage src={Image} alt="로고" />
         </LogoLink>
@@ -89,9 +88,7 @@ const Nav = () => {
         <NavItem>
           <NavLink
             to="/strategy"
-            style={({ isActive }) =>
-              isActive ? { ...activeStyle, ...LinkStyle } : LinkStyle
-            }
+            style={({ isActive }) => (isActive ? activeStyle : basicStyle)}
           >
             홍보 전략
           </NavLink>
@@ -99,9 +96,7 @@ const Nav = () => {
         <NavItem>
           <NavLink
             to="/creator"
-            style={({ isActive }) =>
-              isActive ? { ...activeStyle, ...LinkStyle } : LinkStyle
-            }
+            style={({ isActive }) => (isActive ? activeStyle : basicStyle)}
           >
             크리에이터 찾기
           </NavLink>
@@ -109,9 +104,7 @@ const Nav = () => {
         <NavItem>
           <NavLink
             to="/register"
-            style={({ isActive }) =>
-              isActive ? { ...activeStyle, ...LinkStyle } : LinkStyle
-            }
+            style={({ isActive }) => (isActive ? activeStyle : basicStyle)}
           >
             크리에이터 등록
           </NavLink>
@@ -125,9 +118,7 @@ const Nav = () => {
           <LoginBtn>
             <NavLink
               to="/login"
-              style={({ isActive }) =>
-                isActive ? { ...activeStyle, ...LinkStyle } : LinkStyle
-              }
+              style={({ isActive }) => (isActive ? activeStyle : basicStyle)}
             >
               로그인
             </NavLink>
