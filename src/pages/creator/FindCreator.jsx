@@ -45,6 +45,36 @@ const FindCreator = () => {
       description:
         'SNS 마케팅 전문가 이영희입니다. 브랜드의 인지도를 높이는 데 도움을 드립니다.',
     },
+    {
+      imageUrl: AddPortfolio,
+      category: ['영상', '인쇄물'],
+      creatorName: '홍길동',
+      rating: '4.5',
+      reviewCount: 12,
+      minPrice: 15000,
+      description:
+        '영상 제작과 인쇄물을 전문으로 하는 홍길동입니다. 다양한 스타일을 제공합니다.',
+    },
+    {
+      imageUrl: AddPortfolio,
+      category: ['인쇄물', 'SNS', '영상'],
+      creatorName: '김철수',
+      rating: '4.2',
+      reviewCount: 8,
+      minPrice: 50000,
+      description:
+        '인쇄물을 디자인하고 제작하는 김철수입니다. 고퀄리티 인쇄물을 약속드립니다.',
+    },
+    {
+      imageUrl: AddPortfolio,
+      category: ['SNS'],
+      creatorName: '이영희',
+      rating: '5.0',
+      reviewCount: 20,
+      minPrice: 110000,
+      description:
+        'SNS 마케팅 전문가 이영희입니다. 브랜드의 인지도를 높이는 데 도움을 드립니다.',
+    },
   ];
 
   const filteredData = creatorData
