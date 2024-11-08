@@ -1,29 +1,26 @@
-export const validateInputs = (
-  periodRef,
-  targetRef,
-  budgetRef,
-  isFailed,
-  setIsFailed
-) => {
-  const periodValue = periodRef.current.value;
-  const targetValue = targetRef.current.value;
-  const budgetValue = budgetRef.current.value;
+import { useEffect } from 'react';
+import { useCallback } from 'react';
 
-  // 잠정적인 상태 객체 생성
-  const updatedIsFailed = {
-    title: isFailed.title, // title은 여기서 검사하지 않으므로 이전 상태 유지
-    period: !/^\d+$/.test(periodValue),
-    target: !/^\d+$/.test(targetValue),
-    budget: !/^\d+$/.test(budgetValue),
-  };
+// export const validateInputs = (titleRef, setIsFailed) => {
+//   const titleValue = titleRef.current.value;
+//   // const periodValue = periodRef.current.value;
+//   // const targetValue = targetRef.current.value;
+//   // const budgetValue = budgetRef.current.value;
 
-  setIsFailed(updatedIsFailed);
+//   const updatedIsFailed = {
+//     title: titleValue === '',
+//     // period: !/^\d+$/.test(periodValue),
+//     // target: !/^\d+$/.test(targetValue),
+//     // budget: !(Number(budgetValue) >= 10000),
+//   };
 
-  const hasAnyFalse = Object.values(updatedIsFailed).some((value) => value);
-  if (hasAnyFalse) {
-    alert('모든 필드를 올바르게 입력해주세요.');
-  }
-};
+//   setIsFailed(updatedIsFailed);
+
+//   const hasAnyFalse = Object.values(updatedIsFailed).some((value) => value);
+//   if (hasAnyFalse) {
+//     alert('모든 필드를 올바르게 입력해주세요.');
+//   }
+// };
 
 export const validateFull = (
   value,
@@ -53,3 +50,83 @@ export const validateFull = (
     setIsInputFull(false); // 조건 미충족 시 false로 초기화
   }
 };
+
+export const useValidateFull = (
+  value,
+  titleRef,
+  periodRef,
+  targetRef,
+  budgetRef,
+  setIsInputFull
+) => {
+  const validateFull = useCallback(() => {
+    const period = periodRef.current.value.replace(/[^0-9]/g, '');
+    const formatted1 = period.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    periodRef.current.value = formatted1;
+    const target = targetRef.current.value.replace(/[^0-9]/g, '');
+    const formatted2 = target.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    targetRef.current.value = formatted2;
+    const budget = budgetRef.current.value.replace(/[^0-9]/g, '');
+    const formatted3 = budget.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    budgetRef.current.value = formatted3;
+
+    const isTitleFilled = titleRef.current?.value?.trim() !== '';
+    const isPeriodFilled = periodRef.current?.value?.trim() !== '';
+    const isTargetFilled = targetRef.current?.value?.trim() !== '';
+    const isBudgetFilled = budgetRef.current?.value?.trim() !== '';
+    const fullValue = () => !value.every((item) => item.trim() === '');
+
+    if (
+      isTitleFilled &&
+      isPeriodFilled &&
+      isTargetFilled &&
+      isBudgetFilled &&
+      fullValue()
+    ) {
+      setIsInputFull(true);
+    } else {
+      setIsInputFull(false);
+    }
+  }, [value, titleRef, periodRef, targetRef, budgetRef, setIsInputFull]);
+
+  useEffect(() => {
+    validateFull();
+  }, [validateFull]);
+
+  // `validateFull` 함수 반환
+  return validateFull;
+};
+
+export const getTagInfo = (data, type) =>
+  type === '홍보 타임라인'
+    ? [
+        {
+          src: `calendar.png`,
+          content: `총 ${data.period}일`,
+        },
+        {
+          src: 'coin.png',
+          content: `${data.budget}원`,
+        },
+        {
+          src: 'target.png',
+          content: `${data.target}명`,
+        },
+      ]
+    : [
+        {
+          src: 'number1.png',
+          content: `${data.firstMeans}`,
+        },
+        {
+          src: 'number2.png',
+          content: `${data.secondMeans}`,
+        },
+        {
+          src: 'number3.png',
+          content: `${data.thirdMeans}`,
+        },
+      ];
+
+export const getTitle = (type) =>
+  type === '홍보 타임라인' ? '정보' : type === '비용관리' ? '우선순위' : '';
