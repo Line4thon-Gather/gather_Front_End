@@ -1,10 +1,12 @@
 .container {
+  padding: 0 370px;
   display: flex;
-  min-width: 1920px;
   align-items: center;
   align-content: center;
   gap: 16px;
   flex-wrap: wrap;
+  margin-top: 85px;
+  padding-bottom: 100px;
 }
 
 .subcontainer {
@@ -33,7 +35,7 @@
 }
 
 .thumbnailCard {
-  min-width: 250px;
+  min-width: 383px;
 }
 
 .logoImg {
