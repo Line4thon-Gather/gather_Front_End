@@ -40,15 +40,16 @@ const Toggle = ({ label, options, initialValues, onChange }) => {
         {currentValue || label}
       </label>
       <div className={`${styles.dropdown} ${isOpen ? styles.open : ''}`}>
-        {options.map((option, index) => (
-          <div
-            key={index}
-            className={styles.dropdownItem}
-            onClick={() => handleSelectChange(option.value)}
-          >
-            {option.label}
-          </div>
-        ))}
+        {isOpen &&
+          options.map((option, index) => (
+            <div
+              key={index}
+              className={styles.dropdownItem}
+              onClick={() => handleSelectChange(option.value)}
+            >
+              {option.label}
+            </div>
+          ))}
       </div>
     </div>
   );
