@@ -19,6 +19,13 @@ export default function Routes() {
         <Route path="" element={<Home />} />
         <Route path="strategy" element={<Strategy />} />
         <Route path="creator" element={<FindCreator />} />
+        <Route path="login" element={<Login />} />
+        <Route path="login-select" element={<LoginSelect />} />
+        <Route path="redirect" element={<Redirection />} />
+        <Route path="student" element={<StudentCeritifcation />} />
+        <Route path="business" element={<BusinessCertification />} />
+        <Route path="register" element={<Register />} />
+        <Route path="detail" element={<Datail />} />
       </Route>
     </ReactRouters>
   );
