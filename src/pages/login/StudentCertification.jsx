@@ -21,6 +21,7 @@ const StudentCertification = () => {
   const verifyEmail = async () => {
     const trimmedEmail = email.trim();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!trimmedEmail) {
       alert('이메일을 입력해주세요.');
       return;
@@ -37,19 +38,30 @@ const StudentCertification = () => {
             email: trimmedEmail,
           }
         );
+
+        const token = response.data.token;
+        if (token) {
+          localStorage.setItem('authToken', token);
+        }
         console.log('인증 요청 성공:', response.data);
       } catch (error) {
         console.error('인증 요청 실패:', error);
         alert('인증 요청에 실패했습니다. 다시 시도해주세요.');
       }
     } else {
-      console.log('유효하지 않은 이메일 형식:', trimmedEmail);
       alert('유효한 이메일을 입력해주세요.');
     }
   };
 
   const confirmCode = async () => {
     const numericVerificationCode = Number(verificationCode);
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      alert('인증 토큰이 없습니다. 다시 시도해주세요.');
+      return;
+    }
+
     console.log('인증 요청 데이터:', {
       code: numericVerificationCode,
       email: email.trim(),
@@ -63,6 +75,11 @@ const StudentCertification = () => {
           code: numericVerificationCode,
           email: email.trim(),
           univName: univName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
