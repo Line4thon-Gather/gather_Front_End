@@ -1,0 +1,29 @@
+.questionContainer {
+  display: flex;
+  width: 424px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.questionNum {
+  text-align: center;
+  width: 30px;
+  height: 35px;
+  padding: 2px 12px;
+  border-radius: 8px;
+  border: 1px solid #4e96ff;
+  background: #e8f1ff;
+  color: #1b78ff;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 175%;
+}
+
+.questionText {
+  color: #000;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 150%;
+}

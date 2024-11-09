@@ -1,0 +1,27 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.label {
+  margin-bottom: 5px;
+  color: var(--gray-scale-gray-900, #27282d);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 175%;
+}
+
+.input {
+  height: 52px;
+  display: flex;
+  padding: 0 16px;
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid var(--gray-scale-gray-400, #dcdfe3);
+  background: var(--gray-scale-white, #fff);
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 175%;
+}
