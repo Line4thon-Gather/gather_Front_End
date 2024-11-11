@@ -11,8 +11,7 @@ const WorkDetail = ({ imageUrl, workName, price, duration }) => {
         className={styles.workImage}
       />
       <div className={styles.categoryContainer}>
-        {/* 나중에 이름은 삭제하고 사용하기 */}
-        <h3 className={styles.workName}>작업명 {workName}</h3>
+        <h3 className={styles.workName}>{workName}</h3>
         <div className={styles.price}>{price}원~</div>
         <div className={styles.duration}>총 {duration}일</div>
       </div>
