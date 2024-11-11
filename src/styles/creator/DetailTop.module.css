@@ -3,7 +3,8 @@
   align-items: center;
   align-content: center;
   gap: 16px;
-  flex-wrap: wrap;
+  background-color: #fff;
+  width: 1181px;
 }
 
 .creatorImage {

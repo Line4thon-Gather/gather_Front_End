@@ -7,7 +7,7 @@ const DetailTop = () => {
     name: '크리에이터 이름',
     category: '영상',
     description: '여기에 크리에이터의 소개글이 들어갑니다.',
-    imageUrl: 'https://example.com/creator-image.jpg',
+    imageUrl: 'creator-image.jpg',
   };
 
   return (
