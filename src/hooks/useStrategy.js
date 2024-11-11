@@ -116,15 +116,15 @@ export const getTagInfo = (data, type) =>
     : [
         {
           src: 'number1.png',
-          content: `${data.firstMeans}`,
+          content: data[0]?.means ?? '없음',
         },
         {
           src: 'number2.png',
-          content: `${data.secondMeans}`,
+          content: data[1]?.means ?? '없음',
         },
         {
           src: 'number3.png',
-          content: `${data.thirdMeans}`,
+          content: data[2]?.means ?? '없음',
         },
       ];
 
