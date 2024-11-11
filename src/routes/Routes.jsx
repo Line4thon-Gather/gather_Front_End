@@ -8,6 +8,7 @@ import BusinessCertification from '../pages/login/BusinessCertification';
 import Strategy from '../pages/strategy/Strategy';
 import FindCreator from '../pages/creator/FindCreator';
 import ScrollToTop from '../hooks/ScrollUp';
+import StrategyResult from '../pages/strategy/[id]/StrategyResult';
 
 export default function Routes() {
   return (
@@ -15,6 +16,7 @@ export default function Routes() {
       <Route path="/" element={<Layout />}>
         <Route path="" element={<Home />} />
         <Route path="strategy" element={<Strategy />} />
+        <Route path="strategy/:id" element={<StrategyResult />} />
         <Route path="creator" element={<FindCreator />} />
         <Route path="login" element={<Login />} />
         <Route path="login-select" element={<LoginSelect />} />
