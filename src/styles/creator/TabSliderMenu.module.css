@@ -1,38 +1,23 @@
 .tabSliderMenu {
-  width: 100%;
   padding: 15px 0;
-  font-family: Arial, sans-serif;
+  width: 100%;
+  justify-content: flex-start;
+  width: 1181px;
 }
-
-/* .tabs {
-  display: flex;
-  min-width: 440px;
-} */
 
 .tabs {
   display: flex;
-  justify-content: space-around;
 }
 
-/* .tab {
+.tab {
+  color: #d1d4d8;
   padding: 10px 20px;
   cursor: pointer;
   background-color: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
+  border-bottom: 2px solid #dcdfe3;
   font-size: 16px;
   font-weight: 700;
-  transition: background-color 0.3s, border-bottom-color 0.3s;
-} */
-
-.tab {
-  background-color: transparent;
-  border: none;
-  font-size: 16px;
-  padding: 10px;
-  cursor: pointer;
-  color: red; /* 기본적으로 글자색을 빨간색으로 설정 */
-  transition: color 0.3s ease; /* 색 변경 시 부드러운 애니메이션 */
+  transition: background-color 0.3s, border-bottom-color 0.5s;
 }
 
 .tab.active {
@@ -42,25 +27,11 @@
 
 .slider {
   display: flex;
-  transition: transform 0.5s ease;
+  transition: transform 0.8s ease;
   width: 100%;
 }
 
 .tabContent {
-  margin-top: 80px;
-  border: 1px solid #000;
-  min-width: 100%;
-  padding: 20px;
-  background-color: #f9f9f9;
-  box-sizing: border-box;
-}
-
-.tabs {
-  display: flex;
-  justify-content: space-around;
-}
-
-.tab.active {
-  color: black; /* active 클래스가 있을 때 글자색을 검정색으로 설정 */
-  font-weight: bold; /* 선택된 탭을 강조 */
+  margin-top: 60px;
+  text-align: left;
 }
