@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.innercontainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.white {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 100%;
+  padding: 80px 0 40px 0;
+}
+
+.tabcontainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

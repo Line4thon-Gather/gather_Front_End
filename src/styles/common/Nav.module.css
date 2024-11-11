@@ -1,0 +1,67 @@
+.navBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 60px;
+  padding: 0 20px;
+  background-color: #27282d;
+}
+
+.navItems {
+  display: flex;
+  gap: 60px;
+  padding: 0;
+  list-style: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.navItem {
+  cursor: pointer;
+  color: #fff;
+  font-weight: bold;
+  padding: 0 16px;
+}
+
+.logoLink {
+  display: inline-block;
+  margin-right: 100px;
+}
+
+.logoImage {
+  width: 147px;
+  height: 33.266px;
+}
+
+.loginBtn {
+  cursor: pointer;
+  color: #fff;
+  font-weight: bold;
+  padding: 0 16px;
+  margin-left: 130px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: 130px;
+  color: #fff;
+}
+
+.profileImage {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.activeStyle {
+  color: #4e96ff;
+  text-decoration: none;
+}
+
+.basicStyle {
+  color: #fff;
+  text-decoration: none;
+}

@@ -35,6 +35,14 @@
   border: 1px solid var(--gray-scale-gray-400, #dcdfe3);
   background: var(--gray-scale-white, #fff);
   box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.08);
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+}
+
+.dropdown.open {
+  max-height: 300px;
+  opacity: 1;
 }
 
 .dropdownItem {
