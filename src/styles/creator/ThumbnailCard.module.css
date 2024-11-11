@@ -21,22 +21,28 @@
   background-color: #e0e0e0;
 }
 
-.category {
+.categoryContainer {
   display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.category {
   width: 55px;
+  display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 3px;
   font-size: 14px;
   font-weight: 700;
   line-height: 175%;
+  margin-bottom: 4px;
 }
 
 .description {
-  color: var(--gray-scale-gray-900, #27282d);
+  color: #27282d;
   font-size: 16px;
   font-weight: 700;
-  height: 40px;
 }
 
 .creatorInfo {
@@ -54,25 +60,6 @@
   color: var(--gray-scale-gray-600, #adb3ba);
   font-size: 14px;
   font-weight: 500;
-}
-
-.rating {
-  display: flex;
-  align-items: center;
-  color: var(--gray-scale-gray-900, #27282d);
-  font-size: 14px;
-  font-weight: 500;
-  margin-top: 10px;
-}
-
-.star {
-  color: #ffc107;
-  margin-right: 4px;
-}
-
-.reviewCount {
-  color: var(--gray-scale-gray-500, #757575);
-  font-size: 12px;
 }
 
 .price {

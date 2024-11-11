@@ -1,0 +1,43 @@
+.workDetailContainer {
+  display: flex;
+  width: 333px;
+  padding: 16px;
+  gap: 17px;
+  border-radius: 10px;
+  border: 1px solid var(--gray-scale-gray-300, #eaecee);
+  background: var(--gray-scale-white, #fff);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.categoryContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.workImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+}
+
+.workName {
+  color: #27282d;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 175%;
+}
+
+.price {
+  color: #1b78ff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 175%;
+}
+
+.duration {
+  color: #adb3ba;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 175%;
+}
