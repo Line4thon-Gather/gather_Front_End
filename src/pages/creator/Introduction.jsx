@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../../styles/creator/Introduction.module.css';
-import WorkDetail from './WorkDetail';
+import WorkDetail from '../../components/creator/WorkDetail';
 import Defaultportfolio from '../../assets/images/Defaultportfolio.png';
 import ExampleImage from '../../assets/images/ModalImage.png';
 import Downoload from '../../assets/images/downloadPortfolio.png';

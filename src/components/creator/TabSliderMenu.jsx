@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../../styles/creator/TabSliderMenu.module.css';
-import Introduction from './Introduction';
+import Introduction from '../../pages/creator/Introduction';
 // import Services from './Services';
 // import Contact from './Contact';
 
