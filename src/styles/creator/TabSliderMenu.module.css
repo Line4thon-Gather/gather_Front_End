@@ -1,37 +1,100 @@
-.tabSliderMenu {
-  padding: 15px 0;
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  justify-content: flex-start;
+  max-width: 1181px;
+  margin: 80px auto;
+}
+
+.subcontainer {
   width: 1181px;
+  text-align: left;
+  margin-bottom: 50px;
+  margin-bottom: 80px;
 }
 
-.tabs {
-  display: flex;
-}
-
-.tab {
-  color: #d1d4d8;
-  padding: 10px 20px;
-  cursor: pointer;
-  background-color: transparent;
-  border-bottom: 2px solid #dcdfe3;
-  font-size: 16px;
+.subcontainer h2 {
+  font-size: 20px;
   font-weight: 700;
-  transition: background-color 0.3s, border-bottom-color 0.5s;
+  color: #27282d;
+  margin-bottom: 20px;
 }
 
-.tab.active {
-  color: #000;
-  border-bottom-color: #007bff;
+.subcontainer h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4d5359;
+  margin-top: 10px;
 }
 
-.slider {
+.subcontainer p {
+  color: #4d5359;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 175%;
+}
+
+.portfolioList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.portfolioItem {
+  border-radius: 8px;
   display: flex;
-  transition: transform 0.8s ease;
+  flex-direction: column;
+  align-items: left;
+}
+
+.thumbnail {
+  width: 380px;
+  height: 206px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.downloadIcon {
+  width: 105px;
+  height: 29px;
+  margin-top: 10px;
+}
+
+.itemCount {
+  margin-left: 8px;
+  font-size: 20px;
+  color: #007bff;
+  font-weight: 700;
+}
+
+.services {
+  margin-left: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   width: 100%;
 }
 
-.tabContent {
-  margin-top: 60px;
-  text-align: left;
+.serviceItem {
+  border-radius: 8px;
+}
+
+.connectionContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.connection {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4d5359;
+}
+
+.howconnection {
+  color: #adb3ba !important;
+  font-weight: 600;
+  margin-left: 10px;
 }

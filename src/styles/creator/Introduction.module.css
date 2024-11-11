@@ -1,3 +1,43 @@
+/* TabSliderMenu 스타일 */
+.tabSliderMenu {
+  padding: 15px 0;
+  width: 100%;
+  justify-content: flex-start;
+  width: 1181px;
+}
+
+.tabs {
+  display: flex;
+}
+
+.tab {
+  color: #d1d4d8;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: transparent;
+  border-bottom: 2px solid #dcdfe3;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background-color 0.3s, border-bottom-color 0.5s;
+}
+
+.tab.active {
+  color: #000;
+  border-bottom-color: #007bff;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.8s ease;
+  width: 100%;
+}
+
+.tabContent {
+  margin-top: 60px;
+  text-align: left;
+}
+
+/* Introduction 스타일 */
 .container {
   width: 100%;
 }
@@ -116,4 +156,27 @@
   margin-top: 4px;
   width: 105px;
   height: 29px;
+}
+
+/* TabSliderMenu와 Introduction 공통 스타일 */
+.tabSliderMenu,
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.subcontainer h2 {
+  color: #27282d;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 175%;
+}
+
+.subcontainer p,
+.subcontainer h4 {
+  margin-top: 10px;
+}
+
+.container {
+  gap: 16px;
 }
