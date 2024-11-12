@@ -3,6 +3,7 @@ import styles from '../../styles/strategy/Strategy.module.css';
 import { useState, useRef } from 'react';
 import { useStore } from '../../store/useStore';
 import { useValidateFull } from '../../hooks/useStrategy';
+import { useNavigate } from 'react-router-dom';
 
 export default function FormWrapper() {
   const [isInputFull, setIsInputFull] = useState(false);
@@ -11,6 +12,7 @@ export default function FormWrapper() {
   const periodRef = useRef();
   const targetRef = useRef();
   const budgetRef = useRef();
+  const navigate = useNavigate();
 
   const dropdownList = [
     '선택',
@@ -18,6 +20,20 @@ export default function FormWrapper() {
     '영상(숏폼, 롱폼 등)',
     'SNS 게시물(피드 등)',
   ];
+
+  const handleSubmit = () => {
+    navigate(`1`, {
+      state: {
+        title: titleRef.current.value,
+        period: parseInt(periodRef.current.value),
+        targetNumberOfPeople: parseInt(targetRef.current.value),
+        budget: parseInt(budgetRef.current.value.split(',').join('')),
+        firstMeans: value[0],
+        secondMeans: value[1],
+        thirdMeans: value[2],
+      },
+    });
+  };
 
   //prop로 전달할 onChange 핸들러
   const validateFull = useValidateFull(
@@ -86,7 +102,7 @@ export default function FormWrapper() {
       <div
         className={`${styles.submitBtn} ${isInputFull ? styles.active : ''}`}
       >
-        <button onClick={() => {}} disabled={!isInputFull}>
+        <button onClick={handleSubmit} disabled={!isInputFull}>
           홍보 전략 제안받기
         </button>
       </div>

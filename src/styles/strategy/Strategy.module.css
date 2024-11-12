@@ -60,10 +60,6 @@
 
 .selectWrapper {
   height: 45px;
-
-  span {
-    width: 35px !important;
-  }
 }
 
 .submitBtn {

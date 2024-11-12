@@ -27,6 +27,7 @@ export default function Select({ placeholder, list, number }) {
       className={`${styles.selectWrapper} ${
         selectContent !== '선택' && styles.full
       }`}
+      onClick={handleSelectClick}
     >
       <div
         style={{
@@ -35,7 +36,6 @@ export default function Select({ placeholder, list, number }) {
           width: '100%',
           height: '100%',
         }}
-        onClick={handleSelectClick}
       >
         <input placeholder={placeholder} value={selectContent} readOnly />
         <img
