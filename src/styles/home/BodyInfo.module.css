@@ -73,8 +73,8 @@
   }
 }
 
-.bodyImgWrapper:hover .bodyText,
-.bodyImgWrapper:hover > span {
+.bodyImg:hover ~ .bodyText,
+.bodyImg:hover ~ span {
   opacity: 0;
 }
 
