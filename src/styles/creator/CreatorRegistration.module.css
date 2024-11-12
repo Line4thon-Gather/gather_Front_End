@@ -1,10 +1,19 @@
-.container {
-  background-color: #f6f8f9;
-  padding: 40px;
+* {
+  font-family: 'Arial', sans-serif;
+}
+
+.outerContainer {
   display: flex;
-  flex-direction: column;
-  gap: 60px;
   justify-content: center;
+}
+
+.container {
+  display: flex;
+  max-width: 1180px;
+  padding: 80px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .section {
@@ -20,6 +29,7 @@
   display: flex;
   margin-bottom: 20px;
   align-items: flex-start;
+
   gap: 24px;
 }
 
@@ -43,7 +53,7 @@
   padding-top: 10px;
   color: #4d5359;
   flex: 0 0 auto;
-  margin-right: 24px;
+  margin-right: 18px;
   font-size: 16px;
   font-weight: 700;
   line-height: 175%;
@@ -53,7 +63,6 @@
 .inputcontainer input {
   color: #868c94;
   flex: 2;
-  margin-right: 8px;
   max-width: 100%;
   font-size: 16px;
   border-radius: 6px;
@@ -88,8 +97,22 @@
   line-height: 175%;
 }
 
+.subcontainer h4 {
+  margin-top: 10px;
+  flex: 0 0 auto;
+  color: #4d5359;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 175%;
+}
+
 .profileContainer {
   display: flex;
+  align-items: flex-start;
+  gap: 130px;
+}
+
+.profileContainer2 {
   align-items: flex-start;
   gap: 130px;
 }
@@ -132,7 +155,6 @@
   border: 1px solid #d0d0d0;
   border-radius: 4px;
   font-size: 16px;
-  resize: none;
 }
 
 .profileContaine2 {
@@ -143,11 +165,12 @@
 
 .portfolioItem {
   margin-bottom: 20px;
-  padding: 10px;
+
   border-radius: 5px;
 }
 
 .addButton {
+  width: 100%;
   display: flex;
   height: 46px;
   padding: 10px 42px;
@@ -180,9 +203,23 @@
   background-color: #e8f1ff;
 }
 
+.fileButtonSelected {
+  background-color: #e8f1ff;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 6px;
+}
+
 .rowContainer {
   width: 100%;
   display: flex;
+  gap: 10px;
+}
+
+.dropdown {
+  padding: 8px;
+  font-size: 1rem;
 }
 
 .removeButtonContainer {
@@ -194,8 +231,6 @@
   background-color: transparent;
   color: #1b78ff;
   border: none;
-  border-radius: 4px;
-  padding: 6px 10px;
   font-size: 14px;
   cursor: pointer;
 }
@@ -209,6 +244,19 @@
   cursor: not-allowed;
 }
 
+.removeFileButton {
+  background-color: transparent;
+  color: #1b78ff;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.removeFileButton:hover {
+  color: #0048b4;
+}
+
 span {
   font-size: 14px;
   font-weight: bold;
@@ -218,10 +266,11 @@ span {
 }
 
 .spanBack {
+  margin-left: 8px;
   margin-top: 16.5px;
   color: #868c94;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .hidden-label {
