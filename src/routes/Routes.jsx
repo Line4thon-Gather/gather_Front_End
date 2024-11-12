@@ -9,6 +9,7 @@ import Strategy from '../pages/strategy/Strategy';
 import FindCreator from '../pages/creator/FindCreator';
 import Register from '../pages/creator/CreatorRegistration';
 import ScrollToTop from '../hooks/ScrollUp';
+import StrategyResult from '../pages/strategy/[id]/StrategyResult';
 import Nav from '../components/common/Nav';
 import Datail from '../pages/creator/DetailCreator';
 
@@ -18,6 +19,7 @@ export default function Routes() {
       <Route path="/" element={<Layout />}>
         <Route path="" element={<Home />} />
         <Route path="strategy" element={<Strategy />} />
+        <Route path="strategy/:id" element={<StrategyResult />} />
         <Route path="creator" element={<FindCreator />} />
         <Route path="login" element={<Login />} />
         <Route path="login-select" element={<LoginSelect />} />
