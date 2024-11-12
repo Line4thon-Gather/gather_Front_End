@@ -22,35 +22,6 @@ import { useCallback } from 'react';
 //   }
 // };
 
-export const validateFull = (
-  value,
-  titleRef,
-  periodRef,
-  targetRef,
-  budgetRef,
-  setIsInputFull
-) => {
-  const fullValue = () => {
-    return !value.some((item) => item.trim() === ''); // 공백만 있는 경우 방지
-  };
-  const isTitleFilled = titleRef.current?.value?.trim() !== '';
-  const isPeriodFilled = periodRef.current?.value?.trim() !== '';
-  const isTargetFilled = targetRef.current?.value?.trim() !== '';
-  const isBudgetFilled = budgetRef.current?.value?.trim() !== '';
-
-  if (
-    isTitleFilled &&
-    isPeriodFilled &&
-    isTargetFilled &&
-    isBudgetFilled &&
-    fullValue()
-  ) {
-    setIsInputFull(true);
-  } else {
-    setIsInputFull(false); // 조건 미충족 시 false로 초기화
-  }
-};
-
 export const useValidateFull = (
   value,
   titleRef,
@@ -73,7 +44,9 @@ export const useValidateFull = (
     const isTitleFilled = titleRef.current?.value?.trim() !== '';
     const isPeriodFilled = periodRef.current?.value?.trim() !== '';
     const isTargetFilled = targetRef.current?.value?.trim() !== '';
-    const isBudgetFilled = budgetRef.current?.value?.trim() !== '';
+    const isBudgetFilled =
+      budgetRef.current?.value?.trim() !== '' &&
+      parseInt(budgetRef.current.value.split(',').join('')) >= 10000;
     const fullValue = () => !value.every((item) => item.trim() === '');
 
     if (
