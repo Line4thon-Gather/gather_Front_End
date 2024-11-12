@@ -6,142 +6,116 @@ import { Bar } from '@visx/shape';
 import { Text } from '@visx/text';
 import { useTooltip, useTooltipInPortal } from '@visx/tooltip';
 import { localPoint } from '@visx/event';
-import html2canvas from 'html2canvas';
+import { handleSaveChartAsImage } from '../../hooks/useStrategy';
 import PropTypes from 'prop-types';
 import ResultHeader from '../strategy/ResultHeader';
+import { useLocation } from 'react-router-dom';
 
-export default function TimeLine({ setIsLoading }) {
+export default function TimeLine({ data }) {
   const { showTooltip, hideTooltip, tooltipData, tooltipTop, tooltipLeft } =
     useTooltip();
   const { containerRef, TooltipInPortal } = useTooltipInPortal({
     scroll: true,
   });
 
+  const location = useLocation();
+  const formInfo = location.state;
+
   const headerData = {
-    period: 10,
-    budget: 10000,
-    target: 50,
-  };
-  const handleSaveChartAsImage = async () => {
-    try {
-      setIsLoading(true);
-      const chartElement = document.querySelector(`#timeLine`);
-
-      if (!chartElement) return;
-
-      // 현재 스크롤 위치 저장
-      const originalScrollPosition = window.scrollY;
-
-      // 캡처를 위해 스타일 임시 적용
-      const originalStyle = chartElement.style.cssText;
-      chartElement.style.maxHeight = 'none';
-      chartElement.style.overflow = 'visible';
-
-      const canvas = await html2canvas(chartElement, {
-        logging: false,
-        useCORS: true,
-        allowTaint: true,
-        // 모든 내용을 캡처하기 위해 너비 설정
-        width: chartElement.scrollWidth,
-        windowWidth: chartElement.scrollWidth,
-        windowHeight: document.documentElement.offsetHeight,
-        scrollY: -window.scrollY, // 스크롤 위치 조정
-        scale: 2, // 해상도 2배
-      });
-
-      // 원래 스타일로 복구
-      chartElement.style.cssText = originalStyle;
-
-      // 스크롤 위치 복구
-      window.scrollTo(0, originalScrollPosition);
-
-      // 이미지 저장
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      link.download = 'timeline-chart.png';
-      link.click();
-    } catch (error) {
-      console.error('Error saving chart:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    period: formInfo.period,
+    budget: formInfo.budget,
+    target: formInfo.targetNumberOfPeople,
   };
 
-  const data = [
-    {
-      period: 31,
-      category: 'VIDEO',
-      tasks: [
-        { name: '예산 확정/기획', start: 0, end: 1 },
-        { name: '제작사 선정', start: 1, end: 2 },
-        { name: '협의', start: 2, end: 3 },
-        { name: '촬영', start: 3, end: 6 },
-        { name: '게시_틱톡', start: 6, end: 13 },
-        { name: '게시_유튜브', start: 6, end: 13 },
-        { name: '게시_인스타', start: 6, end: 13 },
-      ],
-    },
-    {
-      period: 13,
-      category: 'SNS_POST',
-      tasks: [
-        { name: '기획', start: 0, end: 1 },
-        { name: '디자인', start: 1, end: 4 },
-        { name: '출력', start: 4, end: 5 },
-        { name: '게시요청_캠퍼스픽', start: 5, end: 6 },
-        { name: '승인기간_캠퍼스픽', start: 6, end: 8 },
-        { name: '최종게시_캠퍼스픽', start: 8, end: 13 },
-        { name: '게시_요즘것들', start: 5, end: 13 },
-        { name: '게시_인스타그램', start: 5, end: 13 },
-      ],
-    },
-    {
-      period: 13,
-      category: 'PRINTS',
-      tasks: [
-        { name: '기획', start: 0, end: 1 },
-        { name: '디자인', start: 1, end: 4 },
-        { name: '출력', start: 4, end: 5 },
-        { name: '게시요청_캠퍼스픽', start: 5, end: 6 },
-        { name: '승인기간_캠퍼스픽', start: 6, end: 8 },
-        { name: '최종게시_캠퍼스픽', start: 8, end: 13 },
-        { name: '게시_요즘것들', start: 8, end: 13 },
-        { name: '게시_인스타그램', start: 8, end: 13 },
-      ],
-    },
-  ];
+  // const data = [
+  //   {
+  //     period: 31,
+  //     category: 'VIDEO',
+  //     tasks: [
+  //       { name: '예산 확정/기획', start: 0, end: 1 },
+  //       { name: '제작사 선정', start: 1, end: 2 },
+  //       { name: '협의', start: 2, end: 3 },
+  //       { name: '촬영', start: 3, end: 6 },
+  //       { name: '게시_틱톡', start: 6, end: 13 },
+  //       { name: '게시_유튜브', start: 6, end: 13 },
+  //       { name: '게시_인스타', start: 6, end: 13, tip: 'adsdds' },
+  //     ],
+  //   },
+  //   {
+  //     period: 13,
+  //     category: 'SNS_POST',
+  //     tasks: [
+  //       { name: '기획', start: 0, end: 1 },
+  //       { name: '디자인', start: 1, end: 4 },
+  //       { name: '출력', start: 4, end: 5 },
+  //       { name: '게시요청_캠퍼스픽', start: 5, end: 6 },
+  //       { name: '승인기간_캠퍼스픽', start: 6, end: 8 },
+  //       { name: '최종게시_캠퍼스픽', start: 8, end: 13 },
+  //       { name: '게시_요즘것들', start: 5, end: 13 },
+  //       { name: '게시_인스타그램', start: 5, end: 13 },
+  //     ],
+  //   },
+  //   {
+  //     period: 13,
+  //     category: 'PRINTS',
+  //     tasks: [
+  //       { name: '기획', start: 0, end: 1 },
+  //       { name: '디자인', start: 1, end: 4 },
+  //       { name: '출력', start: 4, end: 5 },
+  //       { name: '게시요청_캠퍼스픽', start: 5, end: 6 },
+  //       { name: '승인기간_캠퍼스픽', start: 6, end: 8 },
+  //       { name: '최종게시_캠퍼스픽', start: 8, end: 13 },
+  //       { name: '게시_요즘것들', start: 8, end: 13 },
+  //       { name: '게시_인스타그램', start: 8, end: 13 },
+  //     ],
+  //   },
+  // ];
 
   const countPostedTasks = data
-    .flatMap((d) => d.tasks)
-    .filter((task) => task.name.startsWith('게시_')).length;
+    ? data
+        .flatMap((d) => d.tasks)
+        .filter((task) => task.name.startsWith('게시_')).length
+    : 0;
 
   const barWidth = 40;
   const barGap = 100;
 
-  const xScale = scaleLinear({
-    domain: [0, data[0].period > 20 ? data[0].period : 21],
-    range: [0, data[0].period > 20 ? data[0].period * barWidth : 21 * barWidth],
-  });
+  const flatTasks = data
+    ? data.flatMap((d) => {
+        let isFirst = true;
+        return d.tasks.map((task) => ({
+          ...task,
+          category: d.category,
+          yPosition:
+            task.name.startsWith('게시_') && !isFirst
+              ? `${d.category}-${task.name}`
+              : d.category,
+          isFirst:
+            isFirst && task.name.startsWith('게시_')
+              ? (isFirst = false)
+              : false,
+        }));
+      })
+    : [];
 
-  const flatTasks = data.flatMap((d) => {
-    let isFirst = true;
-    return d.tasks.map((task) => ({
-      ...task,
-      category: d.category,
-      yPosition:
-        task.name.startsWith('게시_') && !isFirst
-          ? `${d.category}-${task.name}`
-          : d.category,
-      isFirst:
-        isFirst && task.name.startsWith('게시_') ? (isFirst = false) : false,
-    }));
+  const xScale = scaleLinear({
+    domain: [0, data && data[0].period > 20 ? data[0].period + 1 : 21],
+    range: [
+      0,
+      data && data[0].period > 20
+        ? (data[0].period + 1) * barWidth
+        : 21 * barWidth,
+    ],
   });
 
   const yScale = scaleBand({
-    domain: Array.from(new Set(flatTasks.map((task) => task.yPosition))),
+    domain: data
+      ? Array.from(new Set(flatTasks.map((task) => task.yPosition)))
+      : [],
     range: [0, countPostedTasks * barGap + 1],
     padding: 0.3,
   });
+
   return (
     <div>
       <ResultHeader
@@ -153,8 +127,8 @@ export default function TimeLine({ setIsLoading }) {
         <svg
           ref={containerRef}
           width={
-            data[0].period > 20
-              ? data[0].period * barWidth + 30
+            data && data[0].period > 20
+              ? (data[0].period + 1) * barWidth + 30
               : barWidth * 21 + 40
           }
           height={countPostedTasks > 4 ? barGap * countPostedTasks : '400px'}
@@ -163,8 +137,8 @@ export default function TimeLine({ setIsLoading }) {
             x="0"
             y="30" // x축 아래부터 시작
             width={
-              data[0].period > 20
-                ? data[0].period * barWidth + 20
+              data && data[0].period > 20
+                ? (data[0].period + 1) * barWidth + 30
                 : 21 * barWidth + 40
             }
             height={countPostedTasks > 4 ? barGap * countPostedTasks : 400 - 30} // x축을 제외한 영역의 높이
@@ -175,62 +149,64 @@ export default function TimeLine({ setIsLoading }) {
               x="-10"
               y="-38"
               width={
-                data[0].period > 20
-                  ? data[0].period * barWidth + 20
+                data && data[0].period > 20
+                  ? (data[0].period + 1) * barWidth + 30
                   : 21 * barWidth + 40
               }
               height={38}
               fill="var(--grayscale-200)"
             />
-            <AxisTop
-              top={0}
-              scale={xScale}
-              tickFormat={(v) => `${v}`}
-              tickLength={0}
-              hideAxisLine={true}
-              tickValues={Array.from(
-                { length: data[0].period > 20 ? data[0].period + 1 : 22 },
-                (_, i) => i
-              )}
-              numTicks={data[0].period}
-              tickComponent={({ x, y, formattedValue }) => (
-                <>
-                  <line
-                    x1={x}
-                    y1={y}
-                    x2={x}
-                    y2={countPostedTasks * barGap}
-                    stroke="var(--grayscale-300)"
-                    strokeWidth={1}
-                  />
-                  {/* 검은색 동그라미 배경 */}
-                  {formattedValue === `${data[0].period}` && (
-                    <circle cx={x} cy={y - 14} r={12} fill="black" />
-                  )}
-                  <text
-                    x={x}
-                    y={y - 10}
-                    fontSize={12}
-                    fontWeight="bold"
-                    textAnchor="middle"
-                    fill={
-                      formattedValue === `${data[0].period}`
-                        ? 'white'
-                        : 'var(--grayscale-600)'
-                    }
-                  >
-                    {formattedValue}
-                  </text>
-                </>
-              )}
-            />
+            {data && (
+              <AxisTop
+                top={0}
+                scale={xScale}
+                tickFormat={(v) => `${v}`}
+                tickLength={0}
+                hideAxisLine={true}
+                tickValues={Array.from(
+                  { length: data[0].period > 20 ? data[0].period + 2 : 22 },
+                  (_, i) => i
+                )}
+                numTicks={data[0].period}
+                tickComponent={({ x, y, formattedValue }) => (
+                  <>
+                    <line
+                      x1={x}
+                      y1={y}
+                      x2={x}
+                      y2={countPostedTasks * barGap}
+                      stroke="var(--grayscale-300)"
+                      strokeWidth={1}
+                    />
+                    {/* 검은색 동그라미 배경 */}
+                    {formattedValue === `${data[0].period}` && (
+                      <circle cx={x} cy={y - 14} r={12} fill="black" />
+                    )}
+                    <text
+                      x={x}
+                      y={y - 10}
+                      fontSize={12}
+                      fontWeight="bold"
+                      textAnchor="middle"
+                      fill={
+                        formattedValue === `${data[0].period}`
+                          ? 'white'
+                          : 'var(--grayscale-600)'
+                      }
+                    >
+                      {formattedValue}
+                    </text>
+                  </>
+                )}
+              />
+            )}
             {flatTasks.map((task, j) => (
               <Group
                 key={`task-${task.yPosition}-${j}`}
                 top={yScale(task.yPosition)}
                 onMouseLeave={hideTooltip}
                 onMouseMove={(event) => {
-                  const coords = localPoint(event.currentTarget, event); // 좌표를 정확히 가져오기 위해 currentTarget 사용
+                  const coords = localPoint(event.currentTarget, event);
                   const tooltipX =
                     xScale(task.start) +
                     (barWidth * (task.end - task.start)) / 2;
@@ -238,7 +214,7 @@ export default function TimeLine({ setIsLoading }) {
 
                   showTooltip({
                     tooltipData: task,
-                    tooltipLeft: coords?.x || tooltipX, // x좌표를 마우스 위치 기준으로 반영
+                    tooltipLeft: coords?.x || tooltipX,
                     tooltipTop: tooltipY,
                   });
                 }}
@@ -271,7 +247,7 @@ export default function TimeLine({ setIsLoading }) {
                   style={{
                     overflow: 'hidden',
                     whiteSpace: 'nowrap',
-                    width: '100%',
+                    width: '50%',
                   }}
                   dy=".33em"
                 >
@@ -282,12 +258,12 @@ export default function TimeLine({ setIsLoading }) {
                     {/* 시작 말풍선 */}
                     <Group>
                       <rect
-                        x={xScale(task.start) + 5 - 15 + 10} // x 위치 조정
+                        x={xScale(task.start) + 5 - 15 + 10}
                         y={-20}
-                        width={48} // 말풍선의 너비
-                        height={21} // 말풍선의 높이
+                        width={48}
+                        height={21}
                         fill="black"
-                        rx={10} // 둥근 모서리
+                        rx={10}
                       />
                       <text
                         x={xScale(task.start) + 23}
@@ -335,6 +311,8 @@ export default function TimeLine({ setIsLoading }) {
             left={tooltipLeft}
             top={tooltipTop}
             style={{
+              width: '264px',
+              height: 'auto',
               position: 'absolute',
               backgroundColor: 'white',
               color: 'black',
@@ -354,14 +332,14 @@ export default function TimeLine({ setIsLoading }) {
             <div className={styles.toolTip}>
               <span>{tooltipData.name}</span>
               <div>
-                <img src="/coin.png" />
-                <span>00,000 </span>
-              </div>
-              <div>
                 <img src="/calendar.png" />
                 <span>
                   {tooltipData.start}일 차 - {tooltipData.end}일 차
                 </span>
+              </div>
+              <div>
+                <img src="/tip.png" />
+                <span>{tooltipData.tip}</span>
               </div>
             </div>
           </TooltipInPortal>
@@ -377,5 +355,5 @@ export default function TimeLine({ setIsLoading }) {
 }
 
 TimeLine.propTypes = {
-  setIsLoading: PropTypes.func,
+  data: PropTypes.array,
 };

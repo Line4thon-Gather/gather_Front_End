@@ -1,3 +1,4 @@
+import html2canvas from 'html2canvas';
 import { useEffect } from 'react';
 import { useCallback } from 'react';
 
@@ -103,3 +104,48 @@ export const getTagInfo = (data, type) =>
 
 export const getTitle = (type) =>
   type === '홍보 타임라인' ? '정보' : type === '비용관리' ? '우선순위' : '';
+
+export const handleSaveChartAsImage = async (setIsLoading) => {
+  try {
+    setIsLoading(true);
+    const chartElement = document.querySelector(`#timeLine`);
+
+    if (!chartElement) return;
+
+    // 현재 스크롤 위치 저장
+    const originalScrollPosition = window.scrollY;
+
+    // 캡처를 위해 스타일 임시 적용
+    const originalStyle = chartElement.style.cssText;
+    chartElement.style.maxHeight = 'none';
+    chartElement.style.overflow = 'visible';
+
+    const canvas = await html2canvas(chartElement, {
+      logging: false,
+      useCORS: true,
+      allowTaint: true,
+      // 모든 내용을 캡처하기 위해 너비 설정
+      width: chartElement.scrollWidth,
+      windowWidth: chartElement.scrollWidth,
+      windowHeight: document.documentElement.offsetHeight,
+      scrollY: -window.scrollY, // 스크롤 위치 조정
+      scale: 2, // 해상도 2배
+    });
+
+    // 원래 스타일로 복구
+    chartElement.style.cssText = originalStyle;
+
+    // 스크롤 위치 복구
+    window.scrollTo(0, originalScrollPosition);
+
+    // 이미지 저장
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
+    link.download = 'timeline-chart.png';
+    link.click();
+  } catch (error) {
+    console.error('Error saving chart:', error);
+  } finally {
+    setIsLoading(false);
+  }
+};

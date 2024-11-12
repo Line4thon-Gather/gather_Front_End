@@ -1,37 +1,33 @@
 import Loading from '../../../components/common/Loading';
 import styles from '../../../styles/strategy/StrategyResult.module.css';
-import { useState } from 'react';
 import TimeLine from '../../../components/strategy/TimeLine';
-import ResultHeader from '../../../components/strategy/ResultHeader';
 import Cost from '../../../components/strategy/Cost';
 import Footer from '../../../components/home/Footer';
-import ThumbnailCard from '../../../components/creator/ThumbnailCard';
+import Creator from '../../../components/strategy/Creator';
+import { useLocation } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { postData } from '../../../hooks/useAxios';
 
 export default function StrategyResult() {
-  const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const formInfo = location.state;
+  console.log(formInfo);
 
-  const data = [
-    {
-      url: '',
-    },
-  ];
+  const { data, isLoading } = useQuery({
+    queryKey: ['timeline', formInfo], // formInfo를 queryKey에 추가하여 변경사항 감지
+    queryFn: () => postData(formInfo),
+    refetchOnWindowFocus: false,
+    enabled: !!formInfo, // formInfo가 있을 때만 실행
+  });
 
-  if (isLoading) {
-    return <Loading width="100vw" height="100vh" />;
-  }
-
-  return (
+  return !isLoading ? (
     <div className={styles.pageWrapper}>
-      <TimeLine setIsLoading={setIsLoading} />
+      <TimeLine data={data} />
       <Cost />
-      <div className={styles.creatorWrapper}>
-        <ResultHeader type="크리에이터" />
-      </div>
+      <Creator />
       <Footer />
-      <ThumbnailCard
-        description="크리에이터의 소개글이 적히는 공간입니다."
-        creatorName="예찬"
-      />
     </div>
+  ) : (
+    <Loading width="100vw" height="100vh" />
   );
 }
