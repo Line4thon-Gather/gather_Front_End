@@ -2,53 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/strategy/Creator.module.css';
 import ThumbnailCard from '../creator/ThumbnailCard';
 import ResultHeader from './ResultHeader';
+import P from 'prop-types';
 
-export default function Creator() {
+export default function Creator({ data }) {
   const navigate = useNavigate();
-  const data = [
-    {
-      url: '',
-      minPrice: 20000,
-      creator: '예찬',
-      category: ['영상', 'SNS'],
-      description: '어쩌고 저쩌고 랑람ㄴ얼;미아너',
-    },
-    {
-      url: '',
-      minPrice: 20000,
-      creator: '예찬',
-      category: ['영상', 'SNS'],
-      description: '어쩌고 저쩌고 랑람ㄴ얼;미아너',
-    },
-    {
-      url: '',
-      minPrice: 20000,
-      creator: '예찬',
-      category: ['영상', 'SNS'],
-      description: '어쩌고 저쩌고 랑람ㄴ얼;미아너',
-    },
-    {
-      url: '',
-      minPrice: 20000,
-      creator: '예찬',
-      category: ['영상', 'SNS'],
-      description: '어쩌고 저쩌고 랑람ㄴ얼;미아너',
-    },
-    {
-      url: '',
-      minPrice: 20000,
-      creator: '예찬',
-      category: ['영상', 'SNS'],
-      description: '어쩌고 저쩌고 랑람ㄴ얼;미아너',
-    },
-    {
-      url: '',
-      minPrice: 20000,
-      creator: '예찬',
-      category: ['영상', 'SNS'],
-      description: '어쩌고 저쩌고 랑람ㄴ얼;미아너',
-    },
-  ];
 
   const handleNav = () => {
     navigate('/creator');
@@ -62,10 +19,11 @@ export default function Creator() {
         {data.map((item, index) => (
           <ThumbnailCard
             key={index}
-            description={item.description}
-            creatorName={item.creator}
-            category={item.category}
-            minPrice={item.minPrice}
+            description={item.introductionTitle}
+            creatorName={item.nickname}
+            category={item.availableWork}
+            minPrice={item.startPrice}
+            imageUrl={item.thumbnailImgUrl}
           />
         ))}
       </div>
@@ -78,3 +36,7 @@ export default function Creator() {
     </div>
   );
 }
+
+Creator.propTypes = {
+  data: P.array,
+};
