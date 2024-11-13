@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '../../styles/creator/Toggle2.module.css';
 
-const Toggle = ({ label, options, initialValues, onChange }) => {
+const ReToggle = ({ label, options, initialValues, onChange }) => {
   const [currentValue, setCurrentValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const toggleRef = useRef(null);
@@ -55,4 +55,4 @@ const Toggle = ({ label, options, initialValues, onChange }) => {
   );
 };
 
-export default Toggle;
+export default ReToggle;

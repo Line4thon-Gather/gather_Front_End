@@ -11,7 +11,7 @@ import Register from '../pages/creator/CreatorRegistration';
 import ScrollToTop from '../hooks/ScrollUp';
 import StrategyResult from '../pages/strategy/[id]/StrategyResult';
 import Nav from '../components/common/Nav';
-import Datail from '../pages/creator/DetailCreator';
+import Detail from '../pages/creator/DetailCreator';
 
 export default function Routes() {
   return (
@@ -27,7 +27,7 @@ export default function Routes() {
         <Route path="student" element={<StudentCeritifcation />} />
         <Route path="business" element={<BusinessCertification />} />
         <Route path="register" element={<Register />} />
-        <Route path="detail" element={<Datail />} />
+        <Route path="detail" element={<Detail />} />
       </Route>
     </ReactRouters>
   );

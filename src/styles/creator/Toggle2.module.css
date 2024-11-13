@@ -1,24 +1,30 @@
 .toggleContainer {
   position: relative;
   display: inline-block;
-  text-align: center;
+  align-items: center; /* 세로 중앙 정렬 */
   width: 178px;
   height: 52px;
+  margin-bottom: 20px;
 }
 
-.label {
-  color: #adb3ba;
+.p {
+  height: 25px;
+  text-align: left;
+  color: #6e7276;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 17px 12px;
+  padding: 12px 17px;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border-radius: 6px;
+  border: 1px solid var(--gray-scale-gray-400, #dcdfe3);
+  background: var(--gray-scale-white, #fff);
   border-radius: 5px;
   cursor: pointer;
 }
 
 .dropdown {
+  color: var(--gray-scale-gray-600, #adb3ba);
   position: absolute;
   width: 178px;
   top: 100%;
