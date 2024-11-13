@@ -78,7 +78,7 @@ const StudentCertification = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: token,
           },
         }
       );
