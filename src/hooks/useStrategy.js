@@ -105,9 +105,8 @@ export const getTagInfo = (data, type) =>
 export const getTitle = (type) =>
   type === '홍보 타임라인' ? '정보' : type === '비용관리' ? '우선순위' : '';
 
-export const handleSaveChartAsImage = async (setIsLoading) => {
+export const handleSaveChartAsImage = async () => {
   try {
-    setIsLoading(true);
     const chartElement = document.querySelector(`#timeLine`);
 
     if (!chartElement) return;
@@ -145,7 +144,5 @@ export const handleSaveChartAsImage = async (setIsLoading) => {
     link.click();
   } catch (error) {
     console.error('Error saving chart:', error);
-  } finally {
-    setIsLoading(false);
   }
 };
