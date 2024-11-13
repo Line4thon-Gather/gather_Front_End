@@ -17,6 +17,9 @@ jobs:
     name: react build & deploy
     runs-on: ubuntu-latest
 
+    env:
+      VITE_SERVER_URL: ${{ secrets.VITE_SERVER_URL }}
+
     steps:
       - name: checkout Github Action
         uses: actions/checkout@v3
@@ -24,7 +27,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18" # 원하는 Node.js 버전을 지정하세요.
+          node-version: '18' # 원하는 Node.js 버전을 지정하세요.
 
       - name: Install dependencies
         run: npm install
@@ -49,7 +52,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           source: |
             dist
-          target: "/home/ubuntu/togather"
+          target: '/home/ubuntu/togather'
 
       - name: Using Docker Compose
         uses: appleboy/ssh-action@master
