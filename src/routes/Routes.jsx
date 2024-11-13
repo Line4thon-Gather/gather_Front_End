@@ -12,7 +12,6 @@ import ScrollToTop from '../hooks/ScrollUp';
 import StrategyResult from '../pages/strategy/[id]/StrategyResult';
 import Nav from '../components/common/Nav';
 import Datail from '../pages/creator/DetailCreator';
-import LoginFinish from '../pages/login/LoginFinish';
 
 export default function Routes() {
   return (
@@ -27,7 +26,6 @@ export default function Routes() {
         <Route path="redirect" element={<Redirection />} />
         <Route path="student" element={<StudentCeritifcation />} />
         <Route path="business" element={<BusinessCertification />} />
-        <Route path="login-finish" element={<LoginFinish />} />
         <Route path="register" element={<Register />} />
         <Route path="detail" element={<Datail />} />
       </Route>
