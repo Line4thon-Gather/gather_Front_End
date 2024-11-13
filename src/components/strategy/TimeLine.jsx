@@ -9,7 +9,6 @@ import { localPoint } from '@visx/event';
 import { handleSaveChartAsImage } from '../../hooks/useStrategy';
 import PropTypes from 'prop-types';
 import ResultHeader from '../strategy/ResultHeader';
-import { useLocation } from 'react-router-dom';
 
 export default function TimeLine({ data }) {
   const { showTooltip, hideTooltip, tooltipData, tooltipTop, tooltipLeft } =
@@ -18,58 +17,11 @@ export default function TimeLine({ data }) {
     scroll: true,
   });
 
-  const location = useLocation();
-  const formInfo = location.state;
-
   const headerData = {
-    period: formInfo.period,
-    budget: formInfo.budget,
-    target: formInfo.targetNumberOfPeople,
+    period: data.period,
+    budget: Number(data.budget).toLocaleString('ko-KR'),
+    target: data.targetNumberOfPeople,
   };
-
-  // const data = [
-  //   {
-  //     period: 31,
-  //     category: 'VIDEO',
-  //     tasks: [
-  //       { name: '예산 확정/기획', start: 0, end: 1 },
-  //       { name: '제작사 선정', start: 1, end: 2 },
-  //       { name: '협의', start: 2, end: 3 },
-  //       { name: '촬영', start: 3, end: 6 },
-  //       { name: '게시_틱톡', start: 6, end: 13 },
-  //       { name: '게시_유튜브', start: 6, end: 13 },
-  //       { name: '게시_인스타', start: 6, end: 13, tip: 'adsdds' },
-  //     ],
-  //   },
-  //   {
-  //     period: 13,
-  //     category: 'SNS_POST',
-  //     tasks: [
-  //       { name: '기획', start: 0, end: 1 },
-  //       { name: '디자인', start: 1, end: 4 },
-  //       { name: '출력', start: 4, end: 5 },
-  //       { name: '게시요청_캠퍼스픽', start: 5, end: 6 },
-  //       { name: '승인기간_캠퍼스픽', start: 6, end: 8 },
-  //       { name: '최종게시_캠퍼스픽', start: 8, end: 13 },
-  //       { name: '게시_요즘것들', start: 5, end: 13 },
-  //       { name: '게시_인스타그램', start: 5, end: 13 },
-  //     ],
-  //   },
-  //   {
-  //     period: 13,
-  //     category: 'PRINTS',
-  //     tasks: [
-  //       { name: '기획', start: 0, end: 1 },
-  //       { name: '디자인', start: 1, end: 4 },
-  //       { name: '출력', start: 4, end: 5 },
-  //       { name: '게시요청_캠퍼스픽', start: 5, end: 6 },
-  //       { name: '승인기간_캠퍼스픽', start: 6, end: 8 },
-  //       { name: '최종게시_캠퍼스픽', start: 8, end: 13 },
-  //       { name: '게시_요즘것들', start: 8, end: 13 },
-  //       { name: '게시_인스타그램', start: 8, end: 13 },
-  //     ],
-  //   },
-  // ];
 
   const countPostedTasks = data
     ? data
