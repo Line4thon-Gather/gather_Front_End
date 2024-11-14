@@ -77,7 +77,7 @@ export default function TimeLine({ data }) {
     <div>
       <ResultHeader
         type="홍보 타임라인"
-        title="멋쟁이 사자처럼 13기 모집"
+        title={formData.title}
         data={headerData}
       />
       <div className={styles.timeLine} id="timeLine">
