@@ -22,7 +22,7 @@ export default function FormWrapper() {
   ];
 
   const handleSubmit = () => {
-    navigate(`1`, {
+    navigate(`result`, {
       state: {
         title: titleRef.current.value,
         period: parseInt(periodRef.current.value),
