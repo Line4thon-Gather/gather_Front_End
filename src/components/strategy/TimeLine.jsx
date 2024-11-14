@@ -9,6 +9,7 @@ import { localPoint } from '@visx/event';
 import { handleSaveChartAsImage } from '../../hooks/useStrategy';
 import PropTypes from 'prop-types';
 import ResultHeader from '../strategy/ResultHeader';
+import { useLocation } from 'react-router-dom';
 
 export default function TimeLine({ data }) {
   const { showTooltip, hideTooltip, tooltipData, tooltipTop, tooltipLeft } =
@@ -17,11 +18,15 @@ export default function TimeLine({ data }) {
     scroll: true,
   });
 
+  const location = useLocation();
+  const formData = location.state;
+
   const headerData = {
-    period: data.period,
-    budget: Number(data.budget).toLocaleString('ko-KR'),
-    target: data.targetNumberOfPeople,
+    period: formData.period,
+    budget: Number(formData.budget).toLocaleString('ko-KR'),
+    target: formData.targetNumberOfPeople,
   };
+  console.log(data);
 
   const countPostedTasks = data
     ? data
@@ -72,7 +77,7 @@ export default function TimeLine({ data }) {
     <div>
       <ResultHeader
         type="홍보 타임라인"
-        title="멋쟁이 사자처럼 13기 모집"
+        title={formData.title}
         data={headerData}
       />
       <div className={styles.timeLine} id="timeLine">
@@ -152,110 +157,118 @@ export default function TimeLine({ data }) {
                 )}
               />
             )}
-            {flatTasks.map((task, j) => (
-              <Group
-                key={`task-${task.yPosition}-${j}`}
-                top={yScale(task.yPosition)}
-                onMouseLeave={hideTooltip}
-                onMouseMove={(event) => {
-                  const coords = localPoint(event.currentTarget, event);
-                  const tooltipX =
-                    xScale(task.start) +
-                    (barWidth * (task.end - task.start)) / 2;
-                  const tooltipY = coords?.y || yScale(task.yPosition) + 30;
+            {flatTasks.map((task, j) => {
+              const barLength = barWidth * (task.end - task.start);
+              const textMaxWidth = barLength - 10; // 텍스트가 바 안에 최대한 들어가도록 너비 조정
+              const displayText =
+                task.name.length * 10 > textMaxWidth // 텍스트가 바 너비보다 긴지 확인
+                  ? `${task.name.slice(0, Math.floor(textMaxWidth / 15))}...`
+                  : task.name;
+              return (
+                <Group
+                  key={`task-${task.yPosition}-${j}`}
+                  top={yScale(task.yPosition)}
+                  onMouseLeave={hideTooltip}
+                  onMouseMove={(event) => {
+                    const coords = localPoint(event.currentTarget, event);
+                    const tooltipX =
+                      xScale(task.start) +
+                      (barWidth * (task.end - task.start)) / 2;
+                    const tooltipY = coords?.y || yScale(task.yPosition) + 30;
 
-                  showTooltip({
-                    tooltipData: task,
-                    tooltipLeft: coords?.x || tooltipX,
-                    tooltipTop: tooltipY,
-                  });
-                }}
-              >
-                <Bar
-                  x={xScale(task.start) + 0.5}
-                  width={barWidth * (task.end - task.start) - 0.5}
-                  height={43}
-                  fill={
-                    task.category === 'VIDEO'
-                      ? '#FFCEBC'
-                      : task.category === 'SNS_POST'
-                      ? '#D3C5FF'
-                      : '#C1EEC0'
-                  }
-                  rx={8}
-                />
-                <Text
-                  x={xScale(task.start) + 9}
-                  y={21.5}
-                  fontSize={14}
-                  fontWeight="bold"
-                  fill={
-                    task.category === 'VIDEO'
-                      ? '#FF6B32'
-                      : task.category === 'SNS_POST'
-                      ? '#906BFF'
-                      : '#32854B'
-                  }
-                  style={{
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    width: '50%',
+                    showTooltip({
+                      tooltipData: task,
+                      tooltipLeft: coords?.x || tooltipX,
+                      tooltipTop: tooltipY,
+                    });
                   }}
-                  dy=".33em"
                 >
-                  {task.name}
-                </Text>
-                {task.name.startsWith('게시_') && (
-                  <>
-                    {/* 시작 말풍선 */}
-                    <Group>
-                      <rect
-                        x={xScale(task.start) + 5 - 15 + 10}
-                        y={-20}
-                        width={48}
-                        height={21}
-                        fill="black"
-                        rx={10}
-                      />
-                      <text
-                        x={xScale(task.start) + 23}
-                        y={-7}
-                        fontSize={12}
-                        fontWeight="bold"
-                        textAnchor="middle"
-                        fill="white"
-                      >
-                        start
-                      </text>
-                    </Group>
+                  <Bar
+                    x={xScale(task.start) + 0.5}
+                    width={barWidth * (task.end - task.start) - 0.5}
+                    height={43}
+                    fill={
+                      task.category === 'VIDEO'
+                        ? '#FFCEBC'
+                        : task.category === 'SNS_POST'
+                        ? '#D3C5FF'
+                        : '#C1EEC0'
+                    }
+                    rx={8}
+                  />
+                  <Text
+                    x={xScale(task.start) + 9}
+                    y={21.5}
+                    fontSize={14}
+                    fontWeight="bold"
+                    fill={
+                      task.category === 'VIDEO'
+                        ? '#FF6B32'
+                        : task.category === 'SNS_POST'
+                        ? '#906BFF'
+                        : '#32854B'
+                    }
+                    style={{
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                      width: '50%',
+                    }}
+                    dy=".33em"
+                  >
+                    {displayText}
+                  </Text>
+                  {task.name.startsWith('게시_') && (
+                    <>
+                      {/* 시작 말풍선 */}
+                      <Group>
+                        <rect
+                          x={xScale(task.start) + 5 - 15 + 10}
+                          y={-20}
+                          width={48}
+                          height={21}
+                          fill="black"
+                          rx={10}
+                        />
+                        <text
+                          x={xScale(task.start) + 23}
+                          y={-7}
+                          fontSize={12}
+                          fontWeight="bold"
+                          textAnchor="middle"
+                          fill="white"
+                        >
+                          start
+                        </text>
+                      </Group>
 
-                    {/* 끝 말풍선 */}
-                    <Group>
-                      <rect
-                        x={xScale(task.end)}
-                        y={-20}
-                        width={48}
-                        height={21}
-                        fill="white"
-                        rx={10}
-                        stroke="black"
-                        strokeWidth={1}
-                      />
-                      <text
-                        x={xScale(task.end) + 4 + 20}
-                        y={-7}
-                        fontSize={12}
-                        fontWeight="bold"
-                        textAnchor="middle"
-                        fill="black"
-                      >
-                        end
-                      </text>
-                    </Group>
-                  </>
-                )}
-              </Group>
-            ))}
+                      {/* 끝 말풍선 */}
+                      <Group>
+                        <rect
+                          x={xScale(task.end)}
+                          y={-20}
+                          width={48}
+                          height={21}
+                          fill="white"
+                          rx={10}
+                          stroke="black"
+                          strokeWidth={1}
+                        />
+                        <text
+                          x={xScale(task.end) + 4 + 20}
+                          y={-7}
+                          fontSize={12}
+                          fontWeight="bold"
+                          textAnchor="middle"
+                          fill="black"
+                        >
+                          end
+                        </text>
+                      </Group>
+                    </>
+                  )}
+                </Group>
+              );
+            })}
           </Group>
         </svg>
         {tooltipData && (

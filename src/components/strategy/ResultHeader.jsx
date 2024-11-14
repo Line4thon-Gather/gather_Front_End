@@ -10,7 +10,7 @@ export default function ResultHeader({ title, type, data }) {
     <div className={styles.pageWrapper}>
       <img src={logo} />
       <div className={styles.header}>
-        <span>{title ? '투개더가 추천하는' : '예산에 맞는'} </span>
+        <span>{title ? '투게더가 추천하는' : '예산에 맞는'} </span>
         <span>{type}</span>
         <span> {type === '홍보 타임라인' ? '이에요' : '에요'}</span>
       </div>
