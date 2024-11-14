@@ -11,6 +11,12 @@ const Redirection = () => {
   const token = queryParams.get('code');
 
   useEffect(() => {
+    const isRegistered = localStorage.getItem('isRegistered');
+    if (isRegistered === 'true') {
+      navigate('/');
+      return;
+    }
+
     if (token) {
       axios
         .get('https://backend.to-gather.info/api/test/jwt-test', {
@@ -22,12 +28,13 @@ const Redirection = () => {
         .then((response) => {
           if (response.data.isSuccess === true) {
             const tokenData = response.data.data;
-            localStorage.setItem('authToken', tokenData);
             localStorage.setItem('token', token);
 
-            if (tokenData.includes('가입 이력 있는 사용자 식별자')) {
+            if (response.data.data.isRegistered) {
+              localStorage.setItem('isRegistered', 'true');
               navigate('/');
             } else {
+              localStorage.setItem('isRegistered', 'false');
               navigate('/login-select');
             }
           } else {

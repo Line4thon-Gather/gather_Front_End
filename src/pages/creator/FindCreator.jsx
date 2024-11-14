@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ThumbnailCard from '../../components/creator/ThumbnailCard';
 import AddPortfolio from '../../assets/images/AddPortfolio.png';
 import styles from '../../styles/creator/FindCreator.module.css';
@@ -6,6 +7,12 @@ import Image from '../../assets/images/ModalImage.png';
 import Toggle from '../../components/creator/Toggle';
 
 const FindCreator = () => {
+  const navigate = useNavigate();
+
+  const handleCardClick = (id) => {
+    navigate(`/creator/${nickname}`);
+  };
+
   const [priceRange, setPriceRange] = useState('전체');
   const [category, setCategory] = useState('전체');
   const [sortOrder, setSortOrder] = useState('최신순');
@@ -16,61 +23,55 @@ const FindCreator = () => {
 
   const creatorData = [
     {
+      id: 1,
       imageUrl: AddPortfolio,
       category: ['영상', '인쇄물'],
-      creatorName: '홍길동',
-      rating: '4.5',
-      reviewCount: 12,
+      nickname: '홍길동',
       minPrice: 15000,
       description:
         '영상 제작과 인쇄물을 전문으로 하는 홍길동입니다. 다양한 스타일을 제공합니다.',
     },
     {
+      id: 2,
       imageUrl: AddPortfolio,
       category: ['인쇄물'],
-      creatorName: '김철수',
-      rating: '4.2',
-      reviewCount: 8,
+      nickname: '김철수',
       minPrice: 50000,
       description:
         '인쇄물을 디자인하고 제작하는 김철수입니다. 고퀄리티 인쇄물을 약속드립니다.',
     },
     {
+      id: 3,
       imageUrl: AddPortfolio,
       category: ['SNS'],
-      creatorName: '이영희',
-      rating: '5.0',
-      reviewCount: 20,
+      nickname: '이영희',
       minPrice: 110000,
       description:
         'SNS 마케팅 전문가 이영희입니다. 브랜드의 인지도를 높이는 데 도움을 드립니다.',
     },
     {
+      id: 4,
       imageUrl: AddPortfolio,
       category: ['영상', '인쇄물'],
-      creatorName: '홍길동',
-      rating: '4.5',
-      reviewCount: 12,
+      nickname: '홍길동',
       minPrice: 15000,
       description:
         '영상 제작과 인쇄물을 전문으로 하는 홍길동입니다. 다양한 스타일을 제공합니다.',
     },
     {
+      id: 5,
       imageUrl: AddPortfolio,
       category: ['인쇄물', 'SNS', '영상'],
-      creatorName: '김철수',
-      rating: '4.2',
-      reviewCount: 8,
+      nickname: '김철수',
       minPrice: 50000,
       description:
         '인쇄물을 디자인하고 제작하는 김철수입니다. 고퀄리티 인쇄물을 약속드립니다.',
     },
     {
+      id: 6,
       imageUrl: AddPortfolio,
       category: ['SNS'],
-      creatorName: '이영희',
-      rating: '5.0',
-      reviewCount: 20,
+      nickname: '이영희',
       minPrice: 110000,
       description:
         'SNS 마케팅 전문가 이영희입니다. 브랜드의 인지도를 높이는 데 도움을 드립니다.',
@@ -159,17 +160,18 @@ const FindCreator = () => {
         </div>
 
         <div className={styles.creatorContainer}>
-          {filteredData.map((creator, index) => (
+          {filteredData.map((creator) => (
             <div
               className={`${styles.thumbnailCard} ${creator.category
                 .map((cat) => styles[cat])
                 .join(' ')}`}
-              key={index}
+              key={creator.id}
+              onClick={() => handleCardClick(creator.id)}
             >
               <ThumbnailCard
                 imageUrl={creator.imageUrl}
                 category={creator.category.join(', ')}
-                creatorName={creator.creatorName}
+                creatorName={creator.nickname}
                 rating={creator.rating}
                 reviewCount={creator.reviewCount}
                 minPrice={creator.minPrice.toLocaleString()}
