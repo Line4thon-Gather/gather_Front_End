@@ -8,6 +8,7 @@ const LoginFinish = () => {
   const navigate = useNavigate();
 
   const handleHomeRedirect = () => {
+    localStorage.setItem('isRegistered', 'true');
     navigate('/');
   };
 

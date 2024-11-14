@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import NextButton from '../../components/login/NextButton.jsx';
 import styles from '../../styles/login/BusinessCertification.module.css';
 import Question from '../../components/login/Question.jsx';
@@ -10,9 +10,7 @@ const BusinessCertification = () => {
   const [businessNumber, setBusinessNumber] = useState('');
   const [startDate, setStartDate] = useState('');
   const [representativeName, setRepresentativeName] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [apiResponse, setApiResponse] = useState(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const isNextButtonEnabled = businessNumber && startDate && representativeName;
 
@@ -21,43 +19,50 @@ const BusinessCertification = () => {
   };
 
   const handleCertification = async () => {
-    setIsLoading(true);
-    console.log('인증 요청 시작:', {
-      businessNumber,
-      startDate,
-      representativeName,
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('인증 토큰이 없습니다. 다시 시도해주세요.');
+      return;
+    }
+
+    console.log('인증 토큰:', token);
+
+    console.log('인증 요청 데이터:', {
+      b_no: businessNumber,
+      start_dt: startDate,
+      p_nm: representativeName,
     });
+
     try {
+      console.log('요청 헤더에 담긴 인증 토큰:', token);
+
       const response = await axios.post(
         'https://backend.to-gather.info/api/certification/entrepreneur',
         {
           b_no: businessNumber,
-          start_dt: startDate.replace(/\//g, ''), // YYYY/MM/DD 형식을 YYYYMMDD로 변환
+          start_dt: startDate,
           p_nm: representativeName,
         },
         {
           headers: {
-            Authorization: `Bearer YOUR_ACCESS_TOKEN_HERE`,
+            Authorization: token,
             'Content-Type': 'application/json',
           },
         }
       );
 
-      console.log('인증 응답 데이터:', response.data);
+      const responseData = response.data;
 
-      if (response.data.isSuccess) {
-        alert(`사업자 인증에 성공하였습니다: ${representativeName}`);
-        setApiResponse(response.data);
-        history.push('/login-finish');
+      if (responseData.isSuccess) {
+        navigate('/login-finish');
       } else {
-        alert(`사업자 인증에 실패하였습니다: ${response.data.message}`);
+        alert('사업자 인증에 실패했습니다. 정보를 다시 확인해 주세요.');
       }
     } catch (error) {
-      console.error('인증 중 오류 발생:', error);
-      alert('사업자 인증 중 오류가 발생하였습니다. 다시 시도해 주세요.');
-    } finally {
-      setIsLoading(false);
-      console.log('인증 요청 완료');
+      console.error('인증 요청 중 오류가 발생했습니다:', error);
+      alert(
+        '사업자 인증 요청 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.'
+      );
     }
   };
 
@@ -92,16 +97,11 @@ const BusinessCertification = () => {
         </div>
         <div className={styles.nextBtn}>
           <NextButton
-            text={isLoading ? '인증 중...' : '인증 완료'}
-            isEnabled={isNextButtonEnabled && !isLoading}
+            text="인증 완료"
+            isEnabled={isNextButtonEnabled}
             onClick={handleCertification}
           />
         </div>
-        {apiResponse && (
-          <div className={styles.responseMessage}>
-            <p>인증 결과: {apiResponse.message}</p>
-          </div>
-        )}
       </div>
     </div>
   );

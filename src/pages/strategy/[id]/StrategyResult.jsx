@@ -13,18 +13,18 @@ export default function StrategyResult() {
   const formInfo = location.state;
   console.log(formInfo);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['timeline', formInfo], // formInfo를 queryKey에 추가하여 변경사항 감지
     queryFn: () => postData(formInfo),
     refetchOnWindowFocus: false,
     enabled: !!formInfo, // formInfo가 있을 때만 실행
   });
 
-  return !isLoading ? (
+  return !isLoading && !isError ? (
     <div className={styles.pageWrapper}>
-      <TimeLine data={data} />
-      <Cost />
-      <Creator />
+      <TimeLine data={data.timelineList} />
+      <Cost data={data.costList} />
+      <Creator data={data.creatorList} />
       <Footer />
     </div>
   ) : (
