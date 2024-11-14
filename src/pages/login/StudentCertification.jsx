@@ -41,7 +41,7 @@ const StudentCertification = () => {
 
         const token = response.data.token;
         if (token) {
-          localStorage.setItem('authToken', token);
+          localStorage.setItem('token', token);
         }
         console.log('인증 요청 성공:', response.data);
       } catch (error) {
@@ -55,7 +55,7 @@ const StudentCertification = () => {
 
   const confirmCode = async () => {
     const numericVerificationCode = Number(verificationCode);
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
 
     if (!token) {
       alert('인증 토큰이 없습니다. 다시 시도해주세요.');
@@ -69,6 +69,7 @@ const StudentCertification = () => {
     });
 
     try {
+      console.log(token);
       const response = await axios.post(
         'https://backend.to-gather.info/api/certification/univ/auth',
         {
@@ -78,8 +79,8 @@ const StudentCertification = () => {
         },
         {
           headers: {
-            'Content-Type': 'application/json',
             Authorization: token,
+            'Content-Type': 'application/json',
           },
         }
       );

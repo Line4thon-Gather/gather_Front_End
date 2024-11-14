@@ -2,6 +2,7 @@ import { Routes as ReactRouters, Route, Outlet } from 'react-router-dom';
 import Home from '../pages/home/Home';
 import Login from '../pages/login/Login';
 import LoginSelect from '../pages/login/LoginSelect';
+import LoginFinish from '../pages/login/LoginFinish';
 import Redirection from '../pages/login/Redirection';
 import StudentCeritifcation from '../pages/login/StudentCertification';
 import BusinessCertification from '../pages/login/BusinessCertification';
@@ -11,7 +12,7 @@ import Register from '../pages/creator/CreatorRegistration';
 import ScrollToTop from '../hooks/ScrollUp';
 import StrategyResult from '../pages/strategy/[id]/StrategyResult';
 import Nav from '../components/common/Nav';
-import Datail from '../pages/creator/DetailCreator';
+import Detail from '../pages/creator/DetailCreator';
 
 export default function Routes() {
   return (
@@ -23,11 +24,12 @@ export default function Routes() {
         <Route path="creator" element={<FindCreator />} />
         <Route path="login" element={<Login />} />
         <Route path="login-select" element={<LoginSelect />} />
+        <Route path="login-finish" element={<LoginFinish />} />
         <Route path="redirect" element={<Redirection />} />
         <Route path="student" element={<StudentCeritifcation />} />
         <Route path="business" element={<BusinessCertification />} />
         <Route path="register" element={<Register />} />
-        <Route path="detail" element={<Datail />} />
+        <Route path="detail/:nickname" element={<Detail />} />
       </Route>
     </ReactRouters>
   );
