@@ -23,6 +23,15 @@
   padding-bottom: 20px;
 }
 
+.section2 {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 20px;
+}
+
 .section h2 {
   font-size: 20px;
   font-weight: 700;
@@ -54,7 +63,6 @@
 
 .profileContainer {
   display: flex;
-
   gap: 130px;
 }
 
@@ -112,15 +120,6 @@
   display: none;
 }
 
-.customFileBtn {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-}
-
 .filePreview {
   display: flex;
   align-items: center;
@@ -131,51 +130,9 @@
   margin-right: 10px;
 }
 
-.filePreview button {
-  background: none;
-  border: none;
-  color: red;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.customFileBtn:hover {
-  background-color: #45a049;
-}
-
-button {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
 button[disabled] {
   cursor: not-allowed;
   opacity: 0.5;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modalContent {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.inputFieldContainer {
-  width: 100%;
-  display: flex;
-  gap: 30px;
 }
 
 .inputcontainer h3 {
@@ -234,7 +191,7 @@ button[disabled] {
 
 .removeButtonContainer {
   text-align: right;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .removeButton {
@@ -245,8 +202,13 @@ button[disabled] {
   cursor: pointer;
 }
 
-.removeButton:hover {
-  color: #d9363e;
+.removeButton2 {
+  background-color: transparent;
+  color: #1b78ff;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .removeButton:disabled {
@@ -255,17 +217,19 @@ button[disabled] {
 }
 
 .thumbnailImage {
+  margin-left: 31px;
   border: 0;
   min-width: 160px;
   min-height: 160px;
   max-width: 380px;
   max-height: 206px;
   border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .fileButton {
-  width: 86%;
   padding: 10px 42px;
+  margin-left: 31px;
   background-color: #fff;
   color: #1b78ff;
   border-radius: 6px;
@@ -281,7 +245,7 @@ button[disabled] {
   width: 100%;
   display: flex;
   height: 46px;
-  padding: 10px 42px;
+  padding: px 42px;
   justify-content: center;
   align-items: center;
   border-radius: 6px;
@@ -290,4 +254,142 @@ button[disabled] {
   background: #fff;
   gap: 8px;
   transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.addButton2 {
+  width: 83%;
+  margin-left: 20px;
+  display: flex;
+  height: 46px;
+  padding: 0px 42px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid #b5d3ff;
+  color: #1b78ff;
+  background: #fff;
+  gap: 8px;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.horizontalContainer {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.horizontalContainer label {
+  margin-top: 7px;
+}
+
+.Wrapper {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+}
+
+.dropdownContainer {
+  width: 100%;
+  position: relative;
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.dropdownContainer label {
+  margin-top: 0px !important;
+  margin-right: 15px;
+}
+
+.dropdownButton {
+  width: 70%;
+  width: 178px;
+  height: 52px;
+  padding: 12px 17px;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdownMenu {
+  position: absolute;
+  padding: 5px;
+  top: 100%;
+  left: 26%;
+  width: 63%;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.dropdownItem {
+  text-align: left;
+  padding: 17px 17px;
+  cursor: pointer;
+}
+
+.dropdownItem:hover {
+  background-color: #f0f0f0;
+}
+
+.fileDisplay {
+  width: 100%;
+  padding: 16px 42px;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 30px;
+  font-weight: 600;
+  text-align: left;
+  gap: 10px;
+  border-radius: 5px;
+  background: var(--blue-blue-100, #e8f1ff);
+}
+
+.submitBtnEnabled {
+  display: flex;
+  width: 252px;
+  height: 46px;
+  padding: 10px 42px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  color: white;
+  background-color: #1b78ff;
+  transition: background-color 0.5s ease;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 175%;
+}
+
+.submitBtnEnabled:hover {
+  background-color: #155bbf;
+}
+
+.submitBtnDisabled {
+  display: flex;
+  width: 252px;
+  height: 46px;
+  padding: 10px 42px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: var(--gray-scale-gray-500, #d1d4d8);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 175%;
+}
+
+.submitcontainer {
+  text-align: left;
+  justify-content: flex-start;
+  margin-top: 40px;
+  margin-bottom: 100px;
 }
