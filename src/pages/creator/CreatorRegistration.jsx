@@ -1,26 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import InputField from '../../components/creator/InputField';
 import styles from '../../styles/creator/CreatorRegistration.module.css';
 import defaultProfile from '../../assets/images/profileImage.png';
-import defaultThumbnail from '../../assets/images/AddPortfolio.png';
-import Toggle2 from '../../components/creator/ReToggle';
 import CheckModal from '../../pages/creator/CheckModal';
-
-const dropdownList = ['선택', '인쇄문', '영상', 'SNS'];
+import defaultThumbnail from '../../assets/images/AddPortfolio.png';
+const dropdownList = ['인쇄문', '영상', 'SNS'];
 
 function CreatorRegistration() {
-  const [form, setForm] = useState({
-    profileImage: null,
-    creatorId: '',
-    introTitle: '',
-    introContent: '',
-    portfolios: [{ title: '', image: null, file: null }],
-    skills: [{ category: '', task: '', period: '', price: '' }],
-    kakaoId: '',
-    email: '',
-  });
+  const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
+  const [creatorId, setCreatorId] = useState('');
+  const [introTitle, setIntroTitle] = useState('');
+  const [introContent, setIntroContent] = useState('');
+  const [portfolios, setPortfolios] = useState([
+    { title: '', image: null, file: null, imageName: '', fileName: '' },
+  ]);
+  const [skills, setSkills] = useState([
+    { category: '', task: '', period: '', price: '' },
+  ]);
+  const [kakaoId, setKakaoId] = useState('');
+  const [email, setEmail] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(null);
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleChange = (e, index, type) => {
     const { name, value, files } = e.target;
@@ -28,99 +31,149 @@ function CreatorRegistration() {
     if (name === 'profileImage' && files && files[0]) {
       const imageFile = files[0];
       setProfileImagePreview(URL.createObjectURL(imageFile));
-      setForm({ ...form, profileImage: imageFile });
+      setProfileImage(imageFile);
     } else if (type === 'portfolio') {
-      const updatedPortfolios = [...form.portfolios];
+      const updatedPortfolios = [...portfolios];
       if (name === 'file' && files && files[0]) {
         updatedPortfolios[index].file = files[0];
+        updatedPortfolios[index].fileName = files[0].name;
       } else if (name === 'image' && files && files[0]) {
         updatedPortfolios[index].image = URL.createObjectURL(files[0]);
+        updatedPortfolios[index].imageName = files[0].name;
       } else {
         updatedPortfolios[index][name] = value;
       }
-      setForm({ ...form, portfolios: updatedPortfolios });
+      setPortfolios(updatedPortfolios);
     } else if (type === 'skill') {
-      const updatedSkills = [...form.skills];
+      const updatedSkills = [...skills];
       updatedSkills[index][name] = value;
-      setForm({ ...form, skills: updatedSkills });
-    } else {
-      setForm({ ...form, [name]: value });
+      setSkills(updatedSkills);
+    }
+  };
+  const removePortfolioFile = (index) => {
+    const updatedPortfolios = [...portfolios];
+    updatedPortfolios[index] = {
+      ...updatedPortfolios[index],
+      fileName: null,
+      file: null,
+    };
+    setPortfolios(updatedPortfolios);
+
+    const fileInput = document.getElementById(`fileInput-${index}`);
+    if (fileInput) {
+      fileInput.value = null;
     }
   };
 
-  const handleFieldChange = (field, value) => {
-    setForm((prevForm) => ({ ...prevForm, [field]: value }));
+  const handleCategoryChange = (index, selectedCategory) => {
+    const updatedSkills = [...skills];
+    updatedSkills[index].category = selectedCategory;
+    setSkills(updatedSkills);
+    setDropdownOpen(null);
   };
 
+  const toggleDropdown = (index) => {
+    setDropdownOpen(dropdownOpen === index ? null : index);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const checkEmptyFields = () => {
-    const emptyFields = [];
-
-    if (!form.creatorId.trim()) emptyFields.push('크리연터명');
-    if (!form.introTitle.trim()) emptyFields.push('소개글 제목');
-    if (!form.introContent.trim()) emptyFields.push('소개글 내용');
-    if (!form.kakaoId.trim()) emptyFields.push('카카오톡 ID');
-    if (!form.email.trim()) emptyFields.push('이메일');
-    if (form.category === dropdownList[0]) emptyFields.push('카테고리');
-    if (!(form.profileImage || profileImagePreview))
-      emptyFields.push('프로필 이미지');
-
-    form.portfolios.forEach((portfolio, index) => {
-      if (!portfolio.title.trim())
-        emptyFields.push(`포트폴리오 ${index + 1} 제목`);
-    });
-
-    form.skills.forEach((skill, index) => {
-      if (!skill.category.trim())
-        emptyFields.push(`기술 ${index + 1} 카테고리`);
-      if (!skill.task.trim()) emptyFields.push(`기술 ${index + 1} 작업명`);
-      if (!skill.period.trim()) emptyFields.push(`기술 ${index + 1} 작업일`);
-      if (!skill.price.trim()) emptyFields.push(`기술 ${index + 1} 가격`);
-    });
-
-    if (emptyFields.length > 0) {
-      console.log('빈 항목:', emptyFields);
+    if (
+      !creatorId.trim() ||
+      !introTitle.trim() ||
+      !introContent.trim() ||
+      !kakaoId.trim() ||
+      !email.trim() ||
+      !profileImage ||
+      portfolios.some(
+        (portfolio) =>
+          !portfolio.title.trim() || !portfolio.image || !portfolio.file
+      ) ||
+      skills.some(
+        (skill) =>
+          !skill.category ||
+          !skill.task.trim() ||
+          !skill.period.trim() ||
+          !skill.price.trim()
+      )
+    ) {
+      setIsSubmitEnabled(false);
+    } else {
+      setIsSubmitEnabled(true);
     }
   };
 
   useEffect(() => {
     checkEmptyFields();
-  }, [form]);
+  }, [
+    creatorId,
+    introTitle,
+    introContent,
+    kakaoId,
+    email,
+    profileImage,
+    portfolios,
+    skills,
+  ]);
 
   const addPortfolio = () =>
-    setForm({
-      ...form,
-      portfolios: [...form.portfolios, { title: '', image: null, file: null }],
-    });
-
+    setPortfolios([
+      ...portfolios,
+      { title: '', image: null, file: null, imageName: '', fileName: '' },
+    ]);
   const removePortfolio = (index) =>
-    setForm({
-      ...form,
-      portfolios: form.portfolios.filter((_, i) => i !== index),
-    });
+    setPortfolios(portfolios.filter((_, i) => i !== index));
 
   const addSkill = () =>
-    setForm({
-      ...form,
-      skills: [
-        ...form.skills,
-        { category: '', task: '', period: '', price: '' },
-      ],
-    });
-
+    setSkills([...skills, { category: '', task: '', period: '', price: '' }]);
   const removeSkill = (index) =>
-    setForm({ ...form, skills: form.skills.filter((_, i) => i !== index) });
+    setSkills(skills.filter((_, i) => i !== index));
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
   const handleRegistration = () => {
     checkEmptyFields();
-    openModal();
+    if (isSubmitEnabled) openModal();
+  };
+
+  // 서버에 데이터를 저장하는 함수
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post('/register', data);
+      console.log('등록 성공:', response.data);
+      // 성공 시 추가 작업
+    } catch (error) {
+      console.error('등록 실패:', error);
+    }
   };
 
   const handleConfirmRegistration = () => {
+    handleSubmit();
     closeModal();
-    console.log('크리에이터 등록 완료:', form);
+    console.log('크리에이터 등록 완료:', {
+      profileImage,
+      creatorId,
+      introTitle,
+      introContent,
+      portfolios,
+      skills,
+      kakaoId,
+      email,
+    });
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -158,12 +211,11 @@ function CreatorRegistration() {
                 />
               </div>
             </div>
-
             <div className={styles.align_container}>
               <InputField
-                label="크리연터명"
-                value={form.creatorId}
-                setValue={(value) => handleFieldChange('creatorId', value)}
+                label="크리에이터명"
+                value={creatorId}
+                setValue={setCreatorId}
                 placeholder="USER0000"
                 maxLength={8}
                 maxWidth="600px"
@@ -176,16 +228,16 @@ function CreatorRegistration() {
           <h2>소개글 작성</h2>
           <InputField
             label="소개글 제목"
-            value={form.introTitle}
-            setValue={(value) => handleFieldChange('introTitle', value)}
+            value={introTitle}
+            setValue={setIntroTitle}
             placeholder="10자 이내로 자신을 소개해주세요."
             maxLength={10}
             maxWidth="500px"
           />
           <InputField
             label="소개글 내용"
-            value={form.introContent}
-            setValue={(value) => handleFieldChange('introContent', value)}
+            value={introContent}
+            setValue={setIntroContent}
             placeholder="50자 이내의 간단한 소개글을 입력해주세요."
             maxLength={50}
           />
@@ -194,109 +246,114 @@ function CreatorRegistration() {
         <section className={styles.section}>
           <h2>포트폴리오 등록</h2>
           <div className={styles.profileContaine2}>
-            {form.portfolios.map((item, index) => (
+            {portfolios.map((item, index) => (
               <div key={index} className={styles.portfolioItem}>
                 <div className={styles.removeButtonContainer}>
                   <button
                     type="button"
                     onClick={() => removePortfolio(index)}
-                    disabled={form.portfolios.length <= 1}
+                    disabled={portfolios.length <= 1}
                     className={styles.removeButton}
                   >
                     삭제
                   </button>
                 </div>
-                <div className={styles.subcontainer}>
-                  <InputField
-                    label="포트폴리오 제목"
-                    value={item.title}
-                    setValue={(value) =>
-                      handleChange(
-                        { target: { name: 'title', value } },
-                        index,
-                        'portfolio'
-                      )
-                    }
-                    placeholder="포트폴리오의 제목을 10자 이내로 작성해주세요"
-                    maxLength={10}
-                    maxWidth="100%"
-                  />
-                </div>
-                <div className={styles.rowContainer}>
-                  <div className={styles.subcontainer2}>
-                    <label>썬네일 이미지</label>
-                    <div className={styles.imageWrapper}>
+                <InputField
+                  label="포트폴리오 제목"
+                  value={item.title}
+                  setValue={(value) =>
+                    handleChange(
+                      { target: { name: 'title', value } },
+                      index,
+                      'portfolio'
+                    )
+                  }
+                  placeholder="포트폴리오의 제목을 10자 이내로 작성해주세요"
+                  maxLength={10}
+                  maxWidth="100%"
+                />
+                <div className={styles.horizontalContainer}>
+                  <div className={styles.Wrapper}>
+                    <label>썸네일 이미지</label>
+                    {item.imageName ? (
                       <label
                         htmlFor={`thumbnailInput-${index}`}
-                        className={styles.label}
+                        className={styles.imageLabel}
                       >
                         <img
-                          src={item.image || defaultThumbnail}
-                          alt="썬네일 이미지"
+                          src={item.image}
+                          alt="썸네일 이미지 미리보기"
                           className={styles.thumbnailImage}
                         />
                       </label>
-                      <input
-                        id={`thumbnailInput-${index}`}
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) =>
-                          handleChange(
-                            {
-                              target: { name: 'image', files: e.target.files },
-                            },
-                            index,
-                            'portfolio'
-                          )
-                        }
-                        className={styles.fileInput}
-                        style={{ display: 'none' }}
-                      />
-                    </div>
+                    ) : (
+                      <label
+                        htmlFor={`thumbnailInput-${index}`}
+                        className={styles.imageButton}
+                      >
+                        <img
+                          className={styles.thumbnailImage}
+                          src={defaultThumbnail}
+                          alt="이미지 선택 버튼"
+                        />
+                      </label>
+                    )}
+
+                    <input
+                      id={`thumbnailInput-${index}`}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) =>
+                        handleChange(
+                          {
+                            target: { name: 'image', files: e.target.files },
+                          },
+                          index,
+                          'portfolio'
+                        )
+                      }
+                      className={styles.fileInput}
+                      style={{ display: 'none' }}
+                    />
                   </div>
-                  <div>
-                    {item.file ? (
-                      <div>
-                        <span>{item.file.name}</span>
+                  <div className={styles.Wrapper}>
+                    <label style={{ minWidth: '75px' }}>파일 업로드</label>
+
+                    {!item.fileName ? (
+                      <label
+                        htmlFor={`fileInput-${index}`}
+                        className={styles.addButton2}
+                      >
+                        + 파일 추가
+                      </label>
+                    ) : (
+                      <div className={styles.fileDisplay}>
+                        <span>{item.fileName}</span>
                         <button
                           type="button"
-                          onClick={() => {
-                            const updatedPortfolios = [...form.portfolios];
-                            updatedPortfolios[index].file = null;
-                            setForm({ ...form, portfolios: updatedPortfolios });
-                          }}
+                          onClick={() => removePortfolioFile(index)}
+                          className={styles.removeButton2}
                         >
                           X
                         </button>
                       </div>
-                    ) : (
-                      <div className={styles.fileInputContainer}>
-                        <label className={styles.fileInputLabel}>
-                          파일 선택
-                        </label>
-                        <button type="button" className={styles.addFileButton}>
-                          파일 추가
-                          <input
-                            type="file"
-                            accept="application/pdf, image/*"
-                            onChange={(e) =>
-                              handleChange(
-                                {
-                                  target: {
-                                    name: 'file',
-                                    files: e.target.files,
-                                  },
-                                },
-                                index,
-                                'portfolio'
-                              )
-                            }
-                            className={styles.fileInput}
-                            style={{ display: 'none' }}
-                          />
-                        </button>
-                      </div>
                     )}
+                    <input
+                      id={`fileInput-${index}`}
+                      type="file"
+                      accept=".pdf"
+                      onChange={(e) =>
+                        handleChange(
+                          {
+                            target: { name: 'file', files: e.target.files },
+                          },
+                          index,
+                          'portfolio'
+                        )
+                      }
+                      className={styles.fileInput}
+                      style={{ display: 'none' }}
+                    />
                   </div>
                 </div>
               </div>
@@ -313,86 +370,89 @@ function CreatorRegistration() {
 
         <section className={styles.section}>
           <h2>작업 가능 항목/가격</h2>
-          {form.skills.map((item, index) => (
+          {skills.map((item, index) => (
             <div key={index} className={styles.workItem}>
               <div className={styles.removeButtonContainer}>
                 <button
                   type="button"
                   onClick={() => removeSkill(index)}
-                  disabled={form.skills.length <= 1}
+                  disabled={skills.length <= 1}
                   className={styles.removeButton}
                 >
                   삭제
                 </button>
               </div>
-              <div className={styles.skillFieldsContainer}>
-                <div className={styles.subcontainer}>
-                  <label className={styles.label2}>카테고리</label>
-                  <Toggle2
-                    p="선택"
-                    options={[
-                      { value: '인쇄문', p: '인쇄문' },
-                      { value: '영상', p: '영상' },
-                      { value: 'SNS', p: 'SNS' },
-                    ]}
-                    initialValues={form.category}
-                    setValue={(value) =>
-                      handleChange({ target: { name: 'category', value } })
-                    }
-                  />
+              <div className={styles.horizontalContainer}>
+                <div className={styles.dropdownContainer} ref={dropdownRef}>
+                  <label>카테고리</label>
+                  <button
+                    type="button"
+                    className={styles.dropdownButton}
+                    onClick={() => toggleDropdown(index)}
+                  >
+                    {item.category || '카테고리 선택'}
+                  </button>
+                  {dropdownOpen === index && (
+                    <div className={styles.dropdownMenu}>
+                      {dropdownList.map((category) => (
+                        <div
+                          key={category}
+                          className={styles.dropdownItem}
+                          onClick={() => handleCategoryChange(index, category)}
+                        >
+                          {category}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <div className={styles.subcontainer}>
-                  <InputField
-                    label="작업명"
-                    value={item.task}
-                    setValue={(value) =>
-                      handleChange(
-                        { target: { name: 'task', value } },
-                        index,
-                        'skill'
-                      )
-                    }
-                    placeholder="작업명을 작성해주세요."
-                    maxLength={50}
-                    maxWidth="100%"
-                  />
-                </div>
-                <div className={styles.subcontainer}>
-                  <InputField
-                    label="작업일"
-                    value={item.period}
-                    setValue={(value) =>
-                      handleChange(
-                        { target: { name: 'period', value } },
-                        index,
-                        'skill'
-                      )
-                    }
-                    placeholder="작업 소요 기간"
-                    maxLength={10}
-                    maxWidth="100%"
-                    span="일"
-                    spanPosition="back"
-                  />
-                </div>
-                <div className={styles.subcontainer}>
-                  <InputField
-                    label="가격"
-                    value={item.price}
-                    setValue={(value) =>
-                      handleChange(
-                        { target: { name: 'price', value } },
-                        index,
-                        'skill'
-                      )
-                    }
-                    placeholder="시작 가격"
-                    maxLength={10}
-                    maxWidth="100%"
-                    span="부터 시작"
-                    spanPosition="back"
-                  />
-                </div>
+
+                <InputField
+                  label="작업명"
+                  value={item.task}
+                  setValue={(value) =>
+                    handleChange(
+                      { target: { name: 'task', value } },
+                      index,
+                      'skill'
+                    )
+                  }
+                  placeholder="작업명을 작성해주세요."
+                  maxLength={50}
+                  maxWidth="80%"
+                />
+                <InputField
+                  label="작업일"
+                  value={item.period}
+                  setValue={(value) =>
+                    handleChange(
+                      { target: { name: 'period', value } },
+                      index,
+                      'skill'
+                    )
+                  }
+                  placeholder="작업 소요 기간"
+                  maxLength={10}
+                  maxWidth="80%"
+                  span="일"
+                  spanPosition="back"
+                />
+                <InputField
+                  label="가격"
+                  value={item.price}
+                  setValue={(value) =>
+                    handleChange(
+                      { target: { name: 'price', value } },
+                      index,
+                      'skill'
+                    )
+                  }
+                  placeholder="시작 가격"
+                  maxLength={10}
+                  maxWidth="80%"
+                  span="부터 시작"
+                  spanPosition="back"
+                />
               </div>
             </div>
           ))}
@@ -403,19 +463,19 @@ function CreatorRegistration() {
 
         <section className={styles.section}>
           <h2>연락처</h2>
-          <div className={styles.rowContainer}>
+          <div className={styles.horizontalContainer}>
             <InputField
               label="카카오톡 ID"
-              value={form.kakaoId}
-              setValue={(value) => handleFieldChange('kakaoId', value)}
+              value={kakaoId}
+              setValue={setKakaoId}
               placeholder="카카오톡 ID를 입력해주세요."
               maxLength={30}
               maxWidth="100%"
             />
             <InputField
               label="이메일"
-              value={form.email}
-              setValue={(value) => handleFieldChange('email', value)}
+              value={email}
+              setValue={setEmail}
               placeholder="이메일을 입력해주세요."
               maxLength={50}
               maxWidth="100%"
@@ -423,21 +483,28 @@ function CreatorRegistration() {
           </div>
         </section>
 
-        <button
-          type="button"
-          onClick={handleRegistration}
-          className={styles.submitBtn}
-        >
-          제출
-        </button>
-      </div>
+        <div className={styles.submitcontainer}>
+          <button
+            type="button"
+            onClick={handleRegistration}
+            className={
+              isSubmitEnabled
+                ? styles.submitBtnEnabled
+                : styles.submitBtnDisabled
+            }
+            disabled={!isSubmitEnabled}
+          >
+            등록 완료하기
+          </button>
 
-      {showModal && (
-        <CheckModal
-          onConfirm={handleConfirmRegistration}
-          onCancel={closeModal}
-        />
-      )}
+          {showModal && (
+            <CheckModal
+              onConfirm={handleConfirmRegistration}
+              onCancel={closeModal}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 }
