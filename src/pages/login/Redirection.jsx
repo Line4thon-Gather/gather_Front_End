@@ -27,39 +27,16 @@ const Redirection = () => {
         })
         .then((response) => {
           if (response.data.isSuccess === true) {
+            const tokenData = response.data.data;
             localStorage.setItem('token', token);
-            axios
-              .get('https://backend.to-gather.info/api/user/header-info', {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: token,
-                },
-              })
-              .then((profileResponse) => {
-                if (profileResponse.data.isSuccess === true) {
-                  const userName = profileResponse.data.data.name;
-                  const profileImgUrl = profileResponse.data.data.profileImgUrl;
 
-                  localStorage.setItem('userName', userName);
-                  localStorage.setItem('profileImgUrl', profileImgUrl);
-
-                  console.log('User Name:', userName);
-                  console.log('Profile Image URL:', profileImgUrl);
-
-                  if (response.data.data.isRegistered) {
-                    localStorage.setItem('isRegistered', 'true');
-                    navigate('/');
-                  } else {
-                    localStorage.setItem('isRegistered', 'false');
-                    navigate('/login-select');
-                  }
-                } else {
-                  setError('사용자 정보 요청 실패');
-                }
-              })
-              .catch((profileErr) => {
-                setError(`사용자 정보 요청 오류: ${profileErr.message}`);
-              });
+            if (response.data.data.isRegistered) {
+              localStorage.setItem('isRegistered', 'true');
+              navigate('/');
+            } else {
+              localStorage.setItem('isRegistered', 'false');
+              navigate('/login-select');
+            }
           } else {
             setError('요청 실패');
           }
