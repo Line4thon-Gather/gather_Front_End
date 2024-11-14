@@ -29,7 +29,7 @@ export default function Routes() {
         <Route path="student" element={<StudentCeritifcation />} />
         <Route path="business" element={<BusinessCertification />} />
         <Route path="register" element={<Register />} />
-        <Route path="detail/:nickname" element={<Detail />} />
+        <Route path="creator/:nickname" element={<Detail />} />
       </Route>
     </ReactRouters>
   );
