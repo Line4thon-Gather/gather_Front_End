@@ -8,7 +8,7 @@ import Footer from '../../components/home/Footer';
 const DetailCreator = ({ creatorData }) => {
   const { nickname } = useParams();
 
-  const creator = creatorData.find((creator) => creator.id === parseInt(id));
+  const creator = creatorData.find((creator) => creator.nickname === nickname);
 
   if (!creator) {
     return <div>크리에이터 정보를 찾을 수 없습니다.</div>;

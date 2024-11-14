@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ThumbnailCard from '../../components/creator/ThumbnailCard';
-import AddPortfolio from '../../assets/images/AddPortfolio.png';
 import styles from '../../styles/creator/FindCreator.module.css';
 import Image from '../../assets/images/ModalImage.png';
 import Toggle from '../../components/creator/Toggle';
@@ -9,74 +9,75 @@ import Toggle from '../../components/creator/Toggle';
 const FindCreator = () => {
   const navigate = useNavigate();
 
-  const handleCardClick = (id) => {
+  // 닉네임을 기반으로 URL 이동하도록 수정
+  const handleCardClick = (nickname) => {
     navigate(`/creator/${nickname}`);
   };
 
   const [priceRange, setPriceRange] = useState('전체');
   const [category, setCategory] = useState('전체');
   const [sortOrder, setSortOrder] = useState('최신순');
+  const [creatorData, setCreatorData] = useState([]);
 
   const initialValues1 = '가격대';
   const initialValues2 = '카테고리';
   const initialValues3 = '정렬';
 
-  const creatorData = [
-    {
-      id: 1,
-      imageUrl: AddPortfolio,
-      category: ['영상', '인쇄물'],
-      nickname: '홍길동',
-      minPrice: 15000,
-      description:
-        '영상 제작과 인쇄물을 전문으로 하는 홍길동입니다. 다양한 스타일을 제공합니다.',
-    },
-    {
-      id: 2,
-      imageUrl: AddPortfolio,
-      category: ['인쇄물'],
-      nickname: '김철수',
-      minPrice: 50000,
-      description:
-        '인쇄물을 디자인하고 제작하는 김철수입니다. 고퀄리티 인쇄물을 약속드립니다.',
-    },
-    {
-      id: 3,
-      imageUrl: AddPortfolio,
-      category: ['SNS'],
-      nickname: '이영희',
-      minPrice: 110000,
-      description:
-        'SNS 마케팅 전문가 이영희입니다. 브랜드의 인지도를 높이는 데 도움을 드립니다.',
-    },
-    {
-      id: 4,
-      imageUrl: AddPortfolio,
-      category: ['영상', '인쇄물'],
-      nickname: '홍길동',
-      minPrice: 15000,
-      description:
-        '영상 제작과 인쇄물을 전문으로 하는 홍길동입니다. 다양한 스타일을 제공합니다.',
-    },
-    {
-      id: 5,
-      imageUrl: AddPortfolio,
-      category: ['인쇄물', 'SNS', '영상'],
-      nickname: '김철수',
-      minPrice: 50000,
-      description:
-        '인쇄물을 디자인하고 제작하는 김철수입니다. 고퀄리티 인쇄물을 약속드립니다.',
-    },
-    {
-      id: 6,
-      imageUrl: AddPortfolio,
-      category: ['SNS'],
-      nickname: '이영희',
-      minPrice: 110000,
-      description:
-        'SNS 마케팅 전문가 이영희입니다. 브랜드의 인지도를 높이는 데 도움을 드립니다.',
-    },
-  ];
+  useEffect(() => {
+    const fetchCreatorData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        console.log('토큰:', token);
+
+        if (!token) {
+          console.error('토큰이 없습니다. 인증이 필요한 페이지입니다.');
+          return;
+        }
+
+        console.log('API 요청을 시작합니다.');
+
+        const response = await axios.get(
+          'https://backend.to-gather.info/api/creator',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: token,
+            },
+          }
+        );
+
+        console.log('API 응답:', response);
+
+        if (response.data.isSuccess) {
+          const data = response.data.data;
+
+          const formattedData = [
+            {
+              id: data.nickname,
+              imageUrl: data.profileImgUrl,
+              category: ['영상', '인쇄물'],
+              nickname: data.nickname,
+              minPrice: 50000,
+              description: data.introductionContent || '소개가 없습니다.',
+            },
+          ];
+
+          console.log('데이터 변환 완료:', formattedData);
+
+          setCreatorData(formattedData);
+        } else {
+          console.error(
+            '데이터를 가져오는 데 실패했습니다. 응답 메시지:',
+            response.data.message
+          );
+        }
+      } catch (error) {
+        console.error('API 호출 중 오류가 발생했습니다:', error);
+      }
+    };
+
+    fetchCreatorData();
+  }, []);
 
   const filteredData = creatorData
     .filter((creator) => {
@@ -166,7 +167,7 @@ const FindCreator = () => {
                 .map((cat) => styles[cat])
                 .join(' ')}`}
               key={creator.id}
-              onClick={() => handleCardClick(creator.id)}
+              onClick={() => handleCardClick(creator.nickname)}
             >
               <ThumbnailCard
                 imageUrl={creator.imageUrl}
