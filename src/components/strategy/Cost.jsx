@@ -1,20 +1,8 @@
 import ResultHeader from './ResultHeader';
 import styles from '../../styles/strategy/Cost.module.css';
+import PropTypes from 'prop-types';
 
-export default function Cost() {
-  const data = [
-    {
-      means: '인쇄물',
-      cost: '10,000',
-      rate: 13,
-    },
-    {
-      means: '영상',
-      cost: '10,000',
-      rate: 13,
-    },
-  ];
-
+export default function Cost({ data }) {
   const totalCost = new Intl.NumberFormat('ko-KR').format(
     parseInt(data[0].cost.replace(/,/g, '')) +
       (data[1] ? parseInt(data[1].cost.replace(/,/g, '')) : 0) +
@@ -52,3 +40,7 @@ export default function Cost() {
     </div>
   );
 }
+
+Cost.propTypes = {
+  data: PropTypes.array,
+};

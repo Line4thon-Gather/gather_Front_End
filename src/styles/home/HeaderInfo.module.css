@@ -77,3 +77,10 @@
     }
   }
 }
+
+.infoContent {
+  img {
+    width: 300px;
+    height: 196px;
+  }
+}
