@@ -1,6 +1,7 @@
 import ResultHeader from './ResultHeader';
 import styles from '../../styles/strategy/Cost.module.css';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 
 export default function Cost({ data }) {
   const totalCost = new Intl.NumberFormat('ko-KR').format(
@@ -8,14 +9,13 @@ export default function Cost({ data }) {
       (data[1] ? parseInt(data[1].cost.replace(/,/g, '')) : 0) +
       (data[2] ? parseInt(data[2].cost.replace(/,/g, '')) : 0)
   );
+
+  const location = useLocation();
+  const headerData = location.state;
   return (
     <div className={styles.costWrapper}>
       <div className={styles.contentWrapper}>
-        <ResultHeader
-          title="멋쟁이 사자처럼 13기 모집"
-          type="비용관리"
-          data={data}
-        />
+        <ResultHeader title={headerData.title} type="비용관리" data={data} />
         <div className={styles.cardWrapper}>
           {data.map((item, index) => (
             <div key={index} className={styles.card}>
