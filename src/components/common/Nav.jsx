@@ -7,8 +7,8 @@ import basicImg from '../../assets/images/basicprofile.png';
 const Nav = () => {
   const token = localStorage.getItem('token');
   const isLoggedIn = token !== null;
-  const userName = '사용자 이름';
-  const userProfileImage = basicImg;
+  const userName = localStorage.getItem('userName') || '사용자 이름';
+  const userProfileImage = localStorage.getItem('profileImgUrl') || basicImg;
 
   return (
     <nav className={styles.navBar}>
