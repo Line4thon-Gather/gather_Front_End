@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import styles from '../../styles/common/Nav.module.css';
 import Image from '../../assets/images/NavImage.png';
@@ -7,9 +7,11 @@ import basicImg from '../../assets/images/basicprofile.png';
 const Nav = () => {
   const navigate = useNavigate();
   const location = useLocation(); // 현재 경로 정보를 가져오는 훅
+  const pathname = location.pathname;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('사용자 이름');
   const [userProfileImage, setUserProfileImage] = useState(basicImg);
+  console.log(pathname);
 
   const updateUserInfo = () => {
     const token = localStorage.getItem('token');
@@ -32,7 +34,7 @@ const Nav = () => {
 
   useEffect(() => {
     updateUserInfo(); // 경로 변경 시 정보 업데이트
-  }, [location]); // location이 변경될 때 실행
+  }, [pathname, isLoggedIn, userName]); // location이 변경될 때 실행
 
   const handleUserNameClick = () => {
     navigate('/mypage');

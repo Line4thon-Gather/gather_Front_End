@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import ThumbnailCard from '../../components/creator/ThumbnailCard';
 import styles from '../../styles/creator/FindCreator.module.css';
 import Image from '../../assets/images/ModalImage.png';
@@ -10,8 +9,6 @@ import Footer from '../../components/home/Footer';
 import { useInView } from 'react-intersection-observer';
 
 const FindCreator = () => {
-  const navigate = useNavigate();
-
   const [priceRange, setPriceRange] = useState('');
   const [category, setCategory] = useState('');
   const [sortOrder, setSortOrder] = useState('');
@@ -20,10 +17,6 @@ const FindCreator = () => {
   const { ref, inView } = useInView({
     threshold: 1.0, // Trigger when fully visible
   });
-
-  const initialValues1 = '가격대';
-  const initialValues2 = '카테고리';
-  const initialValues3 = '정렬';
 
   const { data, isFetching, hasNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey: ['creator', category, sortOrder, priceRange],
@@ -74,7 +67,8 @@ const FindCreator = () => {
           <div className={styles.filters}>
             <Toggle
               label="가격대"
-              initialValues={initialValues1}
+              currentLabel={priceRange}
+              setCurrentLabel={setPriceRange}
               options={[
                 { value: '', label: '전체' },
                 { value: 10000, label: '1만원 미만' },
@@ -84,11 +78,17 @@ const FindCreator = () => {
                 { value: 200001, label: '20만원 이상' },
               ]}
               selectedValue={priceRange}
-              onChange={(e) => setPriceRange(e.target.value)}
+              onChange={(e) => {
+                setSortOrder('');
+                // 정렬이 변경될 경우, 다른 두 필터(가격대, 카테고리)를 초기화
+                setPriceRange(e.target.value); // 가격대 초기화
+                setCategory(''); // 카테고리 초기화
+              }}
             />
             <Toggle
               label="카테고리"
-              initialValues={initialValues2}
+              currentLabel={category}
+              setCurrentLabel={setCategory}
               options={[
                 { value: '', label: '전체' },
                 { value: 'PRINTS', label: '인쇄물' },
@@ -96,11 +96,17 @@ const FindCreator = () => {
                 { value: 'SNS_POST', label: 'SNS' },
               ]}
               selectedValue={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                setSortOrder('');
+                // 정렬이 변경될 경우, 다른 두 필터(가격대, 카테고리)를 초기화
+                setPriceRange(''); // 가격대 초기화
+                setCategory(e.target.value); // 카테고리 초기화
+              }}
             />
             <Toggle
               label="정렬"
-              initialValues={initialValues3}
+              currentLabel={sortOrder}
+              setCurrentLabel={setSortOrder}
               options={[
                 { value: 'recently', label: '최신순' },
                 { value: 'lowPrice', label: '가격낮은순' },

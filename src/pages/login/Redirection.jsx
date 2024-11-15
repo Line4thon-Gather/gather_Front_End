@@ -37,6 +37,7 @@ const Redirection = () => {
             if (tokenData.isRegistered) {
               localStorage.setItem('isRegistered', 'true');
               navigate('/');
+              window.location.reload();
             } else {
               localStorage.setItem('isRegistered', 'false');
               navigate('/login-select');
