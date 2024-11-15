@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import InputField from '../../components/creator/InputField';
 import styles from '../../styles/creator/CreatorRegistration.module.css';
 import defaultProfile from '../../assets/images/profileImage.png';
 import CheckModal from '../../pages/creator/CheckModal';
 import defaultThumbnail from '../../assets/images/AddPortfolio.png';
-const dropdownList = ['인쇄문', '영상', 'SNS'];
+
+// const dropdownList = ['인쇄물', '영상', 'SNS'];
+const dropdownList = ['PRINTS', 'VIDEO', 'SNS_POST'];
 
 function CreatorRegistration() {
   const [profileImage, setProfileImage] = useState(null);
@@ -38,7 +41,7 @@ function CreatorRegistration() {
         updatedPortfolios[index].file = files[0];
         updatedPortfolios[index].fileName = files[0].name;
       } else if (name === 'image' && files && files[0]) {
-        updatedPortfolios[index].image = URL.createObjectURL(files[0]);
+        updatedPortfolios[index].image = files[0];
         updatedPortfolios[index].imageName = files[0].name;
       } else {
         updatedPortfolios[index][name] = value;
@@ -46,10 +49,18 @@ function CreatorRegistration() {
       setPortfolios(updatedPortfolios);
     } else if (type === 'skill') {
       const updatedSkills = [...skills];
-      updatedSkills[index][name] = value;
+
+      if (name === 'period' || name === 'price') {
+        if (/^\d*$/.test(value)) {
+          updatedSkills[index][name] = value;
+        }
+      } else {
+        updatedSkills[index][name] = value;
+      }
       setSkills(updatedSkills);
     }
   };
+
   const removePortfolioFile = (index) => {
     const updatedPortfolios = [...portfolios];
     updatedPortfolios[index] = {
@@ -141,39 +152,97 @@ function CreatorRegistration() {
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
-  const handleRegistration = () => {
-    checkEmptyFields();
-    if (isSubmitEnabled) openModal();
-  };
-
-  // 서버에 데이터를 저장하는 함수
   const handleSubmit = async () => {
+    const formData = new FormData();
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    // req JSON 데이터
+    const reqString = JSON.stringify({
+      nickname: creatorId,
+      introductionTitle: introTitle,
+      introductionContent: introContent,
+      contactKaKaoId: kakaoId,
+      contactEmail: email,
+      createPortfolioReqList: portfolios.map((portfolio) => ({
+        title: portfolio.title,
+      })),
+      createWorkReqList: skills.map((skill) => ({
+        title: skill.task,
+        period: parseInt(skill.period, 10) || 0,
+        startPrice: parseInt(skill.price, 10) || 0,
+        category: skill.category,
+      })),
+    });
+
+    formData.append('req', reqString);
+
+    // 프로필 이미지 추가
+    if (profileImage) {
+      formData.append('profileImgUrl', profileImage);
+    }
+
+    // 썸네일 이미지 추가
+    portfolios.forEach((portfolio, index) => {
+      if (portfolio.image) {
+        formData.append('thumbnailImgUrlList', portfolio.image);
+      }
+    });
+
+    // 포트폴리오 파일 추가
+    portfolios.forEach((portfolio, index) => {
+      if (portfolio.file) {
+        formData.append('portfolioPdfList', portfolio.file);
+      }
+    });
+
+    // formData 확인
+    for (const pair of formData.entries()) {
+      console.log(`${pair[0]}:`, pair[1]);
+    }
+
     try {
-      const response = await axios.post('/register', data);
+      const response = await axios.post(
+        'https://backend.to-gather.info/api/creator',
+        formData,
+        {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
       console.log('등록 성공:', response.data);
-      // 성공 시 추가 작업
+      alert('등록 성공! 데이터를 성공적으로 전송했습니다.');
     } catch (error) {
       console.error('등록 실패:', error);
+      if (error.response) {
+        alert(
+          `서버 에러: ${
+            error.response.data.message || '알 수 없는 오류입니다.'
+          }`
+        );
+      } else if (error.request) {
+        alert('서버와 연결할 수 없습니다. 다시 시도해주세요.');
+      } else {
+        alert(`요청 설정 중 오류: ${error.message}`);
+      }
     }
   };
 
   const handleConfirmRegistration = () => {
     handleSubmit();
     closeModal();
-    console.log('크리에이터 등록 완료:', {
-      profileImage,
-      creatorId,
-      introTitle,
-      introContent,
-      portfolios,
-      skills,
-      kakaoId,
-      email,
-    });
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const handleRegistration = () => {
+    checkEmptyFields();
+    if (isSubmitEnabled) openModal();
   };
 
   return (
@@ -217,7 +286,6 @@ function CreatorRegistration() {
                 value={creatorId}
                 setValue={setCreatorId}
                 placeholder="USER0000"
-                maxLength={8}
                 maxWidth="600px"
               />
             </div>
@@ -230,16 +298,14 @@ function CreatorRegistration() {
             label="소개글 제목"
             value={introTitle}
             setValue={setIntroTitle}
-            placeholder="10자 이내로 자신을 소개해주세요."
-            maxLength={10}
+            placeholder="한 줄로 본인을 소개해주세요."
             maxWidth="500px"
           />
           <InputField
             label="소개글 내용"
             value={introContent}
             setValue={setIntroContent}
-            placeholder="50자 이내의 간단한 소개글을 입력해주세요."
-            maxLength={50}
+            placeholder="소개글을 입력해주세요."
           />
         </section>
 
@@ -268,8 +334,7 @@ function CreatorRegistration() {
                       'portfolio'
                     )
                   }
-                  placeholder="포트폴리오의 제목을 10자 이내로 작성해주세요"
-                  maxLength={10}
+                  placeholder="포트폴리오 제목을 입력해주세요."
                   maxWidth="100%"
                 />
                 <div className={styles.horizontalContainer}>
@@ -281,7 +346,7 @@ function CreatorRegistration() {
                         className={styles.imageLabel}
                       >
                         <img
-                          src={item.image}
+                          src={URL.createObjectURL(item.image)}
                           alt="썸네일 이미지 미리보기"
                           className={styles.thumbnailImage}
                         />
@@ -298,7 +363,6 @@ function CreatorRegistration() {
                         />
                       </label>
                     )}
-
                     <input
                       id={`thumbnailInput-${index}`}
                       type="file"

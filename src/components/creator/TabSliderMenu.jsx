@@ -3,6 +3,7 @@ import styles from '../../styles/creator/TabSliderMenu.module.css';
 import Defaultportfolio from '../../assets/images/Defaultportfolio.png';
 import Downoload from '../../assets/images/downloadPortfolio.png';
 import WorkDetail from '../../components/creator/WorkDetail';
+import Defaultwork from '../../assets/images/ModalImage.png';
 
 const TabSliderMenu = ({ creator }) => {
   const {
@@ -39,7 +40,11 @@ const TabSliderMenu = ({ creator }) => {
               getPortfolioResList.map((item, index) => (
                 <div key={index} className={styles.portfolioItem}>
                   <img
-                    src={item.thumbnail ? item.thumbnail : Defaultportfolio}
+                    src={
+                      item.thumbnailImgUrl
+                        ? item.thumbnailImgUrl
+                        : Defaultportfolio
+                    }
                     alt={item.title}
                     className={styles.thumbnail}
                   />
@@ -72,10 +77,10 @@ const TabSliderMenu = ({ creator }) => {
               getWorkResList.map((item, index) => (
                 <div key={index} className={styles.serviceItem}>
                   <WorkDetail
-                    imageUrl="../../assets/images/ModalImage.png"
-                    workName={item.workName}
-                    price={item.price}
-                    duration={item.duration}
+                    imageUrl={Defaultwork}
+                    workName={item.title}
+                    price={item.startPrice}
+                    duration={item.period}
                   />
                 </div>
               ))
