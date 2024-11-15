@@ -334,7 +334,7 @@ function CreatorRegistration() {
                       'portfolio'
                     )
                   }
-                  placeholder="포포트폴리오 제목을 입력해주세요."
+                  placeholder="포트폴리오 제목을 입력해주세요."
                   maxWidth="100%"
                 />
                 <div className={styles.horizontalContainer}>
