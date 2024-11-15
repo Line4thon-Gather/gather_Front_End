@@ -2,10 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 383px;
-  height: 296px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
   padding: 16px;
-  gap: 10px;
+  gap: 0.15vw 0;
   border-radius: 10px;
   border: 1px solid var(--gray-scale-gray-300, #eaecee);
   background: var(--gray-scale-white, #fff);
@@ -13,22 +14,25 @@
 }
 
 .thumbnail {
+  width: 100%;
+  aspect-ratio: 351/100;
   height: 130px;
   align-self: stretch;
-  margin-bottom: 16px;
+  margin-bottom: 1.75%;
   object-fit: cover;
   border-radius: 8px;
   background-color: #e0e0e0;
 }
 
 .categoryContainer {
+  width: 41.61%;
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
 
 .category {
-  width: 55px;
+  width: 41%;
   display: flex;
   justify-content: center;
   align-items: center;

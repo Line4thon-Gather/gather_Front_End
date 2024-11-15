@@ -7,26 +7,24 @@
 }
 
 .headerWrapper {
-  width: 61.46%;
+  width: 85%;
 }
 
 .thumbnailwrapper {
-  width: 90%;
+  width: 85%;
   display: grid;
   gap: 16px;
-
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .navigationWrapper {
   margin-top: 24px;
-  width: 90%;
+  width: 85%;
   display: flex;
   justify-content: end;
 }
 
 .navigation {
-  width: 12.5%;
   cursor: pointer;
   display: flex;
   align-items: center;

@@ -2,16 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from '../../styles/creator/Toggle.module.css';
 
 const Toggle = ({ label, options, initialValues, onChange }) => {
-  const [currentValue, setCurrentValue] = useState('');
+  const [currentLabel, setCurrentLabel] = useState(''); // 현재 선택된 label 관리
   const [isOpen, setIsOpen] = useState(false);
   const toggleRef = useRef(null);
 
-  const handleSelectChange = (value) => {
-    setCurrentValue(value);
+  const handleSelectChange = (selectedOption) => {
+    setCurrentLabel(selectedOption.label); // 선택된 label 설정
     if (onChange) {
-      onChange({ target: { value } });
-      setIsOpen(false);
+      onChange({ target: { value: selectedOption.value } }); // value 전달
     }
+    setIsOpen(false);
   };
 
   const handleLabelClick = () => {
@@ -34,10 +34,10 @@ const Toggle = ({ label, options, initialValues, onChange }) => {
   return (
     <div className={styles.toggleContainer} ref={toggleRef}>
       <label
-        className={`${styles.label} ${currentValue ? styles.selected : ''}`}
+        className={`${styles.label} ${currentLabel ? styles.selected : ''}`}
         onClick={handleLabelClick}
       >
-        {currentValue || label}
+        {currentLabel || label} {/* 선택된 label 표시 */}
       </label>
       <div className={`${styles.dropdown} ${isOpen ? styles.open : ''}`}>
         {isOpen &&
@@ -45,7 +45,7 @@ const Toggle = ({ label, options, initialValues, onChange }) => {
             <div
               key={index}
               className={styles.dropdownItem}
-              onClick={() => handleSelectChange(option.value)}
+              onClick={() => handleSelectChange(option)}
             >
               {option.label}
             </div>
