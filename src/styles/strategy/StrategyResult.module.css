@@ -7,6 +7,10 @@
   & > div:first-child {
     width: 61.46%;
   }
+
+  footer > div {
+    width: 85%;
+  }
 }
 
 .timeLine {
