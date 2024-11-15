@@ -2,11 +2,11 @@ import React from 'react';
 import styles from '../../styles/creator/WorkDetail.module.css';
 import DEFAULT_IMAGE from '../../assets/images/workBasic.png';
 
-const WorkDetail = ({ imageUrl, workName, price, duration }) => {
+const WorkDetail = ({ profileImgUrl, workName, price, duration }) => {
   return (
     <div className={styles.workDetailContainer}>
       <img
-        src={imageUrl || DEFAULT_IMAGE}
+        src={profileImgUrl || DEFAULT_IMAGE}
         alt="작업 이미지"
         className={styles.workImage}
       />

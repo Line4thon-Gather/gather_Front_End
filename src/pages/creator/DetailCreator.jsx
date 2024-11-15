@@ -44,7 +44,7 @@ const DetailCreator = () => {
 
         if (response.data.isSuccess) {
           console.log('데이터 가져오기 성공:', response.data.data);
-          setCreator(response.data.data); // 서버 응답 데이터를 상태에 설정
+          setCreator(response.data.data);
         } else {
           console.error(
             '데이터를 가져오는 데 실패했습니다. 응답 메시지:',
@@ -57,7 +57,7 @@ const DetailCreator = () => {
         setError('서버와의 통신에 문제가 발생했습니다.');
       } finally {
         console.log('데이터 로딩이 완료되었습니다. 로딩 상태를 종료합니다.');
-        setLoading(false); // 로딩 상태 종료
+        setLoading(false);
       }
     };
 
