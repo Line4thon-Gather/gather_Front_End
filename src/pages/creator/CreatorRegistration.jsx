@@ -48,7 +48,14 @@ function CreatorRegistration() {
       setPortfolios(updatedPortfolios);
     } else if (type === 'skill') {
       const updatedSkills = [...skills];
-      updatedSkills[index][name] = value;
+
+      if (name === 'period' || name === 'price') {
+        if (/^\d*$/.test(value)) {
+          updatedSkills[index][name] = value;
+        }
+      } else {
+        updatedSkills[index][name] = value;
+      }
       setSkills(updatedSkills);
     }
   };
@@ -144,65 +151,58 @@ function CreatorRegistration() {
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
-  const handleRegistration = () => {
-    checkEmptyFields();
-    if (isSubmitEnabled) openModal();
-  };
-
   const handleSubmit = async () => {
-    console.log('서버에 데이터 전송 중...');
     const token = localStorage.getItem('token');
     if (!token) {
       alert('로그인이 필요합니다.');
       return;
     }
 
-    console.log('토큰:', token);
     const formData = new FormData();
 
-    formData.append('nickname', creatorId);
-    formData.append('introductionTitle', introTitle);
-    formData.append('introductionContent', introContent);
-    formData.append('contactKaKaoId', kakaoId);
-    formData.append('contactEmail', email);
+    const reqString = `
+{
+  "nickname": "${creatorId}",
+  "introductionTitle": "${introTitle}",
+  "introductionContent": "${introContent}",
+  "contactKaKaoId": "${kakaoId}",
+  "contactEmail": "${email}",
+  "createPortfolioReqList": [
+    ${portfolios
+      .map((portfolio) => `{"title": "${portfolio.title}"}`)
+      .join(',')}
+  ],
+  "createWorkReqList": [
+    ${skills
+      .map(
+        (skill) => `{
+        "title": "${skill.task}",
+        "period": ${parseInt(skill.period, 10) || 0},
+        "startPrice": ${parseInt(skill.price, 10) || 0},
+        "category": "${skill.category}"
+      }`
+      )
+      .join(',')}
+  ]
+}`;
 
-    portfolios.forEach((portfolio, index) => {
-      formData.append(
-        `createPortfolioReqList[${index}].title`,
-        portfolio.title
-      );
-
-      if (portfolio.image) {
-        formData.append(`thumbnailImgUrlList[${index}]`, portfolio.image);
-      }
-
-      if (portfolio.file) {
-        formData.append(`portfolioPdfList[${index}]`, portfolio.file);
-      }
-    });
-
-    skills.forEach((skill, index) => {
-      formData.append(`createWorkReqList[${index}].title`, skill.task);
-      formData.append(`createWorkReqList[${index}].period`, skill.period);
-      formData.append(`createWorkReqList[${index}].startPrice`, skill.price);
-      formData.append(`createWorkReqList[${index}].category`, skill.category);
-    });
+    formData.append('req', reqString);
 
     if (profileImage) {
       formData.append('profileImgUrl', profileImage);
     }
 
-    for (let [key, value] of formData.entries()) {
-      if (value instanceof File) {
-        console.log(
-          `${key}: ${value.name}, ${value.size} bytes, ${value.type}`
-        );
-      } else {
-        console.log(`${key}: ${value}`);
+    portfolios.forEach((portfolio, index) => {
+      if (portfolio.image) {
+        formData.append(`thumbnailImgUrlList[${index}]`, portfolio.image);
       }
-    }
+      if (portfolio.file) {
+        formData.append(`portfolioPdfList[${index}]`, portfolio.file);
+      }
+    });
 
     try {
+      console.log('서버 요청 준비 완료, 데이터 전송 중...');
       const response = await axios.post(
         'https://backend.to-gather.info/api/creator',
         formData,
@@ -213,13 +213,20 @@ function CreatorRegistration() {
           },
         }
       );
+
       console.log('등록 성공:', response.data);
+      alert('등록 성공! 데이터를 성공적으로 전송했습니다.');
     } catch (error) {
       console.error('등록 실패:', error);
+
       if (error.response) {
         console.error('서버 응답 상태 코드:', error.response.status);
         console.error('서버 응답 데이터:', error.response.data);
-        alert(`서버 에러: ${error.response.data.message || '알 수 없는 오류'}`);
+        alert(
+          `서버 에러 발생: ${
+            error.response.data.message || '알 수 없는 오류입니다.'
+          }`
+        );
       } else if (error.request) {
         console.error(
           '요청이 전송되었지만 응답을 받지 못했습니다:',
@@ -236,16 +243,11 @@ function CreatorRegistration() {
   const handleConfirmRegistration = () => {
     handleSubmit();
     closeModal();
-    console.log('크리에이터 등록 완료:', {
-      profileImage,
-      creatorId,
-      introTitle,
-      introContent,
-      portfolios,
-      skills,
-      kakaoId,
-      email,
-    });
+  };
+
+  const handleRegistration = () => {
+    checkEmptyFields();
+    if (isSubmitEnabled) openModal();
   };
 
   return (
