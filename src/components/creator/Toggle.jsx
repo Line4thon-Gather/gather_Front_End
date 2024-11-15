@@ -1,13 +1,26 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styles from '../../styles/creator/Toggle.module.css';
 
-const Toggle = ({ label, options, initialValues, onChange }) => {
-  const [currentLabel, setCurrentLabel] = useState(''); // 현재 선택된 label 관리
+const Toggle = ({
+  label,
+  options,
+  currentLabel, // currentLabel은 value에 해당
+  setCurrentLabel,
+  onChange,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleRef = useRef(null);
 
+  // currentLabel(value)에 해당하는 label을 찾는 함수
+  const getCurrentOptionLabel = () => {
+    const matchedOption = options.find(
+      (option) => option.value === currentLabel
+    );
+    return matchedOption ? matchedOption.label : label; // 매칭된 label 또는 기본 label 반환
+  };
+
   const handleSelectChange = (selectedOption) => {
-    setCurrentLabel(selectedOption.label); // 선택된 label 설정
+    setCurrentLabel(selectedOption.value); // 선택된 value 설정
     if (onChange) {
       onChange({ target: { value: selectedOption.value } }); // value 전달
     }
@@ -37,7 +50,8 @@ const Toggle = ({ label, options, initialValues, onChange }) => {
         className={`${styles.label} ${currentLabel ? styles.selected : ''}`}
         onClick={handleLabelClick}
       >
-        {currentLabel || label} {/* 선택된 label 표시 */}
+        {getCurrentOptionLabel()}{' '}
+        {/* currentLabel(value)에 해당하는 label 표시 */}
       </label>
       <div className={`${styles.dropdown} ${isOpen ? styles.open : ''}`}>
         {isOpen &&
