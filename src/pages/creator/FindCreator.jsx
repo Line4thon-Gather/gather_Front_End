@@ -1,112 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThumbnailCard from '../../components/creator/ThumbnailCard';
 import styles from '../../styles/creator/FindCreator.module.css';
 import Image from '../../assets/images/ModalImage.png';
 import Toggle from '../../components/creator/Toggle';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getCreatorList } from '../../hooks/useCreator';
+import Footer from '../../components/home/Footer';
+import { useInView } from 'react-intersection-observer';
 
 const FindCreator = () => {
   const navigate = useNavigate();
-  const handleCardClick = (nickname) => {
-    navigate(`/creator/${nickname}`);
-  };
 
-  const [priceRange, setPriceRange] = useState('전체');
-  const [category, setCategory] = useState('전체');
-  const [sortOrder, setSortOrder] = useState('최신순');
-  const [creatorData, setCreatorData] = useState([]);
+  const [priceRange, setPriceRange] = useState('');
+  const [category, setCategory] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+
+  const { ref, inView } = useInView({
+    threshold: 1.0, // Trigger when fully visible
+  });
 
   const initialValues1 = '가격대';
   const initialValues2 = '카테고리';
   const initialValues3 = '정렬';
 
+  const { data, isFetching, hasNextPage, fetchNextPage } = useInfiniteQuery({
+    queryKey: ['creator', category, sortOrder, priceRange],
+    queryFn: ({ pageParam = 0 }) =>
+      getCreatorList(pageParam, sortOrder, category, priceRange),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => {
+      if (!lastPage.isLast) return pages.length;
+      return undefined;
+    },
+    staleTime: 1000 * 60 * 30,
+  });
+  console.log(data);
+
   useEffect(() => {
-    const fetchCreatorData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        console.log('토큰:', token);
+    if (inView && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetching, fetchNextPage]);
 
-        if (!token) {
-          console.error('토큰이 없습니다. 인증이 필요한 페이지입니다.');
-          return;
-        }
+  useEffect(() => {
+    if (data) {
+      const allCreators = data.pages
+        ?.flatMap((page) => page.data)
+        ?.map((creator) => ({
+          id: creator.nickname,
+          imageUrl: creator.thumbnailImgUrl || '기본 이미지 경로',
+          category: creator.availableWork,
+          nickname: creator.nickname,
+          minPrice: parseInt(creator.startPrice, 10),
+          description: creator.introductionTitle || '소개가 없습니다.',
+          reviewCount: 0,
+          rating: 0,
+        }));
 
-        console.log('API 요청을 시작합니다.');
-
-        const response = await axios.get(
-          'https://backend.to-gather.info/api/creator',
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: token,
-            },
-          }
-        );
-
-        console.log('API 응답:', response);
-
-        if (response.data.isSuccess) {
-          const data = response.data.data;
-
-          const formattedData = [
-            {
-              id: data.nickname,
-              imageUrl: data.profileImgUrl,
-              category: ['영상', '인쇄물'],
-              nickname: data.nickname,
-              minPrice: 50000,
-              description: data.introductionContent || '소개가 없습니다.',
-            },
-          ];
-
-          console.log('데이터 변환 완료:', formattedData);
-
-          setCreatorData(formattedData);
-        } else {
-          console.error(
-            '데이터를 가져오는 데 실패했습니다. 응답 메시지:',
-            response.data.message
-          );
-        }
-      } catch (error) {
-        console.error('API 호출 중 오류가 발생했습니다:', error);
-      }
-    };
-
-    fetchCreatorData();
-  }, []);
-
-  const filteredData = creatorData
-    .filter((creator) => {
-      if (priceRange === '전체') return true;
-      const priceConditions = {
-        '1만원 미만': creator.minPrice < 10000,
-        '5만원 미만': creator.minPrice < 50000,
-        '10만원 미만': creator.minPrice < 100000,
-        '20만원 미만': creator.minPrice < 200000,
-        '20만원 이상': creator.minPrice >= 200000,
-      };
-      return priceConditions[priceRange];
-    })
-    .filter((creator) => {
-      if (category === '전체') return true;
-      return Array.isArray(creator.category)
-        ? creator.category.includes(category)
-        : creator.category === category;
-    })
-    .sort((a, b) => {
-      switch (sortOrder) {
-        case '리뷰순':
-          return b.reviewCount - a.reviewCount;
-        case '가격낮은순':
-          return a.minPrice - b.minPrice;
-        case '가격높은순':
-          return b.minPrice - a.minPrice;
-        default:
-          return 0;
-      }
-    });
+      setFilteredData(allCreators);
+    }
+  }, [data, priceRange, category, sortOrder]);
 
   return (
     <div className={styles.outerContainer}>
@@ -121,12 +76,12 @@ const FindCreator = () => {
               label="가격대"
               initialValues={initialValues1}
               options={[
-                { value: '전체', label: '전체' },
-                { value: '1만원 미만', label: '1만원 미만' },
-                { value: '5만원 미만', label: '5만원 미만' },
-                { value: '10만원 미만', label: '10만원 미만' },
-                { value: '20만원 미만', label: '20만원 미만' },
-                { value: '20만원 이상', label: '20만원 이상' },
+                { value: '', label: '전체' },
+                { value: 10000, label: '1만원 미만' },
+                { value: 50000, label: '5만원 미만' },
+                { value: 100000, label: '10만원 미만' },
+                { value: 200000, label: '20만원 미만' },
+                { value: 200001, label: '20만원 이상' },
               ]}
               selectedValue={priceRange}
               onChange={(e) => setPriceRange(e.target.value)}
@@ -135,10 +90,10 @@ const FindCreator = () => {
               label="카테고리"
               initialValues={initialValues2}
               options={[
-                { value: '전체', label: '전체' },
-                { value: '인쇄물', label: '인쇄물' },
-                { value: '영상', label: '영상' },
-                { value: 'SNS', label: 'SNS' },
+                { value: '', label: '전체' },
+                { value: 'PRINTS', label: '인쇄물' },
+                { value: 'VIDEO', label: '영상' },
+                { value: 'SNS_POST', label: 'SNS' },
               ]}
               selectedValue={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -147,27 +102,26 @@ const FindCreator = () => {
               label="정렬"
               initialValues={initialValues3}
               options={[
-                { value: '최신순', label: '최신순' },
-                { value: '리뷰순', label: '리뷰순' },
-                { value: '가격낮은순', label: '가격낮은순' },
-                { value: '가격높은순', label: '가격높은순' },
+                { value: 'recently', label: '최신순' },
+                { value: 'lowPrice', label: '가격낮은순' },
+                { value: 'highPrice', label: '가격높은순' },
               ]}
               selectedValue={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
+              onChange={(e) => {
+                setSortOrder(e.target.value);
+                // 정렬이 변경될 경우, 다른 두 필터(가격대, 카테고리)를 초기화
+                setPriceRange(''); // 가격대 초기화
+                setCategory(''); // 카테고리 초기화
+              }}
             />
           </div>
         </div>
 
         <div className={styles.creatorContainer}>
-          {filteredData.map((creator) => (
-            <div
-              className={`${styles.thumbnailCard} ${creator.category
-                .map((cat) => styles[cat])
-                .join(' ')}`}
-              key={creator.id}
-              onClick={() => handleCardClick(creator.nickname)}
-            >
+          {filteredData &&
+            filteredData.map((creator, index) => (
               <ThumbnailCard
+                key={index}
                 imageUrl={creator.imageUrl}
                 category={creator.category.join(', ')}
                 creatorName={creator.nickname}
@@ -176,10 +130,15 @@ const FindCreator = () => {
                 minPrice={creator.minPrice.toLocaleString()}
                 description={creator.description}
               />
+            ))}
+          {hasNextPage && (
+            <div style={{ width: '20px' }} ref={ref} className={styles.loading}>
+              {isFetching ? '로딩 중...' : '스크롤하여 더 보기'}
             </div>
-          ))}
+          )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -30,7 +30,11 @@ const Redirection = () => {
             const tokenData = response.data.data;
             localStorage.setItem('token', token);
 
-            if (response.data.data.isRegistered) {
+            if (tokenData.email) {
+              localStorage.setItem('email', tokenData.email);
+            }
+
+            if (tokenData.isRegistered) {
               localStorage.setItem('isRegistered', 'true');
               navigate('/');
             } else {
