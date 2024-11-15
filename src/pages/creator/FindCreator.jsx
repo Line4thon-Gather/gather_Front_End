@@ -8,8 +8,6 @@ import Toggle from '../../components/creator/Toggle';
 
 const FindCreator = () => {
   const navigate = useNavigate();
-
-  // 닉네임을 기반으로 URL 이동하도록 수정
   const handleCardClick = (nickname) => {
     navigate(`/creator/${nickname}`);
   };

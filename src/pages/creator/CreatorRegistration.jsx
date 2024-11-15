@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import InputField from '../../components/creator/InputField';
 import styles from '../../styles/creator/CreatorRegistration.module.css';
 import defaultProfile from '../../assets/images/profileImage.png';
 import CheckModal from '../../pages/creator/CheckModal';
 import defaultThumbnail from '../../assets/images/AddPortfolio.png';
-const dropdownList = ['인쇄문', '영상', 'SNS'];
+
+const dropdownList = ['인쇄물', '영상', 'SNS'];
 
 function CreatorRegistration() {
   const [profileImage, setProfileImage] = useState(null);
@@ -38,7 +40,7 @@ function CreatorRegistration() {
         updatedPortfolios[index].file = files[0];
         updatedPortfolios[index].fileName = files[0].name;
       } else if (name === 'image' && files && files[0]) {
-        updatedPortfolios[index].image = URL.createObjectURL(files[0]);
+        updatedPortfolios[index].image = files[0];
         updatedPortfolios[index].imageName = files[0].name;
       } else {
         updatedPortfolios[index][name] = value;
@@ -50,6 +52,7 @@ function CreatorRegistration() {
       setSkills(updatedSkills);
     }
   };
+
   const removePortfolioFile = (index) => {
     const updatedPortfolios = [...portfolios];
     updatedPortfolios[index] = {
@@ -146,14 +149,87 @@ function CreatorRegistration() {
     if (isSubmitEnabled) openModal();
   };
 
-  // 서버에 데이터를 저장하는 함수
   const handleSubmit = async () => {
+    console.log('서버에 데이터 전송 중...');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    console.log('토큰:', token);
+    const formData = new FormData();
+
+    formData.append('nickname', creatorId);
+    formData.append('introductionTitle', introTitle);
+    formData.append('introductionContent', introContent);
+    formData.append('contactKaKaoId', kakaoId);
+    formData.append('contactEmail', email);
+
+    portfolios.forEach((portfolio, index) => {
+      formData.append(
+        `createPortfolioReqList[${index}].title`,
+        portfolio.title
+      );
+
+      if (portfolio.image) {
+        formData.append(`thumbnailImgUrlList[${index}]`, portfolio.image);
+      }
+
+      if (portfolio.file) {
+        formData.append(`portfolioPdfList[${index}]`, portfolio.file);
+      }
+    });
+
+    skills.forEach((skill, index) => {
+      formData.append(`createWorkReqList[${index}].title`, skill.task);
+      formData.append(`createWorkReqList[${index}].period`, skill.period);
+      formData.append(`createWorkReqList[${index}].startPrice`, skill.price);
+      formData.append(`createWorkReqList[${index}].category`, skill.category);
+    });
+
+    if (profileImage) {
+      formData.append('profileImgUrl', profileImage);
+    }
+
+    for (let [key, value] of formData.entries()) {
+      if (value instanceof File) {
+        console.log(
+          `${key}: ${value.name}, ${value.size} bytes, ${value.type}`
+        );
+      } else {
+        console.log(`${key}: ${value}`);
+      }
+    }
+
     try {
-      const response = await axios.post('/register', data);
+      const response = await axios.post(
+        'https://backend.to-gather.info/api/creator',
+        formData,
+        {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
       console.log('등록 성공:', response.data);
-      // 성공 시 추가 작업
     } catch (error) {
       console.error('등록 실패:', error);
+      if (error.response) {
+        console.error('서버 응답 상태 코드:', error.response.status);
+        console.error('서버 응답 데이터:', error.response.data);
+        alert(`서버 에러: ${error.response.data.message || '알 수 없는 오류'}`);
+      } else if (error.request) {
+        console.error(
+          '요청이 전송되었지만 응답을 받지 못했습니다:',
+          error.request
+        );
+        alert('서버와 연결할 수 없습니다. 다시 시도해주세요.');
+      } else {
+        console.error('요청 설정 중 오류가 발생했습니다:', error.message);
+        alert(`오류 발생: ${error.message}`);
+      }
     }
   };
 
@@ -170,10 +246,6 @@ function CreatorRegistration() {
       kakaoId,
       email,
     });
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
   };
 
   return (
@@ -217,7 +289,6 @@ function CreatorRegistration() {
                 value={creatorId}
                 setValue={setCreatorId}
                 placeholder="USER0000"
-                maxLength={8}
                 maxWidth="600px"
               />
             </div>
@@ -230,16 +301,14 @@ function CreatorRegistration() {
             label="소개글 제목"
             value={introTitle}
             setValue={setIntroTitle}
-            placeholder="10자 이내로 자신을 소개해주세요."
-            maxLength={10}
+            placeholder="한 줄로 본인을 소개해주세요."
             maxWidth="500px"
           />
           <InputField
             label="소개글 내용"
             value={introContent}
             setValue={setIntroContent}
-            placeholder="50자 이내의 간단한 소개글을 입력해주세요."
-            maxLength={50}
+            placeholder="소개글을 입력해주세요."
           />
         </section>
 
@@ -268,8 +337,7 @@ function CreatorRegistration() {
                       'portfolio'
                     )
                   }
-                  placeholder="포트폴리오의 제목을 10자 이내로 작성해주세요"
-                  maxLength={10}
+                  placeholder="포포트폴리오 제목을 입력해주세요."
                   maxWidth="100%"
                 />
                 <div className={styles.horizontalContainer}>
@@ -281,7 +349,7 @@ function CreatorRegistration() {
                         className={styles.imageLabel}
                       >
                         <img
-                          src={item.image}
+                          src={URL.createObjectURL(item.image)}
                           alt="썸네일 이미지 미리보기"
                           className={styles.thumbnailImage}
                         />
@@ -298,7 +366,6 @@ function CreatorRegistration() {
                         />
                       </label>
                     )}
-
                     <input
                       id={`thumbnailInput-${index}`}
                       type="file"
