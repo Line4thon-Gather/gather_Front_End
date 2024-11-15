@@ -6,7 +6,8 @@ import defaultProfile from '../../assets/images/profileImage.png';
 import CheckModal from '../../pages/creator/CheckModal';
 import defaultThumbnail from '../../assets/images/AddPortfolio.png';
 
-const dropdownList = ['인쇄물', '영상', 'SNS'];
+// const dropdownList = ['인쇄물', '영상', 'SNS'];
+const dropdownList = ['PRINTS', 'VIDEO', 'SNS_POST'];
 
 function CreatorRegistration() {
   const [profileImage, setProfileImage] = useState(null);
@@ -152,57 +153,59 @@ function CreatorRegistration() {
   const closeModal = () => setShowModal(false);
 
   const handleSubmit = async () => {
+    const formData = new FormData();
     const token = localStorage.getItem('token');
+
     if (!token) {
       alert('로그인이 필요합니다.');
       return;
     }
 
-    const formData = new FormData();
-
-    const reqString = `
-{
-  "nickname": "${creatorId}",
-  "introductionTitle": "${introTitle}",
-  "introductionContent": "${introContent}",
-  "contactKaKaoId": "${kakaoId}",
-  "contactEmail": "${email}",
-  "createPortfolioReqList": [
-    ${portfolios
-      .map((portfolio) => `{"title": "${portfolio.title}"}`)
-      .join(',')}
-  ],
-  "createWorkReqList": [
-    ${skills
-      .map(
-        (skill) => `{
-        "title": "${skill.task}",
-        "period": ${parseInt(skill.period, 10) || 0},
-        "startPrice": ${parseInt(skill.price, 10) || 0},
-        "category": "${skill.category}"
-      }`
-      )
-      .join(',')}
-  ]
-}`;
+    // req JSON 데이터
+    const reqString = JSON.stringify({
+      nickname: creatorId,
+      introductionTitle: introTitle,
+      introductionContent: introContent,
+      contactKaKaoId: kakaoId,
+      contactEmail: email,
+      createPortfolioReqList: portfolios.map((portfolio) => ({
+        title: portfolio.title,
+      })),
+      createWorkReqList: skills.map((skill) => ({
+        title: skill.task,
+        period: parseInt(skill.period, 10) || 0,
+        startPrice: parseInt(skill.price, 10) || 0,
+        category: skill.category,
+      })),
+    });
 
     formData.append('req', reqString);
 
+    // 프로필 이미지 추가
     if (profileImage) {
       formData.append('profileImgUrl', profileImage);
     }
 
+    // 썸네일 이미지 추가
     portfolios.forEach((portfolio, index) => {
       if (portfolio.image) {
-        formData.append(`thumbnailImgUrlList[${index}]`, portfolio.image);
-      }
-      if (portfolio.file) {
-        formData.append(`portfolioPdfList[${index}]`, portfolio.file);
+        formData.append('thumbnailImgUrlList', portfolio.image);
       }
     });
 
+    // 포트폴리오 파일 추가
+    portfolios.forEach((portfolio, index) => {
+      if (portfolio.file) {
+        formData.append('portfolioPdfList', portfolio.file);
+      }
+    });
+
+    // formData 확인
+    for (const pair of formData.entries()) {
+      console.log(`${pair[0]}:`, pair[1]);
+    }
+
     try {
-      console.log('서버 요청 준비 완료, 데이터 전송 중...');
       const response = await axios.post(
         'https://backend.to-gather.info/api/creator',
         formData,
@@ -218,24 +221,16 @@ function CreatorRegistration() {
       alert('등록 성공! 데이터를 성공적으로 전송했습니다.');
     } catch (error) {
       console.error('등록 실패:', error);
-
       if (error.response) {
-        console.error('서버 응답 상태 코드:', error.response.status);
-        console.error('서버 응답 데이터:', error.response.data);
         alert(
-          `서버 에러 발생: ${
+          `서버 에러: ${
             error.response.data.message || '알 수 없는 오류입니다.'
           }`
         );
       } else if (error.request) {
-        console.error(
-          '요청이 전송되었지만 응답을 받지 못했습니다:',
-          error.request
-        );
         alert('서버와 연결할 수 없습니다. 다시 시도해주세요.');
       } else {
-        console.error('요청 설정 중 오류가 발생했습니다:', error.message);
-        alert(`오류 발생: ${error.message}`);
+        alert(`요청 설정 중 오류: ${error.message}`);
       }
     }
   };
