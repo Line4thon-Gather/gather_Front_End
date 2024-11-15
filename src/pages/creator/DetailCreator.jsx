@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import DetailTop from '../../components/creator/DetailTop';
 import TabSliderMenu from '../../components/creator/TabSliderMenu';
@@ -11,8 +11,11 @@ const DetailCreator = () => {
   const [creator, setCreator] = useState(null); // 크리에이터 데이터 상태 관리
   const [loading, setLoading] = useState(true); // 로딩 상태 관리
   const [error, setError] = useState(null); // 오류 상태 관리
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!token) navigate('/login');
     const fetchCreatorData = async () => {
       console.log('useEffect 실행됨 - 데이터를 가져오려고 시도합니다.');
 
