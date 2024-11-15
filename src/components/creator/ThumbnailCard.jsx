@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../../styles/creator/ThumbnailCard.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const ThumbnailCard = ({
   imageUrl,
@@ -9,9 +10,13 @@ const ThumbnailCard = ({
   description,
 }) => {
   const categories = Array.isArray(category) ? category : category.split(', ');
+  const navigate = useNavigate();
 
   return (
-    <div className={styles.cardContainer}>
+    <div
+      className={styles.cardContainer}
+      onClick={() => navigate(`/creator/${creatorName}`)}
+    >
       <img src={imageUrl} alt="썸네일 사진" className={styles.thumbnail} />
       <div className={styles.categoryContainer}>
         {categories.map((cat, index) => (
