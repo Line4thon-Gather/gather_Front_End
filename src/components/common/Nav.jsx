@@ -1,14 +1,42 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import styles from '../../styles/common/Nav.module.css';
 import Image from '../../assets/images/NavImage.png';
 import basicImg from '../../assets/images/basicprofile.png';
 
 const Nav = () => {
-  const token = localStorage.getItem('token');
-  const isLoggedIn = token !== null;
-  const userName = localStorage.getItem('userName') || '사용자 이름';
-  const userProfileImage = localStorage.getItem('profileImgUrl') || basicImg;
+  const navigate = useNavigate();
+  const location = useLocation(); // 현재 경로 정보를 가져오는 훅
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('사용자 이름');
+  const [userProfileImage, setUserProfileImage] = useState(basicImg);
+
+  const updateUserInfo = () => {
+    const token = localStorage.getItem('token');
+    const storedUserName = localStorage.getItem('userName') || '사용자 이름';
+    const storedUserProfileImage =
+      localStorage.getItem('profileImgUrl') || basicImg;
+
+    if (token) {
+      setIsLoggedIn(true);
+      setUserName(storedUserName);
+      setUserProfileImage(storedUserProfileImage);
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    updateUserInfo(); // 처음 렌더링 시 정보 업데이트
+  }, []);
+
+  useEffect(() => {
+    updateUserInfo(); // 경로 변경 시 정보 업데이트
+  }, [location]); // location이 변경될 때 실행
+
+  const handleUserNameClick = () => {
+    navigate('/mypage');
+  };
 
   return (
     <nav className={styles.navBar}>
@@ -48,13 +76,13 @@ const Nav = () => {
           </NavLink>
         </li>
         {isLoggedIn ? (
-          <div className={styles.userInfo}>
+          <div className={styles.userInfo} onClick={handleUserNameClick}>
             <img
               src={userProfileImage}
               alt="프로필 이미지"
               className={styles.profileImage}
             />
-            <span>{userName}</span>
+            <span className={styles.userName}>{userName}</span>
           </div>
         ) : (
           <li className={styles.loginBtn}>

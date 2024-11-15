@@ -13,6 +13,7 @@ import ScrollToTop from '../hooks/ScrollUp';
 import StrategyResult from '../pages/strategy/result/StrategyResult';
 import Nav from '../components/common/Nav';
 import Detail from '../pages/creator/DetailCreator';
+import Mypage from '../pages/mypage/Mypage';
 
 export default function Routes() {
   return (
@@ -30,6 +31,7 @@ export default function Routes() {
         <Route path="business" element={<BusinessCertification />} />
         <Route path="register" element={<Register />} />
         <Route path="creator/:nickname" element={<Detail />} />
+        <Route path="mypage" element={<Mypage />} />
       </Route>
     </ReactRouters>
   );
