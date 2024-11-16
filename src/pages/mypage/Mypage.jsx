@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/mypage/Mypage.module.css';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import Footer from '../../components/home/Footer';
+import ThumbnailCard from '../../components/creator/ThumbnailCard';
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -11,6 +13,8 @@ const Mypage = () => {
   const [email, setEmail] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [recentCreators, setRecentCreators] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -25,7 +29,51 @@ const Mypage = () => {
       setEmail(userEmail);
       setProfileImage(userProfileImage);
     }
+
+    // 최근 본 크리에이터 데이터 가져오기
+    fetchRecentCreators();
   }, []);
+
+  const fetchRecentCreators = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+
+      const response = await axios.get(
+        'https://backend.to-gather.info/api/user/my-page',
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      if (response.data.isSuccess && response.data.data) {
+        const { profileInfo, creatorInfo } = response.data.data;
+
+        // 상태 업데이트
+        setRecentCreators(creatorInfo || []);
+        setProfileImage(profileInfo.profileImgUrl || defaultProfile);
+        setEmail(profileInfo.email || '이메일을 입력해주세요');
+      } else {
+        throw new Error(
+          response.data.message || 'Unexpected response structure'
+        );
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setRecentCreators([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleThumbnailClick = (nickname) => {
+    navigate(`/creator/${nickname}`);
+  };
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -52,19 +100,19 @@ const Mypage = () => {
   };
 
   const handleEmailChange = (e) => {
-    setEmail(e.target.value); // 입력값 상태에 반영
+    setEmail(e.target.value);
   };
 
   const handleEmailBlur = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const storedUserEmail =
-      localStorage.getItem('userEmail') || '이메일을 설정해주세요';
+      localStorage.getItem('userEmail') || '이메일을 설정해주세요.';
 
     if (email.trim() === '') {
       setModalMessage('이메일을 빈 문자열로 설정할 수 없습니다.');
       setShowModal(true);
-      setEmail(storedUserEmail); // 기존 이메일로 복원
+      setEmail(storedUserEmail);
     } else if (!emailRegex.test(email) || koreanRegex.test(email)) {
       setModalMessage(
         koreanRegex.test(email)
@@ -72,9 +120,9 @@ const Mypage = () => {
           : '유효하지 않은 이메일 형식입니다.'
       );
       setShowModal(true);
-      setEmail(storedUserEmail); // 기존 이메일로 복원
+      setEmail(storedUserEmail);
     } else {
-      localStorage.setItem('userEmail', email); // 이메일 업데이트
+      localStorage.setItem('userEmail', email);
     }
   };
 
@@ -83,14 +131,13 @@ const Mypage = () => {
   };
 
   const handleLogout = () => {
-    // 로그아웃 처리 - 토큰 삭제 및 초기화
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('profileImgUrl');
     localStorage.removeItem('isRegistered');
     localStorage.removeItem('role');
-    navigate('/login'); // useNavigate를 사용하여 로그인 페이지로 리다이렉트
+    navigate('/login');
   };
 
   const handleAccountDelete = () => {
@@ -99,7 +146,7 @@ const Mypage = () => {
     );
     if (confirmDelete) {
       localStorage.clear();
-      navigate('/'); // useNavigate를 사용하여 회원가입 페이지로 리다이렉트 또는 초기 화면
+      navigate('/');
     }
   };
 
@@ -110,7 +157,6 @@ const Mypage = () => {
           <div className={styles.profilePage}>
             <h2>기본 프로필</h2>
             <div className={styles.basicProfile}>
-              {/* 프로필 */}
               <div className={styles.profileImageContainer}>
                 <p className={styles.profileImageLabel}>프로필 이미지</p>
                 <label htmlFor="profileImageInput">
@@ -129,7 +175,6 @@ const Mypage = () => {
                 />
               </div>
               <div className={styles.profileContainer}>
-                {/* 이름 변경 */}
                 <div className={styles.profileInfo}>
                   <label htmlFor="nameInput" className={styles.inputLabel}>
                     이름
@@ -143,7 +188,6 @@ const Mypage = () => {
                     className={styles.ChangeInput}
                   />
                 </div>
-                {/* 이메일 변경 */}
                 <div className={styles.profileInfo}>
                   <label htmlFor="emailInput" className={styles.inputLabel}>
                     이메일
@@ -160,8 +204,29 @@ const Mypage = () => {
               </div>
             </div>
           </div>
+          <div className={styles.profilePage}>
+            <h2>최근에 봤던 크리에이터</h2>
+            <div className={styles.creatorList}>
+              {loading ? (
+                <p>로딩 중...</p>
+              ) : recentCreators.length === 0 ? (
+                <p>최근에 본 크리에이터가 없습니다.</p>
+              ) : (
+                recentCreators.map((creator, index) => (
+                  <ThumbnailCard
+                    key={index}
+                    imageUrl={creator.thumbnailImgUrl}
+                    category={(creator.availableWork || []).join(', ')} // 안전한 데이터 처리
+                    creatorName={creator.nickname}
+                    description={creator.introductionTitle}
+                    minPrice={creator.startPrice.toLocaleString()}
+                    onClick={() => handleThumbnailClick(creator.nickname)}
+                  />
+                ))
+              )}
+            </div>
+          </div>
 
-          {/* 모달 */}
           {showModal && (
             <div className={styles.modal}>
               <div className={styles.modalContent}>
@@ -174,7 +239,6 @@ const Mypage = () => {
           )}
         </div>
       </div>
-      {/* 로그아웃 및 회원탈퇴 버튼 */}
       <div className={styles.buttonContainer}>
         <button onClick={handleLogout} className={styles.clickButton}>
           로그아웃
