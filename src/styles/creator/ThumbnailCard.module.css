@@ -25,14 +25,14 @@
 }
 
 .categoryContainer {
-  width: 41.61%;
+  width: 100%;
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
 
 .category {
-  width: 41%;
+  width: 21%;
   display: flex;
   justify-content: center;
   align-items: center;

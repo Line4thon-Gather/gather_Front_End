@@ -5,6 +5,7 @@ import styles from '../../styles/creator/CreatorRegistration.module.css';
 import defaultProfile from '../../assets/images/profileImage.png';
 import CheckModal from '../../pages/creator/CheckModal';
 import defaultThumbnail from '../../assets/images/AddPortfolio.png';
+import { useNavigate } from 'react-router-dom';
 
 const dropdownList = ['인쇄물', '영상', 'SNS'];
 // const dropdownList = ['PRINTS', 'VIDEO', 'SNS_POST'];
@@ -16,6 +17,7 @@ const categoryToEnglish = {
 };
 
 function CreatorRegistration() {
+  const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [creatorId, setCreatorId] = useState('');
@@ -225,6 +227,7 @@ function CreatorRegistration() {
 
       console.log('등록 성공:', response.data);
       alert('등록 성공! 데이터를 성공적으로 전송했습니다.');
+      navigate(`/detail/${creatorId}`);
     } catch (error) {
       console.error('등록 실패:', error);
       if (error.response) {
