@@ -36,12 +36,8 @@
   margin-bottom: 30px;
 }
 
-.profileImageContainer {
-  display: flex;
-}
-
 .profileImageContainer p {
-  margin-right: 15px;
+  text-align: left;
   color: #adb3ba;
   font-size: 14px;
   font-weight: 500;
