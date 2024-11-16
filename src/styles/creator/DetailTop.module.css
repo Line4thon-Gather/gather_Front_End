@@ -48,6 +48,13 @@
   line-height: 175%;
 }
 
+.categoryContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
 .category {
   padding: 1px 15px;
   display: flex;

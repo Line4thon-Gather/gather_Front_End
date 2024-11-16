@@ -16,6 +16,12 @@ const Mypage = () => {
   const [recentCreators, setRecentCreators] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const categoryTranslations = {
+    prints: '인쇄물',
+    video: '영상',
+    sns_post: 'SNS',
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userName = localStorage.getItem('userName') || '이름을 입력해주세요';
@@ -29,8 +35,6 @@ const Mypage = () => {
       setEmail(userEmail);
       setProfileImage(userProfileImage);
     }
-
-    // 최근 본 크리에이터 데이터 가져오기
     fetchRecentCreators();
   }, []);
 
@@ -53,8 +57,6 @@ const Mypage = () => {
 
       if (response.data.isSuccess && response.data.data) {
         const { profileInfo, creatorInfo } = response.data.data;
-
-        // 상태 업데이트
         setRecentCreators(creatorInfo || []);
         setProfileImage(profileInfo.profileImgUrl || defaultProfile);
         setEmail(profileInfo.email || '이메일을 입력해주세요');
@@ -212,17 +214,28 @@ const Mypage = () => {
               ) : recentCreators.length === 0 ? (
                 <p>최근에 본 크리에이터가 없습니다.</p>
               ) : (
-                recentCreators.map((creator, index) => (
-                  <ThumbnailCard
-                    key={index}
-                    imageUrl={creator.thumbnailImgUrl}
-                    category={(creator.availableWork || []).join(', ')}
-                    creatorName={creator.nickname}
-                    description={creator.introductionTitle}
-                    minPrice={creator.startPrice.toLocaleString()}
-                    onClick={() => handleThumbnailClick(creator.nickname)}
-                  />
-                ))
+                recentCreators.map((creator, index) => {
+                  const uniqueCategories = [
+                    ...new Set(
+                      (creator.availableWork || []).map(
+                        (work) =>
+                          categoryTranslations[work.toLowerCase()] || work
+                      )
+                    ),
+                  ].join(', ');
+
+                  return (
+                    <ThumbnailCard
+                      key={index}
+                      imageUrl={creator.thumbnailImgUrl}
+                      category={uniqueCategories}
+                      creatorName={creator.nickname}
+                      description={creator.introductionTitle}
+                      minPrice={creator.startPrice.toLocaleString()}
+                      onClick={() => handleThumbnailClick(creator.nickname)}
+                    />
+                  );
+                })
               )}
             </div>
           </div>

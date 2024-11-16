@@ -6,8 +6,14 @@ import defaultProfile from '../../assets/images/profileImage.png';
 import CheckModal from '../../pages/creator/CheckModal';
 import defaultThumbnail from '../../assets/images/AddPortfolio.png';
 
-// const dropdownList = ['인쇄물', '영상', 'SNS'];
-const dropdownList = ['PRINTS', 'VIDEO', 'SNS_POST'];
+const dropdownList = ['인쇄물', '영상', 'SNS'];
+// const dropdownList = ['PRINTS', 'VIDEO', 'SNS_POST'];
+
+const categoryToEnglish = {
+  인쇄물: 'PRINTS',
+  영상: 'VIDEO',
+  SNS: 'SNS_POST',
+};
 
 function CreatorRegistration() {
   const [profileImage, setProfileImage] = useState(null);
@@ -78,7 +84,7 @@ function CreatorRegistration() {
 
   const handleCategoryChange = (index, selectedCategory) => {
     const updatedSkills = [...skills];
-    updatedSkills[index].category = selectedCategory;
+    updatedSkills[index].category = categoryToEnglish[selectedCategory]; // 영어로 저장
     setSkills(updatedSkills);
     setDropdownOpen(null);
   };
@@ -334,7 +340,7 @@ function CreatorRegistration() {
                       'portfolio'
                     )
                   }
-                  placeholder="포포트폴리오 제목을 입력해주세요."
+                  placeholder="포트폴리오 제목을 입력해주세요."
                   maxWidth="100%"
                 />
                 <div className={styles.horizontalContainer}>
@@ -436,16 +442,6 @@ function CreatorRegistration() {
           <h2>작업 가능 항목/가격</h2>
           {skills.map((item, index) => (
             <div key={index} className={styles.workItem}>
-              <div className={styles.removeButtonContainer}>
-                <button
-                  type="button"
-                  onClick={() => removeSkill(index)}
-                  disabled={skills.length <= 1}
-                  className={styles.removeButton}
-                >
-                  삭제
-                </button>
-              </div>
               <div className={styles.horizontalContainer}>
                 <div className={styles.dropdownContainer} ref={dropdownRef}>
                   <label>카테고리</label>
@@ -454,7 +450,10 @@ function CreatorRegistration() {
                     className={styles.dropdownButton}
                     onClick={() => toggleDropdown(index)}
                   >
-                    {item.category || '카테고리 선택'}
+                    {Object.keys(categoryToEnglish).find(
+                      (key) => categoryToEnglish[key] === item.category
+                    ) || '카테고리 선택'}{' '}
+                    {/* 영어 값을 한글로 매핑 */}
                   </button>
                   {dropdownOpen === index && (
                     <div className={styles.dropdownMenu}>
@@ -464,13 +463,12 @@ function CreatorRegistration() {
                           className={styles.dropdownItem}
                           onClick={() => handleCategoryChange(index, category)}
                         >
-                          {category}
+                          {category} {/* 한글로 표시 */}
                         </div>
                       ))}
                     </div>
                   )}
                 </div>
-
                 <InputField
                   label="작업명"
                   value={item.task}
@@ -482,8 +480,6 @@ function CreatorRegistration() {
                     )
                   }
                   placeholder="작업명을 작성해주세요."
-                  maxLength={50}
-                  maxWidth="80%"
                 />
                 <InputField
                   label="작업일"
@@ -496,10 +492,6 @@ function CreatorRegistration() {
                     )
                   }
                   placeholder="작업 소요 기간"
-                  maxLength={10}
-                  maxWidth="80%"
-                  span="일"
-                  spanPosition="back"
                 />
                 <InputField
                   label="가격"
@@ -512,10 +504,6 @@ function CreatorRegistration() {
                     )
                   }
                   placeholder="시작 가격"
-                  maxLength={10}
-                  maxWidth="80%"
-                  span="부터 시작"
-                  spanPosition="back"
                 />
               </div>
             </div>
