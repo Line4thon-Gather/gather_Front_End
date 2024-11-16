@@ -56,6 +56,15 @@
 }
 
 .inputLabel {
+  margin-bottom: 0px;
+  color: #adb3ba;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 175%;
+}
+.inputLabel2 {
+  margin-bottom: 10px;
+  display: flex;
   color: #adb3ba;
   font-size: 14px;
   font-weight: 500;
@@ -211,4 +220,20 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+}
+
+.creator {
+  margin-left: 15px;
+  display: flex;
+  padding: 0px 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 3px;
+  background: var(--blue-blue-200, #b5d3ff);
+  color: var(--blue-blue-500, #1b78ff);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 175%; /* 24.5px */
 }
