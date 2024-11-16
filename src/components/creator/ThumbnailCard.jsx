@@ -17,7 +17,12 @@ const ThumbnailCard = ({
       className={styles.cardContainer}
       onClick={() => navigate(`/creator/${creatorName}`)}
     >
-      <img src={imageUrl} alt="썸네일 사진" className={styles.thumbnail} />
+      <img
+        src={imageUrl}
+        alt="썸네일 사진"
+        className={styles.thumbnail}
+        loading="lazy"
+      />
       <div className={styles.categoryContainer}>
         {categories.map((cat, index) => (
           <span
