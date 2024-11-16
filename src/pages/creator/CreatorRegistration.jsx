@@ -221,7 +221,7 @@ function CreatorRegistration() {
       );
 
       alert('등록 성공! 데이터를 성공적으로 전송했습니다.');
-      navigate(`/detail/${creatorId}`);
+      navigate(`/creator/${creatorId}`);
     } catch (error) {
       console.error('등록 실패:', error);
       if (error.response) {
