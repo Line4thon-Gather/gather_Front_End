@@ -17,11 +17,8 @@ const DetailCreator = () => {
   useEffect(() => {
     if (!token) navigate('/login');
     const fetchCreatorData = async () => {
-      console.log('useEffect 실행됨 - 데이터를 가져오려고 시도합니다.');
-
       try {
         const token = localStorage.getItem('token'); // 로컬스토리지에서 토큰 가져오기
-        console.log('토큰:', token);
 
         if (!token) {
           console.error('토큰이 없습니다. 인증이 필요한 페이지입니다.');
@@ -29,8 +26,6 @@ const DetailCreator = () => {
           setLoading(false);
           return;
         }
-
-        console.log('API 요청을 시작합니다.');
 
         // API 호출
         const response = await axios.get(
@@ -43,10 +38,7 @@ const DetailCreator = () => {
           }
         );
 
-        console.log('API 응답:', response);
-
         if (response.data.isSuccess) {
-          console.log('데이터 가져오기 성공:', response.data.data);
           setCreator(response.data.data);
         } else {
           console.error(
@@ -59,7 +51,6 @@ const DetailCreator = () => {
         console.error('API 호출 중 오류가 발생했습니다:', err);
         setError('서버와의 통신에 문제가 발생했습니다.');
       } finally {
-        console.log('데이터 로딩이 완료되었습니다. 로딩 상태를 종료합니다.');
         setLoading(false);
       }
     };
@@ -69,7 +60,6 @@ const DetailCreator = () => {
 
   // 로딩 중일 때 표시할 컴포넌트
   if (loading) {
-    console.log('로딩 중입니다...');
     return <div>로딩 중...</div>;
   }
 
@@ -86,7 +76,7 @@ const DetailCreator = () => {
   }
 
   // 크리에이터 데이터를 가져온 경우 렌더링
-  console.log('크리에이터 데이터를 렌더링합니다:', creator);
+
   return (
     <div>
       <div className={styles.container}>

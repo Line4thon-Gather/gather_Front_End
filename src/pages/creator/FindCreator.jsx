@@ -29,7 +29,6 @@ const FindCreator = () => {
     },
     staleTime: 1000 * 60 * 30,
   });
-  console.log(data);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetching) {

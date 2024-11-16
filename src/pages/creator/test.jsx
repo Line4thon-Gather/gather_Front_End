@@ -96,7 +96,6 @@ const CreatorRegistration = () => {
   const handleCancel = () => setIsModalOpen(false);
 
   const handleConfirm = () => {
-    console.log(creatorData);
     setIsModalOpen(false);
   };
 

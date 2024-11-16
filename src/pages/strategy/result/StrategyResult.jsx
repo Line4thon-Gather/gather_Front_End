@@ -11,7 +11,6 @@ import { postData } from '../../../hooks/useAxios';
 export default function StrategyResult() {
   const location = useLocation();
   const formInfo = location.state;
-  console.log(formInfo);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['timeline', formInfo], // formInfo를 queryKey에 추가하여 변경사항 감지

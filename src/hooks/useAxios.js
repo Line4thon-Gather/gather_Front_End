@@ -14,7 +14,6 @@ export const postData = async (formInfo) => {
       }
     );
     const data = await response.data.data;
-    console.log(data);
 
     return data;
   } catch (error) {

@@ -43,7 +43,6 @@ const StudentCertification = () => {
         if (token) {
           localStorage.setItem('token', token);
         }
-        console.log('인증 요청 성공:', response.data);
       } catch (error) {
         console.error('인증 요청 실패:', error);
         alert('인증 요청에 실패했습니다. 다시 시도해주세요.');
@@ -62,14 +61,7 @@ const StudentCertification = () => {
       return;
     }
 
-    console.log('인증 요청 데이터:', {
-      code: numericVerificationCode,
-      email: email.trim(),
-      univName: univName,
-    });
-
     try {
-      console.log(token);
       const response = await axios.post(
         'https://backend.to-gather.info/api/certification/univ/auth',
         {
@@ -128,13 +120,10 @@ const StudentCertification = () => {
   };
 
   const handleCertificationRequest = () => {
-    console.log('대학교:', univName);
-    console.log('이메일:', email);
     verifyEmail();
   };
 
   const handleNextButtonClick = () => {
-    console.log('인증된 학교:', univName);
     navigate('/login-finish');
   };
 

@@ -11,7 +11,6 @@ const Nav = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('사용자 이름');
   const [userProfileImage, setUserProfileImage] = useState(basicImg);
-  console.log(pathname);
 
   const updateUserInfo = () => {
     const token = localStorage.getItem('token');

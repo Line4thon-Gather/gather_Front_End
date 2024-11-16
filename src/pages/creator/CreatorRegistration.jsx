@@ -208,11 +208,6 @@ function CreatorRegistration() {
       }
     });
 
-    // formData 확인
-    for (const pair of formData.entries()) {
-      console.log(`${pair[0]}:`, pair[1]);
-    }
-
     try {
       const response = await axios.post(
         'https://backend.to-gather.info/api/creator',
@@ -225,7 +220,6 @@ function CreatorRegistration() {
         }
       );
 
-      console.log('등록 성공:', response.data);
       alert('등록 성공! 데이터를 성공적으로 전송했습니다.');
       navigate(`/detail/${creatorId}`);
     } catch (error) {

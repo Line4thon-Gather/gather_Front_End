@@ -26,7 +26,6 @@ export default function TimeLine({ data }) {
     budget: Number(formData.budget).toLocaleString('ko-KR'),
     target: formData.targetNumberOfPeople,
   };
-  console.log(data);
 
   const countPostedTasks = data
     ? data

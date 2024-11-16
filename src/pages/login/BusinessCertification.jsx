@@ -25,17 +25,7 @@ const BusinessCertification = () => {
       return;
     }
 
-    console.log('인증 토큰:', token);
-
-    console.log('인증 요청 데이터:', {
-      b_no: businessNumber,
-      start_dt: startDate,
-      p_nm: representativeName,
-    });
-
     try {
-      console.log('요청 헤더에 담긴 인증 토큰:', token);
-
       const response = await axios.post(
         'https://backend.to-gather.info/api/certification/entrepreneur',
         {
