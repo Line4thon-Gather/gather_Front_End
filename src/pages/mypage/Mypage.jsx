@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate import
+import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/mypage/Mypage.module.css';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import Footer from '../../components/home/Footer';
 
 const Mypage = () => {
-  const navigate = useNavigate(); // useNavigate 훅 사용
-  const [profileImage, setProfileImage] = useState(defaultProfile); // 기본 이미지
-  const [name, setName] = useState('USER0000');
-  const [email, setEmail] = useState('000000@gmail.com');
-  const [showModal, setShowModal] = useState(false); // 모달 가시성 상태
-  const [modalMessage, setModalMessage] = useState(''); // 모달 메시지
+  const navigate = useNavigate();
+  const [profileImage, setProfileImage] = useState(defaultProfile);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const userName = localStorage.getItem('userName') || 'USER0000';
-    const userEmail = localStorage.getItem('userEmail') || '000000@gmail.com';
+    const userName = localStorage.getItem('userName') || '이름을 입력해주세요';
+    const userEmail =
+      localStorage.getItem('userEmail') || '이메일을 입력해주세요';
     const userProfileImage =
       localStorage.getItem('profileImgUrl') || defaultProfile;
 
@@ -42,7 +43,8 @@ const Mypage = () => {
     if (name.trim() === '') {
       setModalMessage('이름을 빈 문자열로 설정할 수 없습니다.');
       setShowModal(true);
-      const storedUserName = localStorage.getItem('userName') || 'USER0000';
+      const storedUserName =
+        localStorage.getItem('userName') || '이름을 입력해주세요';
       setName(storedUserName);
     } else {
       localStorage.setItem('userName', name);
@@ -54,10 +56,10 @@ const Mypage = () => {
   };
 
   const handleEmailBlur = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일 형식 정규식
-    const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 포함 여부 확인
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const storedUserEmail =
-      localStorage.getItem('userEmail') || '000000@gmail.com';
+      localStorage.getItem('userEmail') || '이메일을 설정해주세요';
 
     if (email.trim() === '') {
       setModalMessage('이메일을 빈 문자열로 설정할 수 없습니다.');

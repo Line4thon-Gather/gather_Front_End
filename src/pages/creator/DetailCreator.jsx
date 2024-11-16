@@ -20,7 +20,7 @@ const DetailCreator = () => {
       console.log('useEffect 실행됨 - 데이터를 가져오려고 시도합니다.');
 
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token'); // 로컬스토리지에서 토큰 가져오기
         console.log('토큰:', token);
 
         if (!token) {
