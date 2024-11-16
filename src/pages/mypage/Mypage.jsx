@@ -16,6 +16,13 @@ const Mypage = () => {
   const [recentCreators, setRecentCreators] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // 영어 카테고리를 한국어로 변환하는 매핑 객체
+  const categoryTranslations = {
+    prints: '인쇄물',
+    video: '영상',
+    sns_post: 'SNS',
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userName = localStorage.getItem('userName') || '이름을 입력해주세요';
@@ -216,7 +223,12 @@ const Mypage = () => {
                   <ThumbnailCard
                     key={index}
                     imageUrl={creator.thumbnailImgUrl}
-                    category={(creator.availableWork || []).join(', ')}
+                    category={(creator.availableWork || [])
+                      .map(
+                        (work) =>
+                          categoryTranslations[work.toLowerCase()] || work
+                      )
+                      .join(', ')}
                     creatorName={creator.nickname}
                     description={creator.introductionTitle}
                     minPrice={creator.startPrice.toLocaleString()}
