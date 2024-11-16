@@ -32,7 +32,7 @@ const TabSliderMenu = ({ creator }) => {
           <h2>
             포트폴리오
             <span className={styles.itemCount}>
-              {getPortfolioResList.length}
+              {getPortfolioResList ? getPortfolioResList.length : 0}
             </span>
           </h2>
           <div className={styles.portfolioList}>
@@ -70,7 +70,9 @@ const TabSliderMenu = ({ creator }) => {
         <div className={styles.subcontainer}>
           <h2>
             작업 가능 항목 및 가격
-            <span className={styles.itemCount}>{getWorkResList.length}</span>
+            <span className={styles.itemCount}>
+              {getWorkResList ? getWorkResList.length : 0}
+            </span>
           </h2>
           <div className={styles.services}>
             {getWorkResList && getWorkResList.length > 0 ? (
@@ -96,14 +98,14 @@ const TabSliderMenu = ({ creator }) => {
           <div className={styles.connectionContainer}>
             <p className={styles.connection}>카카오톡 아이디</p>
             <p className={styles.howconnection}>
-              &nbsp;|
+              &nbsp;|&emsp;
               {contactKakaoId ? contactKakaoId : '카카오톡 아이디가 없습니다.'}
             </p>
           </div>
           <div className={styles.connectionContainer}>
             <p className={styles.connection}>이메일 주소</p>
             <p className={styles.howconnection}>
-              &emsp;&emsp;|
+              &emsp;&emsp;|&emsp;
               {contactEmail ? contactEmail : '이메일 주소가 없습니다.'}
             </p>
           </div>
