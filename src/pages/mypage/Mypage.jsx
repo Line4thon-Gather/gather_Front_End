@@ -216,7 +216,7 @@ const Mypage = () => {
                   <ThumbnailCard
                     key={index}
                     imageUrl={creator.thumbnailImgUrl}
-                    category={(creator.availableWork || []).join(', ')} // 안전한 데이터 처리
+                    category={(creator.availableWork || []).join(', ')}
                     creatorName={creator.nickname}
                     description={creator.introductionTitle}
                     minPrice={creator.startPrice.toLocaleString()}

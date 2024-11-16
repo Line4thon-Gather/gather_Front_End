@@ -49,6 +49,7 @@
 }
 
 .category {
+  padding: 1px 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,4 +58,19 @@
   font-weight: 700;
   line-height: 175%;
   margin-bottom: 4px;
+}
+
+.category.sns_post {
+  background-color: #c1eec0;
+  color: #32854b;
+}
+
+.category.video {
+  background-color: #ffcebc;
+  color: #ff6b32;
+}
+
+.category.prints {
+  background-color: #d3c5ff;
+  color: #906bff;
 }
