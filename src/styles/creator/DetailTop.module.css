@@ -32,6 +32,7 @@
   justify-content: space-between;
   width: 100%;
   align-items: center;
+  text-align: justify;
   color: var(--gray-scale-gray-600, #27282d);
   font-size: 32px;
   font-weight: 700;
