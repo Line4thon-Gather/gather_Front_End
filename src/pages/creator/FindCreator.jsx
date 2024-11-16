@@ -69,7 +69,7 @@ const FindCreator = () => {
               currentLabel={priceRange}
               setCurrentLabel={setPriceRange}
               options={[
-                { value: '', label: '전체' },
+                { value: '', label: '가격대' },
                 { value: 10000, label: '1만원 미만' },
                 { value: 50000, label: '5만원 미만' },
                 { value: 100000, label: '10만원 미만' },
@@ -89,7 +89,7 @@ const FindCreator = () => {
               currentLabel={category}
               setCurrentLabel={setCategory}
               options={[
-                { value: '', label: '전체' },
+                { value: '', label: '카테고리' },
                 { value: 'PRINTS', label: '인쇄물' },
                 { value: 'VIDEO', label: '영상' },
                 { value: 'SNS_POST', label: 'SNS' },
@@ -103,7 +103,7 @@ const FindCreator = () => {
               }}
             />
             <Toggle
-              label="정렬"
+              label="최신순"
               currentLabel={sortOrder}
               setCurrentLabel={setSortOrder}
               options={[
